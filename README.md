@@ -133,8 +133,12 @@ Usage Example:
 
 <br>
 
-## The `node_pools` block:
-The `node-pools` block supports the following arguments:<br>
+## The `aks` block:
+The `rbac` block supports the following arguments:<br>
+`enabled` - (Required)
+`ad_integration` - (Required)
+
+The `node_pools` block supports the following arguments:<br>
 `system` - (Required) The system or default node pool. This node pool hosts the system pods by default. The possible arguments for this block are defined below. 
 
 `addpool` - (Required) The additional node pool configuration. This block name is changeable and must be unique across all additional node pools. At least one additional node pool is required. The possible arguments for this block are defined below.
@@ -197,7 +201,7 @@ This block creates additional node pools. This block is optional.
 Usage Example:
 <br>
 
-    node_pools = {
+    aks = {
         system = {
             vm_size                      = "Standard_D4_v4"
             node_count                   = 1

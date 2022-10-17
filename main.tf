@@ -49,9 +49,10 @@ module "kubernetes" {
   resource_group_name = module.resource_group.name
   identity_type       = "UserAssigned" # Allowed values: UserAssigned or SystemAssigned
   rbac = {
-    enabled        = false
-    ad_integration = false
+    enabled        = var.aks.rbac.enabled
+    ad_integration = var.aks.rbac.ad_integration
   }
+  # rbac_admin_object_ids = { "default" = "fc0bd818-d698-4089-a6b1-f41cf5d1f4c5" }
 
   network_plugin         = "azure"
   configure_network_role = true
@@ -68,7 +69,7 @@ module "kubernetes" {
     route_table_id = local.virtual_network.route_table_id
   }
 
-  node_pools = var.node_pools
+  node_pools = var.aks.node_pools
 
   default_node_pool = "system" //name of the sub-key, which is the default node pool.
 
@@ -110,14 +111,14 @@ resource "kubernetes_secret" "private_docker_registry" {
 }
 
 resource "helm_release" "hpcc" {
-  count = var.disable_helm ? 0 : 1
+  count = var.hpcc.enabled ? 1 : 0
 
   name                       = can(var.hpcc.name) ? var.hpcc.name : "myhpcck8s"
   version                    = can(var.hpcc.version) ? var.hpcc.version : null
   chart                      = can(var.hpcc.remote_chart) ? "hpcc" : var.hpcc.local_chart
   repository                 = can(var.hpcc.remote_chart) ? var.hpcc.remote_chart : null
   create_namespace           = true
-  namespace                  = try(var.hpcc.namespace, terraform.workspace)
+  namespace                  = local.namespaces.hpcc.metadata.name
   atomic                     = try(var.hpcc.atomic, false)
   recreate_pods              = try(var.hpcc.recreate_pods, false)
   reuse_values               = try(var.hpcc.reuse_values, false)
@@ -132,7 +133,7 @@ resource "helm_release" "hpcc" {
   wait_for_jobs              = try(var.hpcc.wait_for_jobs, false)
   lint                       = try(var.hpcc.lint, false)
 
-  values = concat(var.elastic4hpcclogs.enable ? [data.http.elastic4hpcclogs_hpcc_logaccess.body] : [], var.hpcc.expose_eclwatch ? [file("${path.root}/values/esp.yaml")] : [],
+  values = concat(var.elastic4hpcclogs.enabled ? [data.http.elastic4hpcclogs_hpcc_logaccess.body] : [], var.hpcc.expose_eclwatch ? [file("${path.root}/values/esp.yaml")] : [],
   [file("${path.root}/values/values-retained-azurefile.yaml")], try([for v in var.hpcc.values : file(v)], []))
 
   dynamic "set" {
@@ -167,18 +168,47 @@ resource "helm_release" "hpcc" {
     }
   }
 
+  dynamic "set" {
+    for_each = var.hpcc.tls_enabled ? [1] : []
+
+    content {
+      name  = "certificates.enabled"
+      value = true
+    }
+  }
+
+  dynamic "set" {
+    for_each = var.hpcc.tls_enabled ? [1] : []
+
+    content {
+      name  = "certificates.issuers.local.spec.ca.secretName"
+      value = "hpcc-local-issuer-key-pair"
+
+    }
+  }
+
+  dynamic "set" {
+    for_each = var.hpcc.tls_enabled ? [1] : []
+
+    content {
+      name  = "certificates.issuers.signing.spec.ca.secretName"
+      value = "hpcc-local-issuer-key-pair"
+    }
+  }
+
   depends_on = [
     helm_release.elastic4hpcclogs,
     helm_release.storage,
-    module.kubernetes
+    module.kubernetes,
+    helm_release.cert-manager
   ]
 }
 
 resource "helm_release" "elastic4hpcclogs" {
-  count = var.disable_helm || !var.elastic4hpcclogs.enable ? 0 : 1
+  count = var.elastic4hpcclogs.enabled ? 1 : 0
 
   name                       = can(var.elastic4hpcclogs.name) ? var.elastic4hpcclogs.name : "myelastic4hpcclogs"
-  namespace                  = try(var.hpcc.namespace, terraform.workspace)
+  namespace                  = local.namespaces.logging.metadata.name
   chart                      = can(var.elastic4hpcclogs.remote_chart) ? "elastic4hpcclogs" : var.elastic4hpcclogs.local_chart
   repository                 = can(var.elastic4hpcclogs.remote_chart) ? var.elastic4hpcclogs.remote_chart : null
   version                    = can(var.elastic4hpcclogs.version) ? var.elastic4hpcclogs.version : null
@@ -213,7 +243,7 @@ resource "helm_release" "elastic4hpcclogs" {
 }
 
 resource "helm_release" "storage" {
-  count = var.disable_helm ? 0 : 1
+  count = var.storage.enabled ? 1 : 0
 
   name                       = "azstorage"
   chart                      = can(var.storage.remote_chart) ? "hpcc-azurefile" : var.storage.local_chart
@@ -221,7 +251,7 @@ resource "helm_release" "storage" {
   version                    = can(var.storage.version) ? var.storage.version : null
   values                     = concat(var.storage.default ? [] : [local.hpcc_azurefile], try([for v in var.storage.values : file(v)], []))
   create_namespace           = true
-  namespace                  = try(var.hpcc.namespace, terraform.workspace)
+  namespace                  = local.namespaces.hpcc.metadata.name
   atomic                     = try(var.storage.atomic, false)
   force_update               = try(var.storage.force_update, false)
   recreate_pods              = try(var.storage.recreate_pods, false)
@@ -258,5 +288,22 @@ resource "null_resource" "launch_svc_url" {
   provisioner "local-exec" {
     command     = local.is_windows_os ? "Start-Process ${each.value}" : "open ${each.value} || xdg-open ${each.value}"
     interpreter = local.is_windows_os ? ["PowerShell", "-Command"] : ["/bin/bash", "-c"]
+  }
+}
+
+resource "kubernetes_namespace" "namespaces" {
+  for_each = local.namespaces
+
+  metadata {
+    name = each.value.metadata.name
+    annotations = {
+      "name"  = each.value.metadata.annotations.name
+      "admin" = each.value.metadata.annotations.admin
+      "email" = each.value.metadata.annotations.email
+    }
+
+    labels = {
+      "app" = each.value.metadata.labels.app
+    }
   }
 }

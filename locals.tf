@@ -27,6 +27,40 @@ locals {
     try(var.tags)
   )
 
+  namespaces = {
+    "hpcc" = {
+      metadata = {
+        annotations = {
+          "name"  = "hpcc"
+          "admin" = var.admin.name
+          "email" = var.admin.email
+        }
+
+        labels = {
+          "app" = "hpcc"
+        }
+
+        name = "hpcc"
+      }
+    },
+    "logging" = {
+      metadata = {
+        annotations = {
+          "name"  = "logging"
+          "admin" = var.admin.name
+          "email" = var.admin.email
+        }
+
+        labels = {
+          "app" = "logs"
+        }
+
+        name = "logging"
+      }
+    }
+
+  }
+
   get_vnet_data = fileexists("${path.module}/modules/virtual_network/bin/vnet.json") ? jsondecode(file("${path.module}/modules/virtual_network/bin/vnet.json")) : null
 
   get_data_planes = fileexists("${path.module}/modules/storage_accounts/bin/data_planes.json") ? jsondecode(file("${path.module}/modules/storage_accounts/bin/data_planes.json")) : null
@@ -67,6 +101,13 @@ locals {
 
 
   az_command    = try("az aks get-credentials --name ${module.kubernetes.name} --resource-group ${module.resource_group.name} --overwrite", "")
-  web_urls      = { auto_launch_eclwatch = "http://$(kubectl get svc --field-selector metadata.name=eclwatch | awk 'NR==2 {print $4}'):8010" }
+  web_urls      = { auto_launch_eclwatch = "http://$(kubectl get svc --field-selector metadata.name=eclwatch -n ${local.namespaces.hpcc.metadata.name} | awk 'NR==2 {print $4}'):8010" }
   is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true
+
+  cert_manager = ""
+
+  kubelogin_exec_env = {
+    AAD_SERVICE_PRINCIPAL_CLIENT_ID     = var.azure_auth.AAD_CLIENT_ID
+    AAD_SERVICE_PRINCIPAL_CLIENT_SECRET = var.azure_auth.AAD_CLIENT_SECRET
+  }
 }

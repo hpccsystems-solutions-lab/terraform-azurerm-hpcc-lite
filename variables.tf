@@ -87,10 +87,16 @@ variable "virtual_network" {
   default     = null
 }
 
-variable "node_pools" {
-  description = "node pools"
-  type        = any # top level keys are node pool names, sub-keys are subset of node_pool_defaults keys
+variable "aks" {
+  description = "AKS arguments"
+  type        = any
   default     = { default = {} }
+}
+
+variable "cert_manager" {
+  description = "Cert-manager arguments."
+  type        = any
+  default     = { default = false }
 }
 
 variable "hpcc" {
@@ -115,4 +121,22 @@ variable "registry" {
   description = "Use if image is hosted on a private docker repository."
   type        = any
   default     = {}
+}
+
+variable "nginx_ingress" {
+  description = "NGINX Ingress arguments."
+  type        = any
+  default     = { default = false }
+}
+
+variable "azure_auth" {
+  description = "Service principal arguments."
+  type        = any
+  default     = { default = false }
+}
+
+variable "external_dns" {
+  description = "Enable the use of an external DNS for the AKS"
+  type        = any
+  default     = { default = false }
 }
