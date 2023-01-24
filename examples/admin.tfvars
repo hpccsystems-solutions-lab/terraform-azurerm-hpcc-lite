@@ -21,85 +21,89 @@ resource_group = {
   unique_name = true
 }
 
-node_pools = {
-  system = {
-    vm_size                      = "Standard_D4_v4"
-    node_count                   = 1
-    enable_auto_scaling          = true
-    only_critical_addons_enabled = true
-    min_count                    = 1
-    max_count                    = 1
-    availability_zones           = []
-    subnet                       = "public"
-    enable_host_encryption       = false
-    enable_node_public_ip        = false
-    os_disk_type                 = "Managed"
-    type                         = "VirtualMachineScaleSets"
-    # max_pods             = 10
-    # node_labels          = {"engine" = "roxie", "engine" = "roxie"}
-    # orchestrator_version = "2.9.0"
-    # os_disk_size_gb      = 100
-    # tags                 = {"mynodepooltag1" = "mytagvalue1", "mynodepooltag2" = "mytagvalue2"}
+aks = {
+  node_pools = {
+    system = {
+      vm_size                      = "Standard_D4_v4"
+      node_count                   = 1
+      enable_auto_scaling          = true
+      only_critical_addons_enabled = true
+      min_count                    = 1
+      max_count                    = 1
+      availability_zones           = []
+      subnet                       = "public"
+      enable_host_encryption       = false
+      enable_node_public_ip        = false
+      os_disk_type                 = "Managed"
+      type                         = "VirtualMachineScaleSets"
+      # max_pods             = 10
+      # node_labels          = {"engine" = "roxie", "engine" = "roxie"}
+      # orchestrator_version = "2.9.0"
+      # os_disk_size_gb      = 100
+      # tags                 = {"mynodepooltag1" = "mytagvalue1", "mynodepooltag2" = "mytagvalue2"}
 
+    }
+
+    addpool1 = {
+      vm_size                      = "Standard_D4_v4"
+      enable_auto_scaling          = true
+      node_count                   = 2
+      min_count                    = 1
+      max_count                    = 2
+      availability_zones           = []
+      subnet                       = "public"
+      priority                     = "Regular"
+      spot_max_price               = -1
+      max_surge                    = "1"
+      os_type                      = "Linux"
+      priority                     = "Regular"
+      enable_host_encryption       = false
+      enable_node_public_ip        = false
+      only_critical_addons_enabled = false
+      os_disk_type                 = "Managed"
+      type                         = "VirtualMachineScaleSets"
+      # orchestrator_version         = "2.9.0"
+      # os_disk_size_gb              = 100
+      # max_pods                     = 20
+      # node_labels                  = {"engine" = "roxie", "engine" = "roxie"}
+      # eviction_policy              = "Spot"
+      # node_taints                  = ["mytaint1", "mytaint2"]
+      # proximity_placement_group_id = "my_proximity_placement_group_id"
+      # spot_max_price               = 1
+      # tags                         = {"mynodepooltag1" = "mytagvalue1", "mynodepooltag2" = "mytagvalue2"}
+    }
+
+    addpool2 = {
+      vm_size                      = "Standard_D4_v4"
+      enable_auto_scaling          = true
+      node_count                   = 2
+      min_count                    = 1
+      max_count                    = 2
+      availability_zones           = []
+      subnet                       = "public"
+      priority                     = "Regular"
+      spot_max_price               = -1
+      max_surge                    = "1"
+      os_type                      = "Linux"
+      priority                     = "Regular"
+      enable_host_encryption       = false
+      enable_node_public_ip        = false
+      only_critical_addons_enabled = false
+      os_disk_type                 = "Managed"
+      type                         = "VirtualMachineScaleSets"
+      # orchestrator_version         = "2.9.0"
+      # os_disk_size_gb              = 100
+      # max_pods                     = 20
+      # node_labels                  = {"engine" = "roxie", "engine" = "roxie"}
+      # eviction_policy              = "Spot"
+      # node_taints                  = ["mytaint1", "mytaint2"]
+      # proximity_placement_group_id = "my_proximity_placement_group_id"
+      # spot_max_price               = 1
+      # tags                         = {"mynodepooltag1" = "mytagvalue1", "mynodepooltag2" = "mytagvalue2"}
+    }
   }
 
-  addpool1 = {
-    vm_size                      = "Standard_D4_v4"
-    enable_auto_scaling          = true
-    node_count                   = 2
-    min_count                    = 1
-    max_count                    = 2
-    availability_zones           = []
-    subnet                       = "public"
-    priority                     = "Regular"
-    spot_max_price               = -1
-    max_surge                    = "1"
-    os_type                      = "Linux"
-    priority                     = "Regular"
-    enable_host_encryption       = false
-    enable_node_public_ip        = false
-    only_critical_addons_enabled = false
-    os_disk_type                 = "Managed"
-    type                         = "VirtualMachineScaleSets"
-    # orchestrator_version         = "2.9.0"
-    # os_disk_size_gb              = 100
-    # max_pods                     = 20
-    # node_labels                  = {"engine" = "roxie", "engine" = "roxie"}
-    # eviction_policy              = "Spot"
-    # node_taints                  = ["mytaint1", "mytaint2"]
-    # proximity_placement_group_id = "my_proximity_placement_group_id"
-    # spot_max_price               = 1
-    # tags                         = {"mynodepooltag1" = "mytagvalue1", "mynodepooltag2" = "mytagvalue2"}
-  }
-
-  addpool2 = {
-    vm_size                      = "Standard_D4_v4"
-    enable_auto_scaling          = true
-    node_count                   = 2
-    min_count                    = 1
-    max_count                    = 2
-    availability_zones           = []
-    subnet                       = "public"
-    priority                     = "Regular"
-    spot_max_price               = -1
-    max_surge                    = "1"
-    os_type                      = "Linux"
-    priority                     = "Regular"
-    enable_host_encryption       = false
-    enable_node_public_ip        = false
-    only_critical_addons_enabled = false
-    os_disk_type                 = "Managed"
-    type                         = "VirtualMachineScaleSets"
-    # orchestrator_version         = "2.9.0"
-    # os_disk_size_gb              = 100
-    # max_pods                     = 20
-    # node_labels                  = {"engine" = "roxie", "engine" = "roxie"}
-    # eviction_policy              = "Spot"
-    # node_taints                  = ["mytaint1", "mytaint2"]
-    # proximity_placement_group_id = "my_proximity_placement_group_id"
-    # spot_max_price               = 1
-    # tags                         = {"mynodepooltag1" = "mytagvalue1", "mynodepooltag2" = "mytagvalue2"}
-  }
+  log_analytics_workspace_resource_id = ""
 }
 
 # CHARTS 
