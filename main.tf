@@ -73,10 +73,10 @@ module "kubernetes" {
     route_table_id = local.virtual_network.route_table_id
   }
 
-  node_pools = var.node_pools
+  node_pools = var.aks.node_pools
 
-  default_node_pool = "system" //name of the sub-key, which is the default node pool.
-  # log_analytics_workspace_id = var.azure_log_analytics_workspace == null ? null : module.logging[0].workspace_resource_id
+  default_node_pool          = "system" //name of the sub-key, which is the default node pool.
+  log_analytics_workspace_id = var.aks.log_analytics_workspace_resource_id == "" || var.aks.log_analytics_workspace_resource_id == null ? null : var.aks.log_analytics_workspace_resource_id
 }
 
 resource "kubernetes_secret" "sa_secret" {
@@ -136,7 +136,7 @@ resource "helm_release" "hpcc" {
   timeout                    = try(var.hpcc.timeout, 480)
   wait_for_jobs              = try(var.hpcc.wait_for_jobs, false)
   lint                       = try(var.hpcc.lint, false)
-  values = concat(try(module.logging[0].logaccess_body, []), var.hpcc.expose_eclwatch ? [file("${path.root}/values/esp.yaml")] : [],
+  values = concat(try([module.logging[0].logaccess_body], []), var.hpcc.expose_eclwatch ? [file("${path.root}/values/esp.yaml")] : [],
   [file("${path.root}/values/values-retained-azurefile.yaml")], try([for v in var.hpcc.values : file(v)], []))
 
   dynamic "set" {
@@ -291,7 +291,8 @@ module "logging" {
   }
 
   depends_on = [
-    kubernetes_namespace.hpcc
+    kubernetes_namespace.hpcc,
+    helm_release.storage
   ]
 }
 
