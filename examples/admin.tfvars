@@ -220,15 +220,13 @@ storage = {
 }
 
 elastic4hpcclogs = {
-  enable                     = true
-  expose                     = true
+  internet_enabled           = true
   name                       = "myelastic4hpcclogs"
   atomic                     = true
   recreate_pods              = false
   reuse_values               = false
   reset_values               = false
   force_update               = false
-  namespace                  = "default"
   cleanup_on_fail            = false
   disable_openapi_validation = false
   max_history                = 0
@@ -238,10 +236,37 @@ elastic4hpcclogs = {
   wait_for_jobs              = false
   lint                       = false
   remote_chart               = "https://hpcc-systems.github.io/helm-chart"
-  # local_chart = "/Users/foo/work/demo/helm-chart/helm/managed/logging/elastic"
+  #local_chart = "/Users/godji/work/HPCC-Platform/helm/managed/logging/elastic"
   # version                    = "1.2.10"
   # values = ["/Users/foo/mycustomvalues1.yaml", "/Users/foo/mycustomvalues2.yaml"]
 }
+
+# azure_log_analytics_workspace = {
+#   name = "my-hpcc-log-analytics-workspace"
+#   tags = {
+#     "app" = "hpcc"
+#   }
+
+#   internet_query_enabled     = true
+#   internet_ingestion_enabled = true
+
+#   # use_existing_workspace = {
+#   #   name                = "my-hpcc-log-analytics-workspace-qgt"
+#   #   resource_group_name = "app-aks-sandbox-eastus-42812"
+#   # }
+
+#   # linked_storage_account = {
+#   #   data_source_type    = "customlogs"
+#   #   storage_account_ids = ["/subscriptions/ec0ba952-4ae9-4f69-b61c-4b96ff470038/resourceGroups/app-6k625479dgax-sandbox-eastus/providers/Microsoft.Storage/storageAccounts/kk60h6z5u3dr9d7jqu945yui"]
+#   # }
+# }
+
+# azure_log_analytics_creds = {
+#   AAD_CLIENT_ID     = ""
+#   AAD_CLIENT_SECRET = ""
+#   AAD_TENANT_ID     = ""
+#   AAD_PRINCIPAL_ID  = ""
+# }
 
 # expose_services - Expose ECLWatch and elastic4hpcclogs to the internet. This can be unsafe and may not be supported by your organization. 
 # Setting this to true can cause eclwatch service to stick in a pending state. Only use this if you know what you are doing.

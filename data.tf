@@ -17,8 +17,3 @@ data "azurerm_storage_account" "hpccsa" {
   name                = each.key
   resource_group_name = each.value
 }
-
-data "http" "elastic4hpcclogs_hpcc_logaccess" {
-
-  url = local.elastic4hpcclogs_hpcc_logaccess
-}

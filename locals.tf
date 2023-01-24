@@ -56,17 +56,13 @@ locals {
 
   storage_accounts = can(var.storage.storage_accounts) ? { for v in var.storage.storage_accounts : v.name => v.resource_group_name } : { for k, v in local.group_planes_by_sa : k => join(",", distinct([for x in v : x.resource_group_name])) }
 
-  # sa_resource_group_names = can(var.storage.storage_accounts) ? { for k, v in var.storage.storage_accounts : k => v.resource_group_name } : { for k, v in local.get_data_planes : v.plane_name => v.resource_group_name }
-
-  # sa_resource_group_name = values(local.sa_resource_group_names)[0]
-
   hpcc_azurefile = templatefile("${path.module}/values/hpcc-azurefile.tftpl", { planes = local.data_planes })
 
   hpcc_chart_major_minor_point_version = can(var.hpcc.chart_version) ? regex("[\\d+?.\\d+?.\\d+?]+", var.hpcc.chart_version) : "master"
-  elastic4hpcclogs_hpcc_logaccess      = "https://raw.githubusercontent.com/hpcc-systems/helm-chart/${local.hpcc_chart_major_minor_point_version}/helm/managed/logging/elastic/elastic4hpcclogs-hpcc-logaccess.yaml"
-
 
   az_command    = try("az aks get-credentials --name ${module.kubernetes.name} --resource-group ${module.resource_group.name} --overwrite", "")
-  web_urls      = { auto_launch_eclwatch = "http://$(kubectl get svc --field-selector metadata.name=eclwatch | awk 'NR==2 {print $4}'):8010" }
+  web_urls      = { auto_launch_eclwatch = "http://$(kubectl get svc -n ${var.hpcc.namespace} --field-selector metadata.name=eclwatch | awk 'NR==2 {print $4}'):8010" }
   is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true
+
+  workspace_name = try("${var.azure_log_analytics_workspace.name}-${random_string.logging.result}", "default")
 }
