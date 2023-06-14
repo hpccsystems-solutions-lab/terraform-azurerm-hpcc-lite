@@ -35,11 +35,11 @@ variable "auto_connect" {
   default     = false
 }
 
-variable "disable_helm" {
-  description = "Disable Helm deployments by Terraform."
-  type        = bool
-  default     = false
-}
+# variable "disable_helm" {
+#   description = "Disable Helm deployments by Terraform."
+#   type        = bool
+#   default     = false
+# }
 
 variable "disable_naming_conventions" {
   description = "Naming convention module."
@@ -106,8 +106,43 @@ variable "node_pools" {
 
 variable "hpcc" {
   description = "HPCC Helm chart variables."
-  type        = any
-  default     = { name = "myhpcck8s" }
+  type = object({
+    release_name               = optional(string)
+    atomic                     = optional(bool)
+    recreate_pods              = optional(bool)
+    reuse_values               = optional(bool)
+    reset_values               = optional(bool)
+    force_update               = optional(bool)
+    cleanup_on_fail            = optional(bool)
+    disable_openapi_validation = optional(bool)
+    max_history                = optional(number)
+    wait                       = optional(bool)
+    dependency_update          = optional(bool)
+    timeout                    = optional(number)
+    wait_for_jobs              = optional(bool)
+    lint                       = optional(bool)
+    remote_chart               = optional(string)
+    local_chart                = optional(string)
+    chart_version              = optional(string)
+    image_version              = optional(string)
+    image_root                 = optional(string)
+    image_name                 = optional(string)
+    values                     = optional(list(string))
+    create_namespace           = optional(bool)
+    namespace                  = optional(string)
+    tls_enabled                = optional(bool)
+    auto_connect               = optional(bool)
+    auto_launch_eclwatch       = optional(bool)
+    default_storage            = optional(bool)
+
+    internet_enabled = optional(object({
+      eclwatch   = optional(bool)
+      eclqueries = optional(bool)
+      sql2ecl    = optional(bool)
+      esdl       = optional(bool)
+      dfs        = optional(bool)
+    }))
+  })
 }
 
 variable "storage" {
@@ -116,14 +151,32 @@ variable "storage" {
   default     = { default = false }
 }
 
-variable "elastic4hpcclogs" {
-  description = "HPCC Helm chart variables."
-  type        = any
-  default     = { name = "myelastic4hpcclogs", enable = true }
-}
+# variable "elastic4hpcclogs" {
+#   description = "HPCC Helm chart variables."
+#   type        = any
+#   default     = { name = "myelastic4hpcclogs", enable = true }
+# }
 
 variable "registry" {
   description = "Use if image is hosted on a private docker repository."
   type        = any
   default     = {}
+}
+
+variable "aks_automation" {
+  description = "Arguments to automate the Azure Kubernetes Cluster"
+  type = object({
+    local_authentication_enabled  = optional(bool, false)
+    public_network_access_enabled = optional(bool, false)
+
+    schedule = list(object({
+      schedule_name   = string
+      description     = string
+      frequency       = string
+      interval        = string
+      start_time      = string
+      week_days       = list(string)
+      daylight_saving = optional(bool, false)
+    }))
+  })
 }
