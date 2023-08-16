@@ -33,7 +33,7 @@ module "hpcc" {
   location            = var.metadata.location
   tags                = module.metadata.tags
 
-  namespace = var.hpcc_namespace
+  namespace = local.hpcc_namespace
 
   admin_services_storage_account_settings = {
     replication_type     = var.admin_services_storage_account_settings.replication_type

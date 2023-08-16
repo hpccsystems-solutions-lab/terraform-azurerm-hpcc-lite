@@ -129,12 +129,8 @@ variable "hpcc_namespace" {
     name   = string
     labels = map(string)
   })
-  default = {
-    name = "hpcc"
-    labels = {
-      name = "hpcc"
-    }
-  }
+
+  default = null
 }
 
 variable "helm_chart_strings_overrides" {

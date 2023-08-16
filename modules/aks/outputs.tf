@@ -5,6 +5,16 @@ output "aks_login" {
   value = "az aks get-credentials --name ${module.aks.cluster_name} --resource-group ${module.resource_groups["azure_kubernetes_service"].name}"
 }
 
+output "cluster_name" {
+  description = "The name of the Azure Kubernetes Service."
+  value       = module.aks.cluster_name
+}
+
+output "cluster_resource_group_name" {
+  description = "The resource group where the cluster is deployed."
+  value       = module.resource_groups["azure_kubernetes_service"].name
+}
+
 resource "local_file" "output" {
   content  = local.kubeconfig
   filename = "${path.module}/bin/kubeconfig.json"

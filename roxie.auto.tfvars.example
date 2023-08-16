@@ -1,0 +1,14 @@
+# Roxie Settings 
+#################
+
+roxie = [{
+  disabled   = false
+  traceLevel = 3
+
+  services = [{
+    annotations = { "service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path" = "/control/alive" }
+  }]
+
+  useRemoteResources = true
+  copyResources      = false
+}]

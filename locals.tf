@@ -46,6 +46,13 @@ locals {
 
   domain = coalesce(var.internal_domain, format("us-%s.%s.azure.lnrsg.io", "var.metadata.product_name", "dev"))
 
+  hpcc_namespace = var.hpcc_namespace != null ? var.hpcc_namespace : {
+    name = "hpcc-${var.owner.name}-${random_integer.int.result}"
+    labels = {
+      name = "hpcc-${var.owner.name}-${random_integer.int.result}"
+    }
+  }
+
   web_urls      = { auto_launch_eclwatch = "https://eclwatch-${var.hpcc_namespace.name}.${local.domain}" }
   is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true
 }
