@@ -1,4 +1,4 @@
-admin = {
+owner = {
   name  = "hpccdemo"
   email = "hpccdemo@example.com"
 }

@@ -24,8 +24,34 @@ variable "disable_naming_conventions" {
 }
 
 variable "metadata" {
-  description = "Names"
-  type        = map(string)
+  description = "Metadata module variables."
+  type = object({
+    market              = string
+    sre_team            = string
+    environment         = string
+    product_name        = string
+    business_unit       = string
+    product_group       = string
+    subscription_type   = string
+    resource_group_type = string
+    project             = string
+    additional_tags     = map(string)
+    location            = string
+  })
+
+  default = {
+    business_unit       = ""
+    environment         = ""
+    market              = ""
+    product_group       = ""
+    product_name        = "hpcc"
+    project             = ""
+    resource_group_type = ""
+    sre_team            = ""
+    subscription_type   = ""
+    additional_tags     = {}
+    location            = ""
+  }
 }
 
 variable "resource_group" {

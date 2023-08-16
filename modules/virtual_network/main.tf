@@ -13,7 +13,7 @@ module "metadata" {
   naming_rules = module.naming.yaml
 
   market              = var.metadata.market
-  location            = var.resource_group.location
+  location            = var.metadata.location
   sre_team            = var.metadata.sre_team
   environment         = var.metadata.environment
   product_name        = var.metadata.product_name
@@ -25,13 +25,15 @@ module "metadata" {
   project             = var.metadata.project
 }
 
-module "resource_group" {
-  source = "github.com/Azure-Terraform/terraform-azurerm-resource-group.git?ref=v2.0.0"
+module "resource_groups" {
+  source = "github.com/Azure-Terraform/terraform-azurerm-resource-group.git?ref=v2.1.0"
 
-  unique_name = var.resource_group.unique_name
-  location    = var.resource_group.location
-  names       = local.names
-  tags        = local.tags
+  for_each = local.resource_groups
+
+  unique_name = true
+  location    = module.metadata.location
+  names       = module.metadata.names
+  tags        = merge(local.tags, each.value.tags)
 }
 
 module "virtual_network" {
@@ -39,22 +41,22 @@ module "virtual_network" {
 
   naming_rules = module.naming.yaml
 
-  resource_group_name = module.resource_group.name
-  location            = module.resource_group.location
+  resource_group_name = module.resource_groups["virtual_network"].name
+  location            = module.resource_groups["virtual_network"].location
   names               = module.metadata.names
   tags                = module.metadata.tags
 
   enforce_subnet_names = false
 
-  address_space = ["192.168.0.0/21"]
+  address_space = ["10.0.0.0/24"]
   aks_subnets = {
     hpcc = {
       private = {
-        cidrs             = ["192.168.0.0/22"]
+        cidrs             = ["10.0.0.0/25"]
         service_endpoints = ["Microsoft.Storage"]
       }
       public = {
-        cidrs             = ["192.168.4.0/22"]
+        cidrs             = ["10.0.0.128/25"]
         service_endpoints = ["Microsoft.Storage"]
       }
       route_table = {
@@ -65,7 +67,7 @@ module "virtual_network" {
             next_hop_type  = "Internet"
           }
           local-vnet-10-1-0-0-21 = {
-            address_prefix = "192.168.0.0/21"
+            address_prefix = "10.0.0.0/24"
             next_hop_type  = "vnetlocal"
           }
         }

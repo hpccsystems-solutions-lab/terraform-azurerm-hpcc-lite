@@ -32,9 +32,11 @@ locals {
     try(var.tags)
   )
 
-  get_vnet_data       = fileexists("${path.module}/modules/virtual_network/bin/vnet.json") ? jsondecode(file("${path.module}/modules/virtual_network/bin/vnet.json")) : null
-  get_kubeconfig_data = fileexists("${path.module}/modules/aks/bin/kubeconfig.json") ? jsondecode(file("${path.module}/modules/aks/bin/kubeconfig.json")) : null
+  resource_groups = {
+    for k, v in var.resource_groups : k => v
+  }
 
+  get_vnet_data = fileexists("../virtual_network/bin/vnet.json") ? jsondecode(file("../virtual_network/bin/vnet.json")) : null
 
   subnet_ids = try({
     for k, v in var.use_existing_vnet.subnets : k => "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${var.use_existing_vnet.resource_group_name}/providers/Microsoft.Network/virtualNetworks/${var.use_existing_vnet.name}/subnets/${v.name}"
@@ -42,10 +44,27 @@ locals {
 
   location = var.use_existing_vnet != null ? var.use_existing_vnet.location : local.get_vnet_data.location
 
-  # hpcc_chart_major_minor_point_version = var.helm_chart_version != null ? regex("[\\d+?.\\d+?.\\d+?]+", var.helm_chart_version) : "master"
+  cluster_name = "tf-${terraform.workspace}-aks-${var.cluster_ordinal}"
 
-  domain = coalesce(var.internal_domain, format("us-%s.%s.azure.lnrsg.io", "var.metadata.product_name", "dev"))
+  kubeconfig = jsonencode({
+    "kube_admin_config" : "${module.aks.kube_admin_config}",
+    "cluster_endpoint" : "${module.aks.cluster_endpoint}",
+    "cluster_certificate_authority_data" : "${module.aks.cluster_certificate_authority_data}",
+    "cluster_name" : "${module.aks.cluster_name}",
+    "cluster_id" : "${module.aks.cluster_id}",
+    "resource_group_name" : "${module.resource_groups["azure_kubernetes_service"].name}"
+  })
 
-  web_urls      = { auto_launch_eclwatch = "https://eclwatch-${var.hpcc_namespace.name}.${local.domain}" }
-  is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true
+  runbook      = { for rb in var.runbook : "${rb.runbook_name}" => rb }
+  current_time = timestamp()
+  current_day  = formatdate("EEEE", local.current_time)
+  current_hour = tonumber(formatdate("HH", local.current_time))
+  today        = formatdate("YYYY-MM-DD", local.current_time)
+  tomorrow     = formatdate("YYYY-MM-DD", timeadd(local.current_time, "24h"))
+  # today        = formatdate("YYYY-MM-DD", timeadd(local.current_time, "1h"))
+
+  utc_offset = var.aks_automation.schedule[0].daylight_saving ? 4 : 5
+
+  script   = { for item in fileset("${path.root}/scripts", "*") : (item) => file("${path.root}/scripts/${item}") }
+  schedule = { for s in var.aks_automation.schedule : "${s.schedule_name}" => s }
 }

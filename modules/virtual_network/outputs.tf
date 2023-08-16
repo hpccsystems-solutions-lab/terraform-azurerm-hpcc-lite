@@ -14,6 +14,18 @@ output "route_table_id" {
   value = module.virtual_network.aks.hpcc.route_table_id
 }
 
+output "route_table_name" {
+  value = "${module.virtual_network.vnet.resource_group_name}-aks-hpcc-routetable"
+}
+
+output "resource_group_name" {
+  value = module.virtual_network.vnet.resource_group_name
+}
+
+output "vnet_name" {
+  value = module.virtual_network.vnet.name
+}
+
 resource "local_file" "output" {
   content  = local.vnet
   filename = "${path.module}/bin/vnet.json"

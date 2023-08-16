@@ -15,19 +15,19 @@ This module deploys a virtual network using remote modules.
 ## Supported Arguments
 <br>
 
-### The `admin` block:
+### The `owner` block:
 This block contains information on the user who is deploying the cluster. This is used as tags and part of some resource names to identify who deployed a given resource and how to contact that user. This block is required.
 
 | Name  | Description                  | Type   | Default | Required |
 | ----- | ---------------------------- | ------ | ------- | :------: |
-| name  | Name of the admin.           | string | -       |   yes    |
-| email | Email address for the admin. | string | -       |   yes    |
+| name  | Name of the owner.           | string | -       |   yes    |
+| email | Email address for the owner. | string | -       |   yes    |
 
 <br>
 Usage Example:
 <br>
 
-    admin = {
+    owner = {
         name  = "Example"
         email = "example@hpccdemo.com"
     }
@@ -79,7 +79,7 @@ The tag attribute can be used for additional tags. The tags must be key value pa
 
  | Name | Description               | Type        | Default | Required |
  | ---- | ------------------------- | ----------- | ------- | :------: |
- | tags | Additional resource tags. | map(string) | admin   |    no    |
+ | tags | Additional resource tags. | map(string) | owner   |    no    |
 <br>
 
 ### The `resource_group` block:

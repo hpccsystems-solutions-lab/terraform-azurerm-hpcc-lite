@@ -1,10 +1,10 @@
 terraform {
-  required_version = ">= 1.3.3, != 1.3.4"
+  required_version = ">= 1.4.6"
 
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.51.0"
+      version = ">= 3.63.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -25,10 +25,6 @@ terraform {
     shell = {
       source  = "scottwinkler/shell"
       version = ">=1.7.10"
-    }
-    static = {
-      source  = "tiwood/static"
-      version = ">= 0.1.0"
     }
     time = {
       source  = "hashicorp/time"

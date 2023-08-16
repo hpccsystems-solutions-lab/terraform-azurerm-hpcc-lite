@@ -30,11 +30,13 @@ module "metadata" {
   project             = var.metadata.project
 }
 
-resource "null_resource" "launch_svc_url" {
-  for_each = var.auto_launch_eclwatch && var.hpcc_enabled && try(module.hpcc[0].hpcc_deployment_status, "") == "deployed" ? local.web_urls : {}
+module "resource_groups" {
+  source = "github.com/Azure-Terraform/terraform-azurerm-resource-group.git?ref=v2.1.0"
 
-  provisioner "local-exec" {
-    command     = local.is_windows_os ? "Start-Process ${each.value}" : "open ${each.value} || xdg-open ${each.value}"
-    interpreter = local.is_windows_os ? ["PowerShell", "-Command"] : ["/bin/bash", "-c"]
-  }
+  for_each = local.resource_groups
+
+  unique_name = true
+  location    = module.metadata.location
+  names       = module.metadata.names
+  tags        = merge(local.tags, each.value.tags)
 }

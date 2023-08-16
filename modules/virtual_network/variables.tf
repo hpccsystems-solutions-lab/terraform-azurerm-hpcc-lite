@@ -1,4 +1,4 @@
-variable "admin" {
+variable "owner" {
   description = "Information for the user who administers the deployment."
   type = object({
     name  = string
@@ -7,13 +7,13 @@ variable "admin" {
 
   validation {
     condition = try(
-      regex("hpccdemo", var.admin.name) != "hpccdemo", true
+      regex("hpccdemo", var.owner.name) != "hpccdemo", true
       ) && try(
-      regex("hpccdemo", var.admin.email) != "hpccdemo", true
+      regex("hpccdemo", var.owner.email) != "hpccdemo", true
       ) && try(
-      regex("@example.com", var.admin.email) != "@example.com", true
+      regex("@example.com", var.owner.email) != "@example.com", true
     )
-    error_message = "Your name and email are required in the admin block and must not contain hpccdemo or @example.com."
+    error_message = "Your name and email are required in the owner block and must not contain hpccdemo or @example.com."
   }
 }
 
@@ -35,6 +35,8 @@ variable "metadata" {
     subscription_type   = string
     resource_group_type = string
     project             = string
+    additional_tags     = map(string)
+    location            = string
   })
 
   default = {
@@ -47,6 +49,8 @@ variable "metadata" {
     resource_group_type = ""
     sre_team            = ""
     subscription_type   = ""
+    additional_tags     = {}
+    location            = ""
   }
 }
 
@@ -59,12 +63,14 @@ variable "tags" {
   }
 }
 
-variable "resource_group" {
+variable "resource_groups" {
   description = "Resource group module variables."
   type        = any
 
   default = {
+    azure_kubernetes_service = {
+      tags = { "apps" = "vnet" }
+    }
     unique_name = true
-    location    = null
   }
 }
