@@ -1,8 +1,4 @@
 locals {
-  resource_groups = {
-    for k, v in var.resource_groups : k => v
-  }
-
   names = var.disable_naming_conventions ? merge(
     {
       business_unit     = var.metadata.business_unit
@@ -16,7 +12,8 @@ locals {
     var.metadata.resource_group_type != "" ? { resource_group_type = var.metadata.resource_group_type } : {}
   ) : module.metadata.names
 
-  tags = var.disable_naming_conventions ? merge(var.tags, { "owner" = var.owner.name, "owner_email" = var.owner.email }, { "enclosed resource" = "vnet" }) : merge(module.metadata.tags, { "owner" = var.owner.name, "owner_email" = var.owner.email }, { "enclosed resource" = "vnet" }, try(var.tags))
+  tags = merge(var.metadata.additional_tags, { "owner" = var.owner.name, "owner_email" = var.owner.email })
+
 
   private_subnet_id   = module.virtual_network.aks.hpcc.subnets["private"].id
   public_subnet_id    = module.virtual_network.aks.hpcc.subnets["public"].id

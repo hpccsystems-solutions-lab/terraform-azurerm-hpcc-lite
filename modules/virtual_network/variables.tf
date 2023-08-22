@@ -54,15 +54,6 @@ variable "metadata" {
   }
 }
 
-variable "tags" {
-  description = "Additional resource tags."
-  type        = map(string)
-
-  default = {
-    "" = ""
-  }
-}
-
 variable "resource_groups" {
   description = "Resource group module variables."
   type        = any
@@ -71,6 +62,5 @@ variable "resource_groups" {
     azure_kubernetes_service = {
       tags = { "apps" = "vnet" }
     }
-    unique_name = true
   }
 }

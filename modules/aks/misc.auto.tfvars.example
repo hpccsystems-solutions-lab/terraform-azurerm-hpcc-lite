@@ -17,8 +17,6 @@ metadata = {
   location            = "eastus" # Acceptable values: eastus, centralus
 }
 
-tags = { "justification" = "testing" }
-
 resource_groups = {
   azure_kubernetes_service = {
     tags = { "enclosed resource" = "opensource aks" }

@@ -10,6 +10,11 @@ output "cluster_name" {
   value       = module.aks.cluster_name
 }
 
+output "hpcc_log_analytics_enabled" {
+  description = "Is Log Analytics enabled for HPCC?"
+  value       = var.hpcc_log_analytics_enabled && fileexists("../logging/data/workspace_resource_id.txt")
+}
+
 output "cluster_resource_group_name" {
   description = "The resource group where the cluster is deployed."
   value       = module.resource_groups["azure_kubernetes_service"].name
@@ -17,5 +22,5 @@ output "cluster_resource_group_name" {
 
 resource "local_file" "output" {
   content  = local.kubeconfig
-  filename = "${path.module}/bin/kubeconfig.json"
+  filename = "${path.module}/data/kubeconfig.json"
 }

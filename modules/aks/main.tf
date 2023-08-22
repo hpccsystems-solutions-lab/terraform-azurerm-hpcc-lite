@@ -1,6 +1,13 @@
 resource "random_integer" "int" {
   min = 1
-  max = 3
+  max = 1000
+}
+
+resource "random_string" "string" {
+  length  = 4
+  special = false
+  numeric = false
+  upper   = false
 }
 
 module "subscription" {
@@ -33,10 +40,21 @@ module "metadata" {
 module "resource_groups" {
   source = "github.com/Azure-Terraform/terraform-azurerm-resource-group.git?ref=v2.1.0"
 
-  for_each = local.resource_groups
+  for_each = var.resource_groups
 
   unique_name = true
   location    = module.metadata.location
   names       = module.metadata.names
   tags        = merge(local.tags, each.value.tags)
+}
+
+resource "null_resource" "az" {
+  count = var.auto_connect ? 1 : 0
+
+  provisioner "local-exec" {
+    command     = local.az_command
+    interpreter = local.is_windows_os ? ["PowerShell", "-Command"] : ["/bin/bash", "-c"]
+  }
+
+  triggers = { kubernetes_id = module.aks.cluster_name } //must be run after the Kubernetes cluster is deployed.
 }

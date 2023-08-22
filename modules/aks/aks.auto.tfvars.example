@@ -1,9 +1,9 @@
-cluster_version    = "1.25"
-cluster_ordinal    = 1 //cluster name suffix
-experimental       = { oms_agent = false }
-sku_tier           = "free"
-dns_resource_group = "app-dns-prod-eastus2"
-internal_domain    = "my-dns-zone.io"
+cluster_version            = "1.25"
+cluster_ordinal            = 1 //cluster name suffix
+sku_tier                   = "free"
+dns_resource_group         = "app-dns-prod-eastus2"
+internal_domain            = "my-dns-zone.io"
+hpcc_log_analytics_enabled = false
 
 rbac_bindings = {
   cluster_admin_users = {
@@ -42,12 +42,8 @@ core_services_config = {
 
   ingress_internal_core = {
     domain           = "my-dns-zone.io"
-    subdomain_suffix = "hpcc" // dns record suffix
+    subdomain_suffix = "hpcc" // dns record suffix //must be unique accross subscription
     public_dns       = true
-  }
-
-  ingress_core_internal = {
-    domain = ["my-dns-zone.io"]
   }
 }
 

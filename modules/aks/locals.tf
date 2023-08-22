@@ -17,26 +17,9 @@ locals {
     var.metadata.resource_group_type != "" ? { resource_group_type = var.metadata.resource_group_type } : {}
   ) : module.metadata.names
 
-  tags = var.disable_naming_conventions ? merge(
-    var.tags,
-    {
-      "owner"       = var.owner.name,
-      "owner_email" = var.owner.email
-    }
-    ) : merge(
-    module.metadata.tags,
-    {
-      "owner"       = var.owner.name,
-      "owner_email" = var.owner.email
-    },
-    try(var.tags)
-  )
+  tags = merge(var.metadata.additional_tags, { "owner" = var.owner.name, "owner_email" = var.owner.email })
 
-  resource_groups = {
-    for k, v in var.resource_groups : k => v
-  }
-
-  get_vnet_data = fileexists("../virtual_network/bin/vnet.json") ? jsondecode(file("../virtual_network/bin/vnet.json")) : null
+  get_vnet_data = fileexists("../virtual_network/data/vnet.json") ? jsondecode(file("../virtual_network/data/vnet.json")) : null
 
   subnet_ids = try({
     for k, v in var.use_existing_vnet.subnets : k => "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${var.use_existing_vnet.resource_group_name}/providers/Microsoft.Network/virtualNetworks/${var.use_existing_vnet.name}/subnets/${v.name}"
@@ -44,7 +27,7 @@ locals {
 
   location = var.use_existing_vnet != null ? var.use_existing_vnet.location : local.get_vnet_data.location
 
-  cluster_name = "tf-${terraform.workspace}-aks-${var.cluster_ordinal}"
+  cluster_name = "tf-${random_string.string.result}-${terraform.workspace}-aks-${var.cluster_ordinal}"
 
   kubeconfig = jsonencode({
     "kube_admin_config" : "${module.aks.kube_admin_config}",
@@ -67,4 +50,7 @@ locals {
 
   script   = { for item in fileset("${path.root}/scripts", "*") : (item) => file("${path.root}/scripts/${item}") }
   schedule = { for s in var.aks_automation.schedule : "${s.schedule_name}" => s }
+
+  az_command    = "az aks get-credentials --name ${local.cluster_name} --resource-group ${module.resource_groups["azure_kubernetes_service"].name}  --overwrite-existing"
+  is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true
 }

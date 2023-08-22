@@ -85,15 +85,6 @@ variable "metadata" {
   }
 }
 
-variable "tags" {
-  description = "Additional resource tags."
-  type        = map(string)
-
-  default = {
-    "" = ""
-  }
-}
-
 variable "use_existing_vnet" {
   description = "Information about the existing VNet to use. Overrides vnet variable."
   type = object({
@@ -126,11 +117,17 @@ variable "hpcc_enabled" {
 variable "hpcc_namespace" {
   description = "Kubernetes namespace where resources will be created."
   type = object({
-    name   = string
-    labels = map(string)
+    name             = string
+    labels           = map(string)
+    create_namespace = bool
   })
-
-  default = null
+  default = {
+    name = "hpcc"
+    labels = {
+      name = "hpcc"
+    }
+    create_namespace = false
+  }
 }
 
 variable "helm_chart_strings_overrides" {
@@ -148,13 +145,7 @@ variable "helm_chart_files_overrides" {
 variable "helm_chart_timeout" {
   description = "Helm timeout for hpcc chart."
   type        = number
-  default     = 600
-}
-
-variable "helm_chart_version" {
-  description = "Version of the HPCC Helm Chart to use."
-  type        = string
-  default     = "8.6.20"
+  default     = 300
 }
 
 variable "hpcc_container" {
@@ -1183,14 +1174,4 @@ variable "internal_domain" {
   description = "DNS Domain name"
   type        = string
   default     = null
-}
-
-## Logs
-########
-variable "azure_log_analytics_creds" {
-  description = "Creates Role Assignment for enabling Log Access Viewer, ALA ZAP Reports"
-  type = object({
-    scope     = string
-    object_id = string
-  })
 }

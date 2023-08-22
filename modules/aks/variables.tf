@@ -73,15 +73,6 @@ variable "metadata" {
   }
 }
 
-variable "tags" {
-  description = "Additional resource tags."
-  type        = map(string)
-
-  default = {
-    "" = ""
-  }
-}
-
 variable "resource_groups" {
   description = "Resource group module variables."
   type        = any
@@ -90,7 +81,6 @@ variable "resource_groups" {
     azure_kubernetes_service = {
       tags = { "apps" = "aks" }
     }
-    unique_name = true
   }
 }
 
@@ -294,8 +284,7 @@ variable "experimental" {
     workload_identity                            = optional(bool, false)
     control_plane_logging_log_analytics_disabled = optional(bool, false)
   })
-  nullable = false
-  default  = {}
+  default = {}
 }
 
 variable "runbook" {
@@ -444,4 +433,10 @@ variable "logging" {
     condition     = !var.logging.control_plane.storage_account.enabled || (var.logging.control_plane.storage_account.profile != null && contains(["all", "audit-write-only", "minimal", "empty"], coalesce(var.logging.control_plane.storage_account.profile, "empty")))
     error_message = "Control plane logging to a storage account requires profile."
   }
+}
+
+variable "hpcc_log_analytics_enabled" {
+  description = "Should Log Analytics be enabled for HPCC?"
+  type        = bool
+  default     = false
 }

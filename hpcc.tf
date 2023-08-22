@@ -1,5 +1,15 @@
+resource "kubernetes_namespace" "hpcc" {
+  count = var.hpcc_namespace.create_namespace && !fileexists("${path.module}/modules/logging/data/hpcc_namespace.txt") ? 1 : 0
+
+  metadata {
+    labels = var.hpcc_namespace.labels
+
+    name = "${var.hpcc_namespace.name}${trimspace(var.owner.name)}"
+  }
+}
+
 module "hpcc" {
-  source = "../../opinionated/opinionated-terraform-azurerm-hpcc"
+  source = "github.com/gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
 
   count = var.hpcc_enabled ? 1 : 0
 
@@ -22,18 +32,18 @@ module "hpcc" {
     username = var.hpcc_container_registry_auth.username
   } : null
 
-  enable_node_tuning      = false //Disable CSI driver
   install_blob_csi_driver = false //Disable CSI driver
-
-  node_tuning_containers = var.node_tuning.containers
-
-  node_tuning_container_registry_auth = var.node_tuning_container_registry_auth
 
   resource_group_name = local.get_kubeconfig_data.resource_group_name
   location            = var.metadata.location
   tags                = module.metadata.tags
 
-  namespace = local.hpcc_namespace
+  # namespace = local.hpcc_namespace
+  namespace = {
+    create_namespace = false
+    name             = local.hpcc_namespace
+    labels           = var.hpcc_namespace.labels
+  }
 
   admin_services_storage_account_settings = {
     replication_type     = var.admin_services_storage_account_settings.replication_type
@@ -53,20 +63,6 @@ module "hpcc" {
           subnet_ids           = merge({ aks = local.subnet_ids.aks })
         }
       }
-
-      # hpc_cache = var.data_storage_config.internal.hpc_cache.enabled ? {
-      #   dns = {
-      #     zone_name                = var.internal_domain
-      #     zone_resource_group_name = var.dns_resource_group
-      #   }
-
-      #   resource_provider_object_id = var.azuread_clusterrole_map.cluster_admin_user.user_object_id
-      #   size                        = var.data_storage_config.internal.hpc_cache.size
-      #   cache_update_frequency      = var.data_storage_config.internal.hpc_cache.cache_update_frequency
-      #   storage_account_data_planes = var.data_storage_config.internal.hpc_cache.storage_account_data_planes
-      #   # subnet_id                   = try(local.subnet_ids.hpc_cache, module.virtual_network[0].subnets.hpc_cache.id)
-      #   subnet_id = local.virtual_network.hpc_cache
-      # } : null
     }
 
     external = var.data_storage_config.external
@@ -86,11 +82,6 @@ module "hpcc" {
 
   admin_services_node_selector = { all = { workload = var.spray_service_settings.nodeSelector } }
 
-  log_access_role_assignment = {
-    scope     = var.azure_log_analytics_creds.scope
-    object_id = var.azure_log_analytics_creds.object_id
-  }
-
   esp_remoteclients = {
 
     "sample-remoteclient" = {
@@ -107,7 +98,9 @@ module "hpcc" {
 
   }
 
-  helm_chart_files_overrides = var.helm_chart_files_overrides
+  helm_chart_timeout = var.helm_chart_timeout
 
-  ldap_config = var.ldap
+  helm_chart_files_overrides = concat(var.helm_chart_files_overrides, fileexists("${path.module}/modules/logging/data/logaccess_body.yaml") ? ["${path.module}/modules/logging/data/logaccess_body.yaml"] : [])
+
+  ldap_config = var.ldap_config
 }

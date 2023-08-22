@@ -19,8 +19,8 @@
 # }
 
 module "aks" {
-  # source = "git::https://github.com/tlhumphrey2/tlh-rsg-terraform-azurerm-aks.git"
-  source = "../../../terraform-azurerm-aks"
+  depends_on = [random_string.string]
+  source     = "github.com/gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
 
   providers = {
     kubernetes = kubernetes.default
@@ -53,7 +53,18 @@ module "aks" {
 
   node_groups = var.node_groups
 
-  core_services_config = var.core_services_config
+  core_services_config = {
+    alertmanager = var.core_services_config.alertmanager
+    coredns      = var.core_services_config.coredns
+    external_dns = var.core_services_config.external_dns
+    cert_manager = var.core_services_config.cert_manager
+
+    ingress_internal_core = {
+      domain           = var.core_services_config.ingress_internal_core.domain
+      subdomain_suffix = "${var.core_services_config.ingress_internal_core.subdomain_suffix}${trimspace(var.owner.name)}" // dns record suffix
+      public_dns       = var.core_services_config.ingress_internal_core.public_dns
+    }
+  }
 
   tags = local.tags
 
@@ -64,8 +75,8 @@ module "aks" {
 
   logging = var.logging
 
-  # experimental = {
-  #   oms_agent                            = var.azure_log_analytics_workspace != null ? true : false
-  #   oms_agent_log_analytics_workspace_id = var.azure_log_analytics_workspace != null ? module.logging.workspace_resource_id : null
-  # }
+  experimental = {
+    oms_agent                            = var.hpcc_log_analytics_enabled || var.experimental.oms_agent
+    oms_agent_log_analytics_workspace_id = fileexists("../logging/data/workspace_resource_id.txt") ? file("../logging/data/workspace_resource_id.txt") : var.experimental.oms_agent_log_analytics_workspace_id != null ? var.experimental.oms_agent_log_analytics_workspace_id : null
+  }
 }

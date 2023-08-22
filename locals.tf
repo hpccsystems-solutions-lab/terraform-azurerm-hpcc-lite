@@ -17,23 +17,11 @@ locals {
     var.metadata.resource_group_type != "" ? { resource_group_type = var.metadata.resource_group_type } : {}
   ) : module.metadata.names
 
-  tags = var.disable_naming_conventions ? merge(
-    var.tags,
-    {
-      "owner"       = var.owner.name,
-      "owner_email" = var.owner.email
-    }
-    ) : merge(
-    module.metadata.tags,
-    {
-      "owner"       = var.owner.name,
-      "owner_email" = var.owner.email
-    },
-    try(var.tags)
-  )
+  tags = merge(var.metadata.additional_tags, { "owner" = var.owner.name, "owner_email" = var.owner.email })
 
-  get_vnet_data       = fileexists("${path.module}/modules/virtual_network/bin/vnet.json") ? jsondecode(file("${path.module}/modules/virtual_network/bin/vnet.json")) : null
-  get_kubeconfig_data = fileexists("${path.module}/modules/aks/bin/kubeconfig.json") ? jsondecode(file("${path.module}/modules/aks/bin/kubeconfig.json")) : null
+
+  get_vnet_data       = fileexists("${path.module}/modules/virtual_network/data/vnet.json") ? jsondecode(file("${path.module}/modules/virtual_network/data/vnet.json")) : null
+  get_kubeconfig_data = fileexists("${path.module}/modules/aks/data/kubeconfig.json") ? jsondecode(file("${path.module}/modules/aks/data/kubeconfig.json")) : null
 
 
   subnet_ids = try({
@@ -46,12 +34,14 @@ locals {
 
   domain = coalesce(var.internal_domain, format("us-%s.%s.azure.lnrsg.io", "var.metadata.product_name", "dev"))
 
-  hpcc_namespace = var.hpcc_namespace != null ? var.hpcc_namespace : {
-    name = "hpcc-${var.owner.name}-${random_integer.int.result}"
-    labels = {
-      name = "hpcc-${var.owner.name}-${random_integer.int.result}"
-    }
-  }
+  # hpcc_namespace = var.hpcc_namespace != null ? var.hpcc_namespace : {
+  #   name = "hpcc-${var.owner.name}-${random_integer.int.result}"
+  #   labels = {
+  #     name = "hpcc-${var.owner.name}-${random_integer.int.result}"
+  #   }
+  # }
+  
+  hpcc_namespace = fileexists("${path.module}/logging/data/hpcc_namespace.txt") ? file("${path.module}/logging/data/hpcc_namespace.txt") : "${var.hpcc_namespace.name}${trimspace(var.owner.name)}"
 
   web_urls      = { auto_launch_eclwatch = "https://eclwatch-${var.hpcc_namespace.name}.${local.domain}" }
   is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true

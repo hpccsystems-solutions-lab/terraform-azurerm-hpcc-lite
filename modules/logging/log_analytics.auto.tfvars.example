@@ -1,0 +1,15 @@
+azure_log_analytics_workspace = {
+  name                       = "my-hpcc-log-analytics-workspace"
+  internet_query_enabled     = true
+  internet_ingestion_enabled = true
+  tags = {
+    "app" = "hpcc"
+  }
+}
+
+azure_log_analytics_creds = {
+  AAD_CLIENT_ID     = ""
+  AAD_CLIENT_SECRET = ""
+  AAD_PRINCIPAL_ID  = ""
+  AAD_TENANT_ID     = ""
+}
