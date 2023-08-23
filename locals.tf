@@ -40,9 +40,8 @@ locals {
   #     name = "hpcc-${var.owner.name}-${random_integer.int.result}"
   #   }
   # }
-  
-  hpcc_namespace = fileexists("${path.module}/logging/data/hpcc_namespace.txt") ? file("${path.module}/logging/data/hpcc_namespace.txt") : "${var.hpcc_namespace.name}${trimspace(var.owner.name)}"
 
-  web_urls      = { auto_launch_eclwatch = "https://eclwatch-${var.hpcc_namespace.name}.${local.domain}" }
-  is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true
+  hpcc_namespace = fileexists("${path.module}/logging/data/hpcc_namespace.txt") && var.hpcc_namespace.create_namespace ? file("${path.module}/logging/data/hpcc_namespace.txt") : kubernetes_namespace.hpcc[0].metadata[0].name
+  svc_domains    = { eclwatch = var.auto_launch_svc.eclwatch ? "https://eclwatch-${local.hpcc_namespace}.${local.domain}:18010" : null }
+  is_windows_os  = substr(pathexpand("~"), 0, 1) == "/" ? false : true
 }

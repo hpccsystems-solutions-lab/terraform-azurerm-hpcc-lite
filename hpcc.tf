@@ -4,14 +4,13 @@ resource "kubernetes_namespace" "hpcc" {
   metadata {
     labels = var.hpcc_namespace.labels
 
-    name = "${var.hpcc_namespace.name}${trimspace(var.owner.name)}"
+    generate_name = "${var.hpcc_namespace.prefix_name}${trimspace(var.owner.name)}"
   }
 }
 
 module "hpcc" {
-  source = "github.com/gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
-
-  count = var.hpcc_enabled ? 1 : 0
+  # source = "github.com/gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
+  source = "../../opinionated/opinionated-terraform-azurerm-hpcc"
 
   environment = var.metadata.environment
   productname = var.metadata.product_name

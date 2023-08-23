@@ -19,7 +19,7 @@ metadata = {
 location = "eastus2"
 
 hpcc = {
-  namespace        = "hpcc"
+  namespace_prefix = "hpcc"
   version          = "9.2.12-rc1"
   create_namespace = true
 }

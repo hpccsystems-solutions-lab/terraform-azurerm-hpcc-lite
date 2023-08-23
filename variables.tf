@@ -36,10 +36,14 @@ variable "expose_services" {
   default     = false
 }
 
-variable "auto_launch_eclwatch" {
-  description = "Auto launch ELCWatch after each connection to the cluster."
-  type        = bool
-  default     = false
+variable "auto_launch_svc" {
+  description = "Auto launch HPCC services."
+  type = object({
+    eclwatch = bool
+  })
+  default = {
+    eclwatch = true
+  }
 }
 
 variable "auto_connect" {
@@ -117,12 +121,12 @@ variable "hpcc_enabled" {
 variable "hpcc_namespace" {
   description = "Kubernetes namespace where resources will be created."
   type = object({
-    name             = string
+    prefix_name      = string
     labels           = map(string)
     create_namespace = bool
   })
   default = {
-    name = "hpcc"
+    prefix_name = "hpcc"
     labels = {
       name = "hpcc"
     }

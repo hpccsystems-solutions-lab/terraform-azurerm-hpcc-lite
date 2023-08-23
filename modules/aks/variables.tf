@@ -33,7 +33,7 @@ variable "owner" {
 variable "auto_connect" {
   description = "Automatically connect to the Kubernetes cluster from the host machine by overwriting the current context."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "disable_naming_conventions" {

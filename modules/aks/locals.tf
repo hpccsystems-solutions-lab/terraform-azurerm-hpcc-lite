@@ -51,6 +51,6 @@ locals {
   script   = { for item in fileset("${path.root}/scripts", "*") : (item) => file("${path.root}/scripts/${item}") }
   schedule = { for s in var.aks_automation.schedule : "${s.schedule_name}" => s }
 
-  az_command    = "az aks get-credentials --name ${local.cluster_name} --resource-group ${module.resource_groups["azure_kubernetes_service"].name}  --overwrite-existing"
+  az_command    = "az aks get-credentials --name ${local.cluster_name} --resource-group ${module.resource_groups["azure_kubernetes_service"].name}  --admin --overwrite-existing"
   is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true
 }

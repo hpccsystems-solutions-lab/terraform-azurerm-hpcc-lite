@@ -81,7 +81,7 @@ variable "hpcc" {
   description = "HPCC Platform attributes"
   type = object({
     version          = optional(string, "latest")
-    namespace        = optional(string, "hpcc")
+    namespace_prefix = optional(string, "hpcc")
     labels           = optional(object({ name = string }), { name = "hpcc" })
     create_namespace = optional(bool, false)
   })

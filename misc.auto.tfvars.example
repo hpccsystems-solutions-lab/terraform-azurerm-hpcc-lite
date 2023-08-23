@@ -20,8 +20,10 @@ metadata = {
 # # disable_naming_conventions - Disable naming conventions
 # # disable_naming_conventions = true 
 
-# # auto_launch_eclwatch - Automatically launch ECLWatch web interface.
-auto_launch_eclwatch = true
+# # auto_launch_svc - Automatically launch ECLWatch web interface.
+auto_launch_svc = {
+  eclwatch = true
+}
 
 # azure_auth = {
 #   #   AAD_CLIENT_ID     = ""
@@ -85,7 +87,7 @@ azure_log_analytics_creds = {
 }
 
 hpcc_namespace = {
-  name = "hpcc"
+  prefix_name = "hpcc"
   labels = {
     name = "hpcc"
   }

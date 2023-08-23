@@ -15,7 +15,7 @@ output "workspace_id" {
 
 output "hpcc_namespace" {
   description = "The namespace where the Kubernetes secret has been created and in which HPCC must be deployed."
-  value       = var.hpcc.create_namespace ? "${var.hpcc.namespace}${trimspace(var.owner.name)}" : var.hpcc.namespace
+  value       = var.hpcc.create_namespace ? kubernetes_namespace.hpcc[0].metadata[0].name : prefix_name
 }
 
 resource "local_file" "logaccess_body" {
@@ -31,6 +31,6 @@ resource "local_file" "workspace_resource_id" {
 resource "local_file" "hpcc_namespace" {
   count = var.hpcc.create_namespace ? 1 : 0
 
-  content  = "${var.hpcc.namespace}${trimspace(var.owner.name)}"
+  content  = var.hpcc.create_namespace ? kubernetes_namespace.hpcc[0].metadata[0].name : prefix_name
   filename = "${path.module}/data/hpcc_namespace.txt"
 }
