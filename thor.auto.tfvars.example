@@ -1,7 +1,7 @@
 # Thor Settings 
 ################
 
-thor = [{
+thor_config = [{
   disabled            = false
   name                = "thor"
   prefix              = "thor"

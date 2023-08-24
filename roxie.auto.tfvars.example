@@ -1,7 +1,7 @@
 # Roxie Settings 
 #################
 
-roxie = [{
+roxie_config = [{
   disabled   = false
   traceLevel = 3
 

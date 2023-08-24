@@ -526,76 +526,58 @@ variable "roxie_config" {
 ## Thor Config
 ##################
 variable "thor_config" {
-  description = "Configuration for Thor(s)."
-  type = list(object({
-    disabled = bool
-    eclAgentResources = object({
-      cpu    = string
-      memory = string
-    })
-    keepJobs = string
-    managerResources = object({
-      cpu    = string
-      memory = string
-    })
-    maxGraphs           = number
-    maxJobs             = number
-    maxGraphStartupTime = number
-    name                = string
-    nodeSelector        = map(string)
-    numWorkers          = number
-    numWorkersPerPod    = number
-    prefix              = string
-    egress              = string
-    tolerations_value   = string
-    spillPlane          = optional(string, "spill")
-    workerMemory = object({
-      query      = string
-      thirdParty = string
-    })
-    workerResources = object({
-      cpu    = string
-      memory = string
-    })
-    cost = object({
-      perCpu = number
-    })
+  description = "Configurations for Thor."
+  type = list(object(
+    {
+      disabled = bool
+      eclAgentResources = optional(object({
+        cpu    = string
+        memory = string
+        }
+        ),
+        {
+          cpu    = 1
+          memory = "2G"
+      })
+      keepJobs = optional(string, "none")
+      managerResources = optional(object({
+        cpu    = string
+        memory = string
+        }),
+        {
+          cpu    = 1
+          memory = "2G"
+      })
+      maxGraphs           = optional(number, 2)
+      maxJobs             = optional(number, 4)
+      maxGraphStartupTime = optional(number, 172800)
+      name                = optional(string, "thor")
+      nodeSelector        = optional(map(string), { workload = "thorpool" })
+      numWorkers          = optional(number, 2)
+      numWorkersPerPod    = optional(number, 1)
+      prefix              = optional(string, "thor")
+      egress              = optional(string, "engineEgress")
+      tolerations_value   = optional(string, "thorpool")
+      workerMemory = optional(object({
+        query      = string
+        thirdParty = string
+        }),
+        {
+          query      = "3G"
+          thirdParty = "500M"
+      })
+      workerResources = optional(object({
+        cpu    = string
+        memory = string
+        }),
+        {
+          cpu    = 3
+          memory = "4G"
+      })
+      cost = object({
+        perCpu = number
+      })
   }))
-
-  default = [{
-    disabled = true
-    eclAgentResources = {
-      cpu    = 1
-      memory = "2G"
-    }
-    managerResources = {
-      cpu    = 1
-      memory = "2G"
-    }
-    keepJobs            = "none"
-    maxGraphs           = 2
-    maxJobs             = 4
-    maxGraphStartupTime = 172800
-    name                = "thor"
-    nodeSelector        = {}
-    numWorkers          = 2
-    numWorkersPerPod    = 1
-    prefix              = "thor"
-    spillPlane          = "spill"
-    egress              = "engineEgress"
-    tolerations_value   = "thorpool"
-    workerMemory = {
-      query      = "3G"
-      thirdParty = "500M"
-    }
-    workerResources = {
-      cpu    = 3
-      memory = "4G"
-    }
-    cost = {
-      perCpu = 1
-    }
-  }]
 }
 
 ## ECL Agent Config
