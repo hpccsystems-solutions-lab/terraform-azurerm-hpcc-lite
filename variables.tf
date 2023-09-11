@@ -578,6 +578,39 @@ variable "thor_config" {
         perCpu = number
       })
   }))
+  default = [{
+    disabled            = true
+    name                = "thor"
+    prefix              = "thor"
+    numWorkers          = 5
+    keepJobs            = "none"
+    maxJobs             = 4
+    maxGraphs           = 2
+    maxGraphStartupTime = 172800
+    numWorkersPerPod    = 1
+    nodeSelector = {}
+    egress = "engineEgress"
+    tolerations_value = "thorpool"
+    managerResources = {
+      cpu    = 1
+      memory = "2G"
+    }
+    workerResources = {
+      cpu    = 3
+      memory = "4G"
+    }
+    workerMemory = {
+      query      = "3G"
+      thirdParty = "500M"
+    }
+    eclAgentResources = {
+      cpu    = 1
+      memory = "2G"
+    }
+    cost = {
+      perCpu = 1
+    }
+  }]
 }
 
 ## ECL Agent Config

@@ -9,7 +9,8 @@ resource "kubernetes_namespace" "hpcc" {
 }
 
 module "hpcc" {
-  source = "github.com/gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
+  #source = "github.com/gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
+  source = "git@github.com:gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
   # source = "../../opinionated/opinionated-terraform-azurerm-hpcc"
 
   environment = var.metadata.environment

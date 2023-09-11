@@ -20,7 +20,9 @@
 
 module "aks" {
   depends_on = [random_string.string]
-  source     = "github.com/gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
+  #source     = "github.com/gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
+  source     = "git@github.com:gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
+  #source     = "/home/azureuser/godji/terraform-azurerm-aks"
 
   providers = {
     kubernetes = kubernetes.default
@@ -37,7 +39,7 @@ module "aks" {
   # for v1.6.2 aks: sku_tier_paid   = false
   sku_tier = var.sku_tier
 
-  cluster_endpoint_public_access = var.cluster_endpoint_public_access
+  #cluster_endpoint_public_access = var.cluster_endpoint_public_access
   cluster_endpoint_access_cidrs  = var.cluster_endpoint_access_cidrs
 
   virtual_network_resource_group_name = try(var.use_existing_vnet.resource_group_name, local.get_vnet_data.resource_group_name)

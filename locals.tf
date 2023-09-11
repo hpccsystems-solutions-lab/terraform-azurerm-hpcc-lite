@@ -34,14 +34,15 @@ locals {
 
   domain = coalesce(var.internal_domain, format("us-%s.%s.azure.lnrsg.io", "var.metadata.product_name", "dev"))
 
-  # hpcc_namespace = var.hpcc_namespace != null ? var.hpcc_namespace : {
+  #hpcc_namespace = var.hpcc_namespace != null ? var.hpcc_namespace : {
   #   name = "hpcc-${var.owner.name}-${random_integer.int.result}"
   #   labels = {
   #     name = "hpcc-${var.owner.name}-${random_integer.int.result}"
   #   }
-  # }
+  #}
 
-  hpcc_namespace = fileexists("${path.module}/logging/data/hpcc_namespace.txt") && var.hpcc_namespace.create_namespace ? file("${path.module}/logging/data/hpcc_namespace.txt") : kubernetes_namespace.hpcc[0].metadata[0].name
+  #hpcc_namespace = fileexists("${path.module}/logging/data/hpcc_namespace.txt") && var.hpcc_namespace.create_namespace ? file("${path.module}/logging/data/hpcc_namespace.txt") : kubernetes_namespace.hpcc[0].metadata[0].name
+  hpcc_namespace = "default"
   svc_domains    = { eclwatch = var.auto_launch_svc.eclwatch ? "https://eclwatch-${local.hpcc_namespace}.${local.domain}:18010" : null }
   is_windows_os  = substr(pathexpand("~"), 0, 1) == "/" ? false : true
 }
