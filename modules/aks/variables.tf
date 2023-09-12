@@ -157,17 +157,6 @@ variable "sku_tier" {
   }
 }
 
-variable "rbac_bindings" {
-  description = "User and groups to configure in Kubernetes ClusterRoleBindings; for Azure AD these are the IDs."
-  type = object({
-    cluster_admin_users = optional(map(any))
-    cluster_view_users  = optional(map(any))
-    cluster_view_groups = optional(list(string))
-  })
-  nullable = false
-  default  = {}
-}
-
 variable "node_groups" {
   description = "Node groups to configure."
   type = map(object({

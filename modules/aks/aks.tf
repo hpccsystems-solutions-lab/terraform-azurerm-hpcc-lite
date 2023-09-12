@@ -51,7 +51,7 @@ module "aks" {
 
   admin_group_object_ids = [data.azuread_group.subscription_owner.object_id]
 
-  rbac_bindings = var.rbac_bindings
+  rbac_bindings = local.rbac_bindings
 
   node_groups = var.node_groups
 

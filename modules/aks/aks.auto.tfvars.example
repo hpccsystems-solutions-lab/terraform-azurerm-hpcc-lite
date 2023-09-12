@@ -5,18 +5,6 @@ dns_resource_group         = "app-dns-prod-eastus2"
 internal_domain            = "my-dns-zone.io"
 hpcc_log_analytics_enabled = true
 
-rbac_bindings = {
-  cluster_admin_users = {
-    # "service_principal1" = "",
-    # "user1"              = ""
-    # "user2"              = ""
-
-  }
-
-  cluster_view_users  = {}
-  cluster_view_groups = []
-}
-
 core_services_config = {
   alertmanager = {
     smtp_host = "smtp-hostname.ds:25"

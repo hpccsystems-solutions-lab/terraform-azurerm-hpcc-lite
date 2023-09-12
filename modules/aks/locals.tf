@@ -1,4 +1,10 @@
 locals {
+  rbac_bindings = {
+    cluster_admin_users = { "$(azurerm_user_assigned_identity.tlh-uaid.name)" =  azurerm_user_assigned_identity.tlh-uaid.principal_id }
+    cluster_view_users  = {}
+    cluster_view_groups = []
+  }
+
   azure_auth_env = {
     AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
     AZURE_SUBSCRIPTION_ID = data.azurerm_client_config.current.subscription_id
