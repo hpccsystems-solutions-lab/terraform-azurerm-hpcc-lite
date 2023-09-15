@@ -19,6 +19,6 @@ metadata = {
 
 resource_groups = {
   virtual_network = {
-    tags = { "enclosed resource" = "opensource vnet" }
+    tags = { "enclosed resource" = "open source vnet" }
   }
 }

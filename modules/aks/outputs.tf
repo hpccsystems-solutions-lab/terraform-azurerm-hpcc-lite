@@ -21,6 +21,6 @@ output "cluster_resource_group_name" {
 }
 
 resource "local_file" "output" {
-  content  = local.kubeconfig
-  filename = "${path.module}/data/kubeconfig.json"
+  content  = local.config
+  filename = "${path.module}/data/config.json"
 }

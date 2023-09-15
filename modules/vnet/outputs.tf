@@ -27,8 +27,8 @@ output "vnet_name" {
 }
 
 resource "local_file" "output" {
-  content  = local.vnet
-  filename = "${path.module}/data/vnet.json"
+  content  = local.config
+  filename = "${path.module}/data/config.json"
 }
 
 

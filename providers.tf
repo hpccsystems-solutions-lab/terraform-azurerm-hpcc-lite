@@ -7,17 +7,17 @@ provider "azurerm" {
 provider "azuread" {}
 
 provider "kubernetes" {
-  host                   = local.get_kubeconfig_data.kube_admin_config[0].host
-  client_certificate     = base64decode(local.get_kubeconfig_data.kube_admin_config[0].client_certificate)
-  client_key             = base64decode(local.get_kubeconfig_data.kube_admin_config[0].client_key)
-  cluster_ca_certificate = base64decode(local.get_kubeconfig_data.kube_admin_config[0].cluster_ca_certificate)
+  host                   = local.get_aks_config.kube_admin_config[0].host
+  client_certificate     = base64decode(local.get_aks_config.kube_admin_config[0].client_certificate)
+  client_key             = base64decode(local.get_aks_config.kube_admin_config[0].client_key)
+  cluster_ca_certificate = base64decode(local.get_aks_config.kube_admin_config[0].cluster_ca_certificate)
 }
 
 provider "kubectl" {
-  host                   = local.get_kubeconfig_data.kube_admin_config[0].host
-  client_key             = base64decode(local.get_kubeconfig_data.kube_admin_config[0].client_key)
-  client_certificate     = base64decode(local.get_kubeconfig_data.kube_admin_config[0].client_certificate)
-  cluster_ca_certificate = base64decode(local.get_kubeconfig_data.kube_admin_config[0].cluster_ca_certificate)
+  host                   = local.get_aks_config.kube_admin_config[0].host
+  client_key             = base64decode(local.get_aks_config.kube_admin_config[0].client_key)
+  client_certificate     = base64decode(local.get_aks_config.kube_admin_config[0].client_certificate)
+  cluster_ca_certificate = base64decode(local.get_aks_config.kube_admin_config[0].cluster_ca_certificate)
 
   load_config_file  = false
   apply_retry_count = 6
@@ -33,8 +33,8 @@ provider "kubectl" {
 
 provider "helm" {
   kubernetes {
-    host                   = local.get_kubeconfig_data.cluster_endpoint
-    cluster_ca_certificate = base64decode(local.get_kubeconfig_data.cluster_certificate_authority_data)
+    host                   = local.get_aks_config.cluster_endpoint
+    cluster_ca_certificate = base64decode(local.get_aks_config.cluster_certificate_authority_data)
 
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"

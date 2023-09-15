@@ -8,7 +8,4 @@ roxie_config = [{
   services = [{
     annotations = { "service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path" = "/control/alive" }
   }]
-
-  useRemoteResources = true
-  copyResources      = false
 }]

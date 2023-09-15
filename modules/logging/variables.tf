@@ -80,10 +80,10 @@ variable "azure_log_analytics_creds" {
 variable "hpcc" {
   description = "HPCC Platform attributes"
   type = object({
-    version          = optional(string, "latest")
-    namespace_prefix = optional(string, "hpcc")
-    labels           = optional(object({ name = string }), { name = "hpcc" })
-    create_namespace = optional(bool, false)
+    version            = optional(string, "latest")
+    existing_namespace = optional(string)
+    labels             = optional(object({ name = string }), { name = "hpcc" })
+    create_namespace   = optional(bool, false)
   })
 
   nullable = false

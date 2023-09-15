@@ -3,20 +3,20 @@ resource "kubernetes_namespace" "hpcc" {
 
   metadata {
     labels = var.hpcc_namespace.labels
-
-    generate_name = "${var.hpcc_namespace.prefix_name}${trimspace(var.owner.name)}"
+    name   = "${substr(trimspace(var.owner.name), 0, 5)}${random_integer.random.result}"
+    # generate_name = "${trimspace(var.owner.name)}"
   }
 }
 
 module "hpcc" {
-  source = "github.com/gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
-  # source = "../../opinionated/opinionated-terraform-azurerm-hpcc"
+  # source = "github.com/gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
+  source = "../../opinionated/opinionated-terraform-azurerm-hpcc"
 
   environment = var.metadata.environment
   productname = var.metadata.product_name
 
   internal_domain = var.internal_domain
-  cluster_name    = local.get_kubeconfig_data.cluster_name
+  cluster_name    = local.get_aks_config.cluster_name
 
   hpcc_container = {
     image_name           = var.hpcc_container != null ? var.hpcc_container.image_name : null
@@ -33,7 +33,7 @@ module "hpcc" {
 
   install_blob_csi_driver = false //Disable CSI driver
 
-  resource_group_name = local.get_kubeconfig_data.resource_group_name
+  resource_group_name = local.get_aks_config.resource_group_name
   location            = var.metadata.location
   tags                = module.metadata.tags
 
@@ -52,7 +52,7 @@ module "hpcc" {
   }
 
   data_storage_config = {
-    internal = {
+    internal = local.external_storage_config == null ? {
       blob_nfs = {
         data_plane_count = var.data_storage_config.internal.blob_nfs.data_plane_count
         storage_account_settings = {
@@ -62,23 +62,23 @@ module "hpcc" {
           subnet_ids           = merge({ aks = local.subnet_ids.aks })
         }
       }
-    }
+    } : null
 
-    external = var.data_storage_config.external
+    # external = local.internal_data_storage_enabled ? null : {
+    #   blob_nfs = local.get_storage_config != null ? local.get_storage_config.data_storage_planes : var.data_storage_config.external.blob_nfs
+    #   hpcc     = null
+    # }
+    external = null
   }
 
-  spill_volumes = var.spill_volumes
+  external_storage_config = local.external_storage_config
 
-  roxie_config = var.roxie_config
-
-  thor_config = var.thor_config
-
-  vault_config = var.vault_config
-
-  eclccserver_settings = var.eclccserver_settings
-
-  spray_service_settings = var.spray_service_settings
-
+  spill_volumes                = var.spill_volumes
+  roxie_config                 = var.roxie_config
+  thor_config                  = var.thor_config
+  vault_config                 = var.vault_config
+  eclccserver_settings         = var.eclccserver_settings
+  spray_service_settings       = var.spray_service_settings
   admin_services_node_selector = { all = { workload = var.spray_service_settings.nodeSelector } }
 
   esp_remoteclients = {
@@ -97,9 +97,7 @@ module "hpcc" {
 
   }
 
-  helm_chart_timeout = var.helm_chart_timeout
-
+  helm_chart_timeout         = var.helm_chart_timeout
   helm_chart_files_overrides = concat(var.helm_chart_files_overrides, fileexists("${path.module}/modules/logging/data/logaccess_body.yaml") ? ["${path.module}/modules/logging/data/logaccess_body.yaml"] : [])
-
-  ldap_config = var.ldap_config
+  ldap_config                = var.ldap_config
 }

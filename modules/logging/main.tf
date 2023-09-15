@@ -44,6 +44,6 @@ resource "kubernetes_namespace" "hpcc" {
 
     labels = var.hpcc.labels
 
-    generate_name = "${var.hpcc.namespace_prefix}${trimspace(var.owner.name)}"
+    generate_name = "${trimspace(var.owner.name)}"
   }
 }

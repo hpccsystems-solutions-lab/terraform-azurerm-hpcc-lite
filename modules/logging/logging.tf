@@ -20,7 +20,7 @@ module "logging" {
   azure_log_analytics_creds = var.azure_log_analytics_creds
 
   hpcc = {
-    namespace = var.hpcc.create_namespace ? kubernetes_namespace.hpcc[0].metadata[0].name : var.hpcc.namespace_prefix
+    namespace = local.hpcc_namespace
     version   = var.hpcc.version
   }
 

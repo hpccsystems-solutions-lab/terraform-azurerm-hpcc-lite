@@ -1,6 +1,6 @@
-resource "random_integer" "int" {
+resource "random_integer" "random" {
   min = 1
-  max = 3
+  max = 2
 }
 
 module "subscription" {

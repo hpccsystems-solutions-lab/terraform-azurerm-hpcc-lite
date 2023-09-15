@@ -19,7 +19,7 @@ metadata = {
 
 resource_groups = {
   azure_kubernetes_service = {
-    tags = { "enclosed resource" = "opensource aks" }
+    tags = { "enclosed resource" = "open source aks" }
   }
   # azure_log_analytics_workspace = {
   #   tags = { "enclosed resource" = "azure log analytics workspace" }

@@ -21,6 +21,7 @@
 module "aks" {
   depends_on = [random_string.string]
   source     = "github.com/gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
+  # source = "../../../terraform-azurerm-aks"
 
   providers = {
     kubernetes = kubernetes.default
@@ -37,13 +38,12 @@ module "aks" {
   # for v1.6.2 aks: sku_tier_paid   = false
   sku_tier = var.sku_tier
 
-  cluster_endpoint_public_access = var.cluster_endpoint_public_access
-  cluster_endpoint_access_cidrs  = var.cluster_endpoint_access_cidrs
+  cluster_endpoint_access_cidrs = var.cluster_endpoint_access_cidrs
 
-  virtual_network_resource_group_name = try(var.use_existing_vnet.resource_group_name, local.get_vnet_data.resource_group_name)
-  virtual_network_name                = try(var.use_existing_vnet.name, local.get_vnet_data.name)
+  virtual_network_resource_group_name = try(var.use_existing_vnet.resource_group_name, local.get_vnet_config.resource_group_name)
+  virtual_network_name                = try(var.use_existing_vnet.name, local.get_vnet_config.name)
   subnet_name                         = try(var.use_existing_vnet.subnets.aks.name, "aks-hpcc-private")
-  route_table_name                    = try(var.use_existing_vnet.route_table_name, local.get_vnet_data.route_table_name)
+  route_table_name                    = try(var.use_existing_vnet.route_table_name, local.get_vnet_config.route_table_name)
 
   dns_resource_group_lookup = { "${var.internal_domain}" = var.dns_resource_group }
 
@@ -51,7 +51,8 @@ module "aks" {
 
   rbac_bindings = var.rbac_bindings
 
-  node_groups = var.node_groups
+  availability_zones = var.availability_zones
+  node_groups        = var.node_groups
 
   core_services_config = {
     alertmanager = var.core_services_config.alertmanager

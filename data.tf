@@ -1,5 +1,5 @@
 data "http" "host_ip" {
-  url = "https://ifconfig.me"
+  url = "https://api.ipify.org"
 }
 
 data "azurerm_subscription" "current" {

@@ -3,7 +3,7 @@ cluster_ordinal            = 1 //cluster name suffix
 sku_tier                   = "free"
 dns_resource_group         = "app-dns-prod-eastus2"
 internal_domain            = "my-dns-zone.io"
-hpcc_log_analytics_enabled = true
+hpcc_log_analytics_enabled = false
 
 rbac_bindings = {
   cluster_admin_users = {
@@ -48,7 +48,8 @@ core_services_config = {
 }
 
 cluster_endpoint_access_cidrs  = ["0.0.0.0/0"]
-cluster_endpoint_public_access = true
+
+availability_zones = [1,2]
 
 node_groups = {
   thorpool = {

@@ -22,7 +22,7 @@ locals {
   name                = module.virtual_network.vnet.name
 
 
-  vnet = jsonencode({
+  config = jsonencode({
     "private_subnet_id" : "${local.private_subnet_id}",
     "private_subnet_name" : "aks-hpcc-private",
     "public_subnet_id" : "${local.public_subnet_id}",
