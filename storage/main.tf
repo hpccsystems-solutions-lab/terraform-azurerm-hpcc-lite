@@ -4,6 +4,6 @@ module "storage" {
   owner                      = var.owner
   disable_naming_conventions = var.disable_naming_conventions
   metadata                   = var.metadata
-  virtual_network            = local.virtual_network
+  subnet_ids                 = local.subnet_ids
   storage_accounts           = var.storage_accounts
 }

@@ -102,8 +102,61 @@ data_storage_config = {
   external = null
 }
 
+# external_services_storage_config = [
+#   {
+#     category            = "dali"
+#     container_name      = "hpcc-dali"
+#     path                = "dalistorage"
+#     plane_name          = "dali"
+#     size                = 100
+#     storage_type        = "azurefiles"
+#     storage_account     = ""
+#     resource_group_name = ""
+#   },
+#   {
+#     category            = "debug"
+#     container_name      = "hpcc-debug"
+#     path                = "debug"
+#     plane_name          = "debug"
+#     size                = 100
+#     storage_type        = "blobnfs"
+#     storage_account     = ""
+#     resource_group_name = ""
+#   },
+#   {
+#     category            = "dll"
+#     container_name      = "hpcc-dll"
+#     path                = "queries"
+#     plane_name          = "dll"
+#     size                = 100
+#     storage_type        = "blobnfs"
+#     storage_account     = ""
+#     resource_group_name = ""
+#   },
+#   {
+#     category            = "lz"
+#     container_name      = "hpcc-mydropzone"
+#     path                = "mydropzone"
+#     plane_name          = "mydropzone"
+#     size                = 100
+#     storage_type        = "blobnfs"
+#     storage_account     = ""
+#     resource_group_name = ""
+#   },
+#   {
+#     category            = "sasha"
+#     container_name      = "hpcc-sasha"
+#     path                = "sashastorage"
+#     plane_name          = "sasha"
+#     size                = 100
+#     storage_type        = "blobnfs"
+#     storage_account     = ""
+#     resource_group_name = ""
+#   }
+# ]
 
-ignore_external_storage     = false
+ignore_external_data_storage     = false
+ignore_external_services_storage = false
 
 spill_volumes = {
   spill = {

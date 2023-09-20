@@ -56,12 +56,12 @@ variable "metadata" {
 
 variable "virtual_network" {
   description = "Subnet IDs"
-  type = object({
-    name                = string
+  type = list(object({
+    vnet_name           = string
     resource_group_name = string
-    location            = string
-    subnet_ids          = map(string)
-  })
+    subnet_name         = string
+    subscription_id     = optional(string)
+  }))
   default = null
 }
 
