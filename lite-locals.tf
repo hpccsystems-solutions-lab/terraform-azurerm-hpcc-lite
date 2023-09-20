@@ -13,7 +13,7 @@ locals {
     business_unit       = "commercial"
     environment         = "sandbox"
     market              = "us"
-    product_group       = "tlhhpcc"
+    product_group       = "hpcc"
     resource_group_type = "app"
     sre_team            = var.product_name
     subscription_type   = "dev"
