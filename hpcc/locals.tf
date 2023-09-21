@@ -19,13 +19,13 @@ locals {
 
   tags = merge(var.metadata.additional_tags, { "owner" = var.owner.name, "owner_email" = var.owner.email })
 
-  # external_services_storage_exists = fileexists("${path.module}/modules/storage/data/config.json") || var.external_services_storage_config != null
+  # external_services_storage_exists = fileexists("../storage/data/config.json") || var.external_services_storage_config != null
 
-  get_vnet_config    = fileexists("${path.module}/modules/vnet/data/config.json") ? jsondecode(file("${path.module}/modules/vnet/data/config.json")) : null
-  get_aks_config     = fileexists("${path.module}/modules/aks/data/config.json") ? jsondecode(file("${path.module}/modules/aks/data/config.json")) : null
-  get_storage_config = local.external_storage_exists ? jsondecode(file("${path.module}/modules/storage/data/config.json")) : null
+  get_vnet_config    = fileexists("../vnet/data/config.json") ? jsondecode(file("../vnet/data/config.json")) : null
+  get_aks_config     = fileexists("../aks/data/config.json") ? jsondecode(file("../aks/data/config.json")) : null
+  get_storage_config = local.external_storage_exists ? jsondecode(file("../storage/data/config.json")) : null
 
-  external_storage_exists = fileexists("${path.module}/modules/storage/data/config.json") || var.external_storage_config != null
+  external_storage_exists = fileexists("../storage/data/config.json") || var.external_storage_config != null
 
   subnet_ids = try({
     for k, v in var.use_existing_vnet.subnets : k => "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${var.use_existing_vnet.resource_group_name}/providers/Microsoft.Network/virtualNetworks/${var.use_existing_vnet.name}/subnets/${v.name}"
