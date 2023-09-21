@@ -10,7 +10,9 @@ resource "kubernetes_namespace" "hpcc" {
 
 module "hpcc" {
   #source = "github.com/gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
-  source = "git@github.com:gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
+  #source = "git@github.com:gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
+  #source = "/home/azureuser/godji/opinionated-terraform-azurerm-hpcc"
+  source = "/home/azureuser/temp/opinionated-terraform-azurerm-hpcc"
 
   environment = var.metadata.environment
   productname = var.metadata.product_name
@@ -51,8 +53,10 @@ module "hpcc" {
     subnet_ids           = merge({ aks = local.subnet_ids.aks })
   }
 
+  internal_storage_enabled = local.internal_storage_enabled
+
   data_storage_config = {
-    internal = local.external_storage_config == null ? {
+    internal = (local.external_storage_config == null) || (local.internal_storage_enabled == true) ? {
       blob_nfs = {
         data_plane_count = var.data_storage_config.internal.blob_nfs.data_plane_count
         storage_account_settings = {

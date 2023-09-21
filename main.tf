@@ -31,7 +31,7 @@ module "metadata" {
 }
 
 resource "null_resource" "launch_svc_url" {
-  for_each = module.hpcc.hpcc_status == "deployed" ? local.svc_domains : {}
+  for_each = (module.hpcc.hpcc_status == "deployed") && (var.auto_launch_svc.eclwatch == true) ? local.svc_domains : {}
 
   provisioner "local-exec" {
     command     = local.is_windows_os ? "Start-Process ${each.value}" : "open ${each.value} || xdg-open ${each.value}"

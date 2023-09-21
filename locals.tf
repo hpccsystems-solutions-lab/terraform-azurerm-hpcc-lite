@@ -21,11 +21,11 @@ locals {
 
   # external_services_storage_exists = fileexists("${path.module}/modules/storage/data/config.json") || var.external_services_storage_config != null
 
-  get_vnet_config    = fileexists("../vnet/data/config.json") ? jsondecode(file("../vnet/data/config.json")) : null
-  get_aks_config     = fileexists("../aks/data/config.json") ? jsondecode(file("../aks/data/config.json")) : null
-  get_storage_config = local.external_storage_exists ? jsondecode(file("../storage/data/config.json")) : null
+  get_vnet_config    = fileexists("${path.module}/modules/vnet/data/config.json") ? jsondecode(file("${path.module}/modules/vnet/data/config.json")) : null
+  get_aks_config     = fileexists("${path.module}/modules/aks/data/config.json") ? jsondecode(file("${path.module}/modules/aks/data/config.json")) : null
+  get_storage_config = local.external_storage_exists ? jsondecode(file("${path.module}/modules/storage/data/config.json")) : null
 
-  external_storage_exists = fileexists("../storage/data/config.json") || var.external_storage_config != null
+  external_storage_exists = fileexists("${path.module}/modules/storage/data/config.json") || var.external_storage_config != null
 
   subnet_ids = try({
     for k, v in var.use_existing_vnet.subnets : k => "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${var.use_existing_vnet.resource_group_name}/providers/Microsoft.Network/virtualNetworks/${var.use_existing_vnet.name}/subnets/${v.name}"
@@ -37,7 +37,7 @@ locals {
 
   domain = coalesce(var.internal_domain, format("us-%s.%s.azure.lnrsg.io", "var.metadata.product_name", "dev"))
 
-  internal_storage_enabled = local.external_storage_exists == true && var.ignore_external_storage == true ? true : local.external_storage_exists == true && var.ignore_external_storage == false ? false : true
+  internal_storage_enabled = (local.external_storage_exists == true) && (var.ignore_external_storage == true) ? true : local.external_storage_exists == true && var.ignore_external_storage == false ? false : true
   # external_services_storage_enabled = local.external_services_storage_exists == true && var.ignore_external_services_storage == false ? true : local.external_services_storage_exists == true && var.ignore_external_services_storage == true ? false : true
 
   hpcc_namespace = var.hpcc_namespace.existing_namespace != null ? var.hpcc_namespace.existing_namespace : var.hpcc_namespace.create_namespace == true ? kubernetes_namespace.hpcc[0].metadata[0].name : fileexists("${path.module}/logging/data/hpcc_namespace.txt") ? file("${path.module}/logging/data/hpcc_namespace.txt") : "default"
