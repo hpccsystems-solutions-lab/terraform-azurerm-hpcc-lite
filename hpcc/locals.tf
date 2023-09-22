@@ -4,45 +4,46 @@ locals {
     AZURE_SUBSCRIPTION_ID = data.azurerm_client_config.current.subscription_id
   }
 
-  names = var.disable_naming_conventions ? merge(
+  names = try(local.disable_naming_conventions, false) ? merge(
     {
-      business_unit     = var.metadata.business_unit
-      environment       = var.metadata.environment
-      location          = var.metadata.location
-      market            = var.metadata.market
-      subscription_type = var.metadata.subscription_type
+      business_unit     = local.metadata.business_unit
+      environment       = local.metadata.environment
+      location          = local.metadata.location
+      market            = local.metadata.market
+      subscription_type = local.metadata.subscription_type
     },
-    var.metadata.product_group != "" ? { product_group = var.metadata.product_group } : {},
-    var.metadata.product_name != "" ? { product_name = var.metadata.product_name } : {},
-    var.metadata.resource_group_type != "" ? { resource_group_type = var.metadata.resource_group_type } : {}
+    local.metadata.product_group != "" ? { product_group = local.metadata.product_group } : {},
+    local.metadata.product_name != "" ? { product_name = local.metadata.product_name } : {},
+    local.metadata.resource_group_type != "" ? { resource_group_type = local.metadata.resource_group_type } : {}
   ) : module.metadata.names
 
-  tags = merge(var.metadata.additional_tags, { "owner" = var.owner.name, "owner_email" = var.owner.email })
-
-  # external_services_storage_exists = fileexists("../storage/data/config.json") || var.external_services_storage_config != null
+  # external_services_storage_exists = fileexists("../storage/data/config.json") || local.external_services_storage_config != null
 
   get_vnet_config    = fileexists("../vnet/data/config.json") ? jsondecode(file("../vnet/data/config.json")) : null
   get_aks_config     = fileexists("../aks/data/config.json") ? jsondecode(file("../aks/data/config.json")) : null
-  get_storage_config = local.external_storage_exists ? jsondecode(file("../storage/data/config.json")) : null
+  #get_storage_config = local.external_storage_exists ? jsondecode(file("../storage/data/config.json")) : null
+  get_storage_config = fileexists("../storage/data/config.json") ? jsondecode(file("../storage/data/config.json")) : null
 
-  external_storage_exists = fileexists("../storage/data/config.json") || var.external_storage_config != null
+  external_storage_exists = fileexists("../storage/data/config.json") || local.external_storage_config != null
 
   subnet_ids = try({
-    for k, v in var.use_existing_vnet.subnets : k => "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${var.use_existing_vnet.resource_group_name}/providers/Microsoft.Network/virtualNetworks/${var.use_existing_vnet.name}/subnets/${v.name}"
+    for k, v in local.use_existing_vnet.subnets : k => "/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${local.use_existing_vnet.resource_group_name}/providers/Microsoft.Network/virtualNetworks/${local.use_existing_vnet.name}/subnets/${v.name}"
   }, { aks = local.get_vnet_config.private_subnet_id })
 
-  location = var.use_existing_vnet != null ? var.use_existing_vnet.location : local.get_vnet_config.location
+  location = local.use_existing_vnet != null ? local.use_existing_vnet.location : local.get_vnet_config.location
 
-  # hpcc_chart_major_minor_point_version = var.helm_chart_version != null ? regex("[\\d+?.\\d+?.\\d+?]+", var.helm_chart_version) : "master"
+  # hpcc_chart_major_minor_point_version = local.helm_chart_version != null ? regex("[\\d+?.\\d+?.\\d+?]+", local.helm_chart_version) : "master"
 
-  domain = coalesce(var.internal_domain, format("us-%s.%s.azure.lnrsg.io", "var.metadata.product_name", "dev"))
+  domain = coalesce(local.internal_domain, format("us-%s.%s.azure.lnrsg.io", "local.metadata.product_name", "dev"))
 
-  internal_storage_enabled = (local.external_storage_exists == true) && (var.ignore_external_storage == true) ? true : local.external_storage_exists == true && var.ignore_external_storage == false ? false : true
-  # external_services_storage_enabled = local.external_services_storage_exists == true && var.ignore_external_services_storage == false ? true : local.external_services_storage_exists == true && var.ignore_external_services_storage == true ? false : true
+  internal_storage_enabled = (local.external_storage_exists == true) && (local.ignore_external_storage == true) ? true : local.external_storage_exists == true && local.ignore_external_storage == false ? false : true
+  #internal_storage_enabled = local.external_storage_exists == true && local.ignore_external_storage == true ? true : local.external_storage_exists == true && local.ignore_external_storage == false ? false : true
+  # external_services_storage_enabled = local.external_services_storage_exists == true && local.ignore_external_services_storage == false ? true : local.external_services_storage_exists == true && local.ignore_external_services_storage == true ? false : true
 
-  hpcc_namespace = var.hpcc_namespace.existing_namespace != null ? var.hpcc_namespace.existing_namespace : var.hpcc_namespace.create_namespace == true ? kubernetes_namespace.hpcc[0].metadata[0].name : fileexists("${path.module}/logging/data/hpcc_namespace.txt") ? file("${path.module}/logging/data/hpcc_namespace.txt") : "default"
+  #hpcc_namespace = local.hpcc_namespace.existing_namespace != null ? local.hpcc_namespace.existing_namespace : local.hpcc_namespace.create_namespace == true ? kubernetes_namespace.hpcc[0].metadata[0].name : fileexists("../logging/data/hpcc_namespace.txt") ? file("../logging/data/hpcc_namespace.txt") : "default"
+  hpcc_namespace = "default"
 
-  external_storage_config = local.get_storage_config != null && var.ignore_external_storage == false ? [
+  external_storage_config = local.get_storage_config != null && local.ignore_external_storage == false ? [
     for plane in local.get_storage_config.external_storage_config :
     {
       category        = plane.category
@@ -58,6 +59,6 @@ locals {
     }
   ] : []
 
-  svc_domains   = { eclwatch = var.auto_launch_svc.eclwatch ? "https://eclwatch-${local.hpcc_namespace}.${local.domain}:18010" : null }
+  svc_domains   = { eclwatch = local.auto_launch_svc.eclwatch ? "https://eclwatch-${local.hpcc_namespace}.${local.domain}:18010" : null }
   is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true
 }
