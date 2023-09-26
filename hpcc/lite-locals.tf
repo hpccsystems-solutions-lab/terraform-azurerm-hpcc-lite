@@ -472,7 +472,7 @@ locals {
   admin_services_node_selector = {}
 
   thor_config = [{
-    disabled            = ((var.thor_num_workers == 0 ) || (var.thor_num_workers == null))? true : false
+    disabled            = (var.enable_thor == true) || (var.enable_thor == null)? false : true
     name                = "thor"
     prefix              = "thor"
     numWorkers          = var.thor_num_workers

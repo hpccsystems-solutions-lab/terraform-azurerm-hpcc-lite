@@ -74,6 +74,13 @@ enable_code_security=true
 
 #------------------------------------------------------------------------------
 
+# If you want a thor cluster then 'enable_thor' must be set to true
+# Otherwise it is set to false
+
+enable_thor=true
+
+#------------------------------------------------------------------------------
+
 # The number of Thor workers to allocate.
 # Must be 1 or more.
 
