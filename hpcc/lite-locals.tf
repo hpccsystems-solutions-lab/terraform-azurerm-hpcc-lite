@@ -161,6 +161,17 @@ locals {
   #   }
   # }
 
+  roxie_internal_service = {
+    name        = "iroxie"
+    servicePort = 9876
+    listenQueue = 200
+    numThreads  = 30
+    visibility  = "local"
+    annotations = {}
+  }
+
+  roxie_services = [local.roxie_internal_service]
+
   #========================================
   # defaults in godji original variables.tf
   expose_services = false
@@ -315,16 +326,7 @@ locals {
       useMemoryMappedIndexes         = false
       useRemoteResources             = false
       useTreeCopy                    = false
-      services = [
-        {
-          name        = "roxie"
-          servicePort = 9876
-          listenQueue = 200
-          numThreads  = 30
-          visibility  = "local"
-          annotations = {}
-        }
-      ]
+      services                       = local.roxie_services
       topoServer = {
         replicas = 1
       }
