@@ -113,4 +113,6 @@ module "hpcc" {
   helm_chart_timeout         = local.helm_chart_timeout
   helm_chart_files_overrides = concat(local.helm_chart_files_overrides, fileexists("../logging/data/logaccess_body.yaml") ? ["../logging/data/logaccess_body.yaml"] : [])
   ldap_config                = local.ldap_config
+
+  authn_htpasswd_filename    = var.authn_htpasswd_filename
 }
