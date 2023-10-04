@@ -41,6 +41,8 @@ module "hpcc" {
     username = local.hpcc_container_registry_auth.username
   } : null
 
+  storage_data_gb = var.storage_data_gb
+
   install_blob_csi_driver = false //Disable CSI driver
 
   resource_group_name = local.get_aks_config.resource_group_name
@@ -114,5 +116,6 @@ module "hpcc" {
   helm_chart_files_overrides = concat(local.helm_chart_files_overrides, fileexists("../logging/data/logaccess_body.yaml") ? ["../logging/data/logaccess_body.yaml"] : [])
   ldap_config                = local.ldap_config
 
+  enable_code_security       = var.enable_code_security
   authn_htpasswd_filename    = var.authn_htpasswd_filename
 }
