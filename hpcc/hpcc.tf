@@ -21,6 +21,7 @@ resource "kubernetes_namespace" "hpcc" {
 module "hpcc" {
   source = "git@github.com:gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
   #source = "/home/azureuser/temp/opinionated-terraform-azurerm-hpcc"
+  #source = "/home/azureuser/tlhumphrey2/RBA-terraform-azurerm-hpcc"
 
   environment = local.metadata.environment
   productname = local.metadata.product_name
@@ -40,6 +41,8 @@ module "hpcc" {
     password = local.hpcc_container_registry_auth.password
     username = local.hpcc_container_registry_auth.username
   } : null
+
+  storage_data_gb = var.storage_data_gb
 
   install_blob_csi_driver = false //Disable CSI driver
 
@@ -86,6 +89,7 @@ module "hpcc" {
   external_storage_config = local.external_storage_config
 
   spill_volumes                = local.spill_volumes
+  enable_roxie                 = var.enable_roxie
   roxie_config                 = local.roxie_config
   thor_config                  = local.thor_config
   vault_config                 = local.vault_config
@@ -112,4 +116,7 @@ module "hpcc" {
   helm_chart_timeout         = local.helm_chart_timeout
   helm_chart_files_overrides = concat(local.helm_chart_files_overrides, fileexists("../logging/data/logaccess_body.yaml") ? ["../logging/data/logaccess_body.yaml"] : [])
   ldap_config                = local.ldap_config
+
+  enable_code_security       = var.enable_code_security
+  authn_htpasswd_filename    = var.authn_htpasswd_filename
 }

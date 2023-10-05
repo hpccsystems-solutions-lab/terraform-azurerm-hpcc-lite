@@ -1,10 +1,3 @@
-variable "availability_zones" {
-  description = "Availability zones to use for the node groups."
-  type        = list(number)
-  nullable    = false
-  default     = [1]
-}
-
 variable "tags" {
   description = "Tags to apply to all resources."
   type        = map(string)

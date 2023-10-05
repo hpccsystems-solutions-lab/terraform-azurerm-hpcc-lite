@@ -30,11 +30,11 @@ module "metadata" {
   project             = local.metadata.project
 }
 
-resource "null_resource" "launch_svc_url" {
+/*resource "null_resource" "launch_svc_url" {
   for_each = (module.hpcc.hpcc_status == "deployed") && (local.auto_launch_svc.eclwatch == true) ? local.svc_domains : {}
 
   provisioner "local-exec" {
     command     = local.is_windows_os ? "Start-Process ${each.value}" : "open ${each.value} || xdg-open ${each.value}"
     interpreter = local.is_windows_os ? ["PowerShell", "-Command"] : ["/bin/bash", "-c"]
   }
-}
+}*/
