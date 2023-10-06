@@ -38,3 +38,13 @@ module "metadata" {
     interpreter = local.is_windows_os ? ["PowerShell", "-Command"] : ["/bin/bash", "-c"]
   }
 }*/
+
+resource "null_resource" "launch_svc_url" {
+  count = (module.hpcc.hpcc_status == "deployed") ? 1 : 0
+
+  provisioner "local-exec" {
+    command     = "../scripts/hpcc_is_deployed.sh"
+  }
+
+  depends_on = [ module.hpcc ]
+}
