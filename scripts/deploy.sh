@@ -1,4 +1,17 @@
 #!/bin/bash
+#========================================================================
+function assert_fail () {
+    echo ">>>>>>>>>>>>>>>>>>> EXECUTING: $*"
+    if "$@"; then
+        echo;echo ">>>>>>>>>>>>>>>>>>> Successful: $*";echo
+    else
+        echo;echo ">>>>>>>>>>>>>>>>>>> FAILED: $*. EXITING!";echo
+	rm -vr data
+        exit 1
+    fi
+}
+#========================================================================
+
 cd $1;
 name=$(basename `pwd`)
 if [ "$name" == "hpcc" ];then
@@ -11,9 +24,9 @@ if [ "$name" == "hpcc" ];then
 fi
 plan=`/home/azureuser/mkplan ${name}_deployment.plan`
 if [ -d "data" ] && [ -f "data/config.json" ]; then echo "Complete! $name is already deployed";exit 0; fi
-echo "=============== Deploying $name. Executing 'terraform init' ===============";
-terraform init 
-echo "=============== Deploying $name. Executing 'terraform plan -out=$plan' ===============";
-terraform plan -out=$plan
-echo "=============== Deploying $name. Executing 'terraform apply $plan'  ===============";
-terraform apply $plan
+echo "=============== Deploy $name. Executing 'terraform init' ===============";
+assert_fail terraform init 
+echo "=============== Deploy $name. Executing 'terraform plan -out=$plan' ===============";
+assert_fail terraform plan -out=$plan
+echo "=============== Deploy $name. Executing 'terraform apply $plan'  ===============";
+assert_fail terraform apply $plan
