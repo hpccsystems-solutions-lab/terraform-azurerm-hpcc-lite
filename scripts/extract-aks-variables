@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+if ( scalar(@ARGV) > 0 ){
+  $variable_file = shift @ARGV;
+} else{
+  die "FATAL ERROR: Variable file name must be given on command line\n";
+}
+undef $/;
+open(IN, $variable_file) || die "Can't open variable file, \"$variable_file\"\n";
+$_ = <IN>;
+close(IN);
+
+@variable_definitions = m/\bvariable \"aks_[^\"]+\".+?\n}/sg;
+
+print join("\n\n",@variable_definitions),"\n";

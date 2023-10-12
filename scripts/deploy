@@ -1,0 +1,82 @@
+#!/bin/bash
+#========================================================================
+function assert_fail () {
+    echo ">>>>>>>>>>>>>>>>>>> EXECUTING: $*"
+    if "$@"; then
+        echo;echo ">>>>>>>>>>>>>>>>>>> Successful: $*";echo
+    else
+        echo;echo ">>>>>>>>>>>>>>>>>>> FAILED: $*. EXITING!";echo
+	rm -vrf data
+        exit 1
+    fi
+}
+#========================================================================
+# make sure data/config.json doesn't exist if kubernetes cluster doesn't exist
+# Delete both hpcc/data and aks/data if kubernetes cluster doesn't exist
+# If kubernetes cluster does exist but there are no pods in the default namespace 
+# then delete only hpcc/data
+ns=`kubectl get ns 2>&1|egrep -v NAME|sed "s/  *.*$//"`
+if [[ "$ns" == *"Unable to connect to the server"* ]];then
+  # force rm data/config.json in hpcc and aks directories
+  echo "Forcibly delete hpcc/data and aks/data"
+  rm -vrf hpcc/data; rm -vrf aks/data
+fi
+p=`kubectl get pods 2>&1`
+if [[ "$p" == *"No resources found in default namespace"* ]];then
+  # force rm data/config.json in hpcc only
+  echo "Forcibly delete hpcc/data only"
+  rm -vrf hpcc/data
+fi
+
+# See if vnet/data/config.json exists. If it does then from the file get
+# the resource group name and then check to see if resource group exists.
+# if it doesn't exists then delete vnet/data/config.json
+if [ -e "vnet/data/config.json" ];then
+  # Get resource group name from file
+  rg=`scripts/get_rg_from_file vnet/data/config.json`
+  if [ $(az group exists --name $rg) = false ]; then
+     echo "vnet resource group, \"$rg\" does not exists. So deleting vnet/data/config.json"
+     rm -vrf vnet/data
+else
+     echo "vnet resource group, \"$rg\" does exists. So NOT deleting vnet/data/config.json"
+  fi
+fi
+#------------------------------------------------------------------------
+cd $1;
+
+# put the root directory's lite.auto.tfvars (either all of part) in either aks or hpcc
+# directory.
+name=$(basename `pwd`)
+if [ -e "../lite.auto.tfvars" ] && [ -e "/tmp/${name}.lite.auto.tfvars" ];then
+  diff=`diff /tmp/${name}.lite.auto.tfvars ../lite.auto.tfvars`
+fi
+if [ "$name" == "hpcc" ];then
+  if [ -e "../lite.auto.tfvars" ];then
+    cp -v ../lite.auto.tfvars /tmp/${name}.lite.auto.tfvars
+    cp -v ../lite-variables.tf .
+  else
+    echo "ERROR: The file 'lite.auto.tfvars' file must exist in the root directory and it does not. So, we exit with an error."
+    exit 1
+  fi
+elif [ "$name" == "aks" ];then
+  if [ -e "../lite.auto.tfvars" ];then
+    egrep "^aks_" ../lite.auto.tfvars > /tmp/${name}.lite.auto.tfvars
+    ../scripts/extract-aks-variables ../lite-variables.tf > lite-variables.tf
+  else
+    echo "ERROR: The file 'lite.auto.tfvars' file must exist in the root directory and it does not. So, we exit with an error."
+    exit 1
+  fi
+fi
+#------------------------------------------------------------------------
+plan=`/home/azureuser/mkplan ${name}_deployment.plan`
+if [ "$diff" == "" ] && [ -d "data" ] && [ -f "data/config.json" ]; then echo "Complete! $name is already deployed";exit 0; fi
+if [ "$name" != "vnet" ];then
+  cp -v /tmp/${name}.lite.auto.tfvars .
+fi
+
+echo "=============== Deploy $name. Executing 'terraform init' ===============";
+assert_fail terraform init 
+echo "=============== Deploy $name. Executing 'terraform plan -out=$plan' ===============";
+assert_fail terraform plan -out=$plan
+echo "=============== Deploy $name. Executing 'terraform apply $plan'  ===============";
+assert_fail terraform apply $plan

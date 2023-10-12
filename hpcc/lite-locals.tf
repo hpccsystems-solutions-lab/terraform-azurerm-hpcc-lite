@@ -4,7 +4,7 @@ locals {
 
   owner = {
     name  = var.admin_username
-    email = var.admin_email
+    email = var.aks_admin_email
   }
 
   metadata = {
@@ -18,7 +18,7 @@ locals {
     sre_team            = var.product_name
     subscription_type   = "dev"
     additional_tags     = { "justification" = "testing" }
-    location            = var.azure_region # Acceptable values: eastus, centralus
+    location            = var.aks_azure_region # Acceptable values: eastus, centralus
   }
 
   tags = merge(local.metadata.additional_tags, var.extra_tags)
@@ -54,7 +54,7 @@ locals {
   #   password = "value"
   # }
   
-  internal_domain = var.dns_zone_name // Example: hpcczone.us-hpccsystems-dev.azure.lnrsg.io
+  internal_domain = var.aks_dns_zone_name // Example: hpcczone.us-hpccsystems-dev.azure.lnrsg.io
   
   external = {}
   # external = {

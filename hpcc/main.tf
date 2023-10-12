@@ -43,7 +43,7 @@ resource "null_resource" "launch_svc_url" {
   count = (module.hpcc.hpcc_status == "deployed") ? 1 : 0
 
   provisioner "local-exec" {
-    command     = "../scripts/hpcc_is_deployed.sh"
+    command     = "../scripts/hpcc_is_deployed"
   }
 
   depends_on = [ module.hpcc ]

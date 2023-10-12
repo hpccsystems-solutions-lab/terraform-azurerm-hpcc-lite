@@ -1,14 +1,14 @@
 resource "null_resource" "deploy_vnet" {
 
   provisioner "local-exec" {
-    command     = "scripts/deploy.sh vnet"
+    command     = "scripts/deploy vnet"
   }
 }
 
 resource "null_resource" "deploy_aks" {
 
   provisioner "local-exec" {
-    command     = "scripts/deploy.sh aks"
+    command     = "scripts/deploy aks"
   }
 
   depends_on = [ null_resource.deploy_vnet ]
@@ -17,7 +17,7 @@ resource "null_resource" "deploy_aks" {
 resource "null_resource" "deploy_hpcc" {
 
   provisioner "local-exec" {
-    command     = "scripts/deploy.sh hpcc"
+    command     = "scripts/deploy hpcc"
   }
 
   depends_on = [  null_resource.deploy_aks ]

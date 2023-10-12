@@ -1,0 +1,31 @@
+#!/bin/bash
+#========================================================================
+function assert_fail () {
+    echo ">>>>>>>>>>>>>>>>>>> EXECUTING: $*"
+    if "$@"; then
+        echo;echo ">>>>>>>>>>>>>>>>>>> Successful: $*";echo
+    else
+        echo;echo ">>>>>>>>>>>>>>>>>>> FAILED: $*. EXITING!";echo
+        rm -vrf data
+        exit 1
+    fi
+}
+#========================================================================
+
+if [ "$1" == "vnet" ];then
+  assert_fail scripts/destroy hpcc
+  assert_fail scripts/destroy aks
+elif [ "$1" == "aks" ];then
+  assert_fail scripts/destroy hpcc
+fi
+cd $1;
+name=$(basename `pwd`)
+plan=`/home/azureuser/mkplan ${name}_destroy.plan`
+if [ ! -d "data" ] || [ ! -f "data/config.json" ]; then echo "$name is already destroyed";exit 0; fi
+
+echo "=============== Destroying $name. Executing 'terraform destroy' ===============";
+assert_fail terraform destroy -auto-approve
+rm -vr data
+cd ..
+r=`terraform state list|egrep "_$name"`
+terraform state rm $r

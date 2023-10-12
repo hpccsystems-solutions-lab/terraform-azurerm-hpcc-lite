@@ -5,25 +5,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "owner" {
-  description = "Information for the user who administers the deployment."
-  type = object({
-    name  = string
-    email = string
-  })
-
-  validation {
-    condition = try(
-      regex("hpccdemo", var.owner.name) != "hpccdemo", true
-      ) && try(
-      regex("hpccdemo", var.owner.email) != "hpccdemo", true
-      ) && try(
-      regex("@example.com", var.owner.email) != "@example.com", true
-    )
-    error_message = "Your name and email are required in the owner block and must not contain hpccdemo or @example.com."
-  }
-}
-
 # variable "azure_auth" {
 #   description = "Azure authentication"
 #   type = object({
@@ -47,37 +28,6 @@ variable "disable_naming_conventions" {
   description = "Naming convention module."
   type        = bool
   default     = false
-}
-
-variable "metadata" {
-  description = "Metadata module variables."
-  type = object({
-    market              = string
-    sre_team            = string
-    environment         = string
-    product_name        = string
-    business_unit       = string
-    product_group       = string
-    subscription_type   = string
-    resource_group_type = string
-    project             = string
-    additional_tags     = map(string)
-    location            = string
-  })
-
-  default = {
-    business_unit       = ""
-    environment         = ""
-    market              = ""
-    product_group       = ""
-    product_name        = "hpcc"
-    project             = ""
-    resource_group_type = ""
-    sre_team            = ""
-    subscription_type   = ""
-    additional_tags     = {}
-    location            = ""
-  }
 }
 
 variable "resource_groups" {
@@ -110,18 +60,6 @@ variable "use_existing_vnet" {
   })
 
   default = null
-}
-
-## DNS
-#########
-variable "internal_domain" {
-  description = "DNS Domain name"
-  type        = string
-}
-
-variable "dns_resource_group" {
-  description = "DNS resource group name"
-  type        = string
 }
 
 ## Other AKS Vars
@@ -188,89 +126,6 @@ variable "node_groups" {
   }))
   nullable = false
   default  = {}
-}
-
-variable "core_services_config" {
-  description = "Core service configuration."
-  type = object({
-    alertmanager = object({
-      smtp_host = string
-      smtp_from = string
-      receivers = optional(list(object({
-        name              = string
-        email_configs     = optional(any, [])
-        opsgenie_configs  = optional(any, [])
-        pagerduty_configs = optional(any, [])
-        pushover_configs  = optional(any, [])
-        slack_configs     = optional(any, [])
-        sns_configs       = optional(any, [])
-        victorops_configs = optional(any, [])
-        webhook_configs   = optional(any, [])
-        wechat_configs    = optional(any, [])
-        telegram_configs  = optional(any, [])
-      })))
-      routes = optional(list(object({
-        receiver            = string
-        group_by            = optional(list(string))
-        continue            = optional(bool)
-        matchers            = list(string)
-        group_wait          = optional(string)
-        group_interval      = optional(string)
-        repeat_interval     = optional(string)
-        mute_time_intervals = optional(list(string))
-        # active_time_intervals = optional(list(string))
-      })))
-    })
-    cert_manager = optional(object({
-      acme_dns_zones      = optional(list(string))
-      additional_issuers  = optional(map(any))
-      default_issuer_kind = optional(string)
-      default_issuer_name = optional(string)
-    }))
-    coredns = optional(object({
-      forward_zones = optional(map(any))
-    }))
-    external_dns = optional(object({
-      additional_sources     = optional(list(string))
-      private_domain_filters = optional(list(string))
-      public_domain_filters  = optional(list(string))
-    }))
-    fluentd = optional(object({
-      image_repository = optional(string)
-      image_tag        = optional(string)
-      additional_env   = optional(map(string))
-      debug            = optional(bool)
-      filters          = optional(string)
-      route_config = optional(list(object({
-        match  = string
-        label  = string
-        copy   = optional(bool)
-        config = string
-      })))
-      routes  = optional(string)
-      outputs = optional(string)
-    }))
-    grafana = optional(object({
-      admin_password          = optional(string)
-      additional_plugins      = optional(list(string))
-      additional_data_sources = optional(list(any))
-    }))
-    ingress_internal_core = optional(object({
-      domain           = string
-      subdomain_suffix = optional(string)
-      lb_source_cidrs  = optional(list(string))
-      lb_subnet_name   = optional(string)
-      public_dns       = optional(bool)
-    }))
-    prometheus = optional(object({
-      remote_write = optional(any)
-    }))
-    storage = optional(object({
-      file = optional(bool, true)
-      blob = optional(bool, false)
-    }), {})
-  })
-  nullable = false
 }
 
 variable "experimental" {
