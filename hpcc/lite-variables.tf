@@ -14,34 +14,16 @@ variable "a_record_name" {
   default     = ""
 }
 
-variable "dns_zone_resource_group_name" {
-  type        = string
-  description = "OPTIONAL: Name of the resource group containing the dns zone."
-  default     = ""
-}
-
-variable "dns_zone_name" {
-  type        = string
-  description = "OPTIONAL: dns zone name. The name of existing dns zone."
-  default     = ""
-}
-
-variable "admin_email" {
+variable "aks_admin_email" {
   type        = string
   description = "REQUIRED.  Email address of the administrator of this HPCC Systems cluster.\nExample entry: jane.doe@hpccsystems.com"
   validation {
-    condition     = length(regexall("^[^@]+@[^@]+$", var.admin_email)) > 0
+    condition     = length(regexall("^[^@]+@[^@]+$", var.aks_admin_email)) > 0
     error_message = "Value must at least look like a valid email address."
   }
 }
 
-variable "admin_ip_cidr_map" {
-  description = "OPTIONAL.  Map of name => CIDR IP addresses that can administrate this AKS.\nFormat is '{\"name\"=\"cidr\" [, \"name\"=\"cidr\"]*}'.\nThe 'name' portion must be unique.\nDefault value is '{}' means no CIDR addresses.\nThe corporate network and your current IP address will be added automatically, and these addresses will have access to the HPCC cluster as a user."
-  type        = map(string)
-  default     = {}
-}
-
-variable "admin_name" {
+variable "aks_admin_name" {
   type        = string
   description = "REQUIRED.  Name of the administrator of this HPCC Systems cluster.\nExample entry: Jane Doe"
 }
@@ -55,11 +37,11 @@ variable "admin_username" {
   }
 }
 
-variable "azure_region" {
+variable "aks_azure_region" {
   type        = string
   description = "REQUIRED.  The Azure region abbreviation in which to create these resources.\nMust be one of [\"eastus\", \"eastus2\", \"centralus\"].\nExample entry: eastus2"
   validation {
-    condition     = contains(["eastus", "eastus2", "centralus"], var.azure_region)
+    condition     = contains(["eastus", "eastus2", "centralus"], var.aks_azure_region)
     error_message = "Value must be one of [\"eastus\", \"eastus2\", \"centralus\"]."
   }
 }
@@ -80,6 +62,18 @@ variable "extra_tags" {
   default     = {}
 }
 
+variable "aks_dns_zone_resource_group_name" {
+  type        = string
+  description = "OPTIONAL: Name of the resource group containing the dns zone."
+  default     = ""
+}
+
+variable "aks_dns_zone_name" {
+  type        = string
+  description = "OPTIONAL: dns zone name. The name of existing dns zone."
+  default     = ""
+}
+
 variable "hpcc_user_ip_cidr_list" {
   description = "OPTIONAL.  List of additional CIDR addresses that can access this HPCC Systems cluster.\nDefault value is '[]' which means no CIDR addresses.\nTo open to the internet, add \"0.0.0.0/0\"."
   type        = list(string)
@@ -95,16 +89,22 @@ variable "hpcc_version" {
   }
 }
 
-variable "max_node_count" {
+variable "aks_admin_ip_cidr_map" {
+  description = "OPTIONAL.  Map of name => CIDR IP addresses that can administrate this AKS.\nFormat is '{\"name\"=\"cidr\" [, \"name\"=\"cidr\"]*}'.\nThe 'name' portion must be unique.\nDefault value is '{}' means no CIDR addresses.\nThe corporate network and your current IP address will be added automatically, and these addresses will have access to the HPCC cluster as a user."
+  type        = map(string)
+  default     = {}
+}
+
+variable "aks_max_node_count" {
   type        = number
   description = "REQUIRED.  The maximum number of VM nodes to allocate for the HPCC Systems node pool.\nMust be 2 or more."
   validation {
-    condition     = var.max_node_count >= 2
+    condition     = var.aks_max_node_count >= 2
     error_message = "Value must be 2 or more."
   }
 }
 
-variable "node_size" {
+variable "aks_node_size" {
   type        = string
   description = "REQUIRED.  The VM size for each node in the HPCC Systems node pool.\nRecommend \"Standard_B4ms\" or better.\nSee https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information."
 }

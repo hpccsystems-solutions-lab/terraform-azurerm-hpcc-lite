@@ -6,18 +6,18 @@ locals {
 
   names = var.disable_naming_conventions ? merge(
     {
-      business_unit     = var.metadata.business_unit
-      environment       = var.metadata.environment
-      location          = var.metadata.location
-      market            = var.metadata.market
-      subscription_type = var.metadata.subscription_type
+      business_unit     = local.metadata.business_unit
+      environment       = local.metadata.environment
+      location          = local.metadata.location
+      market            = local.metadata.market
+      subscription_type = local.metadata.subscription_type
     },
-    var.metadata.product_group != "" ? { product_group = var.metadata.product_group } : {},
-    var.metadata.product_name != "" ? { product_name = var.metadata.product_name } : {},
-    var.metadata.resource_group_type != "" ? { resource_group_type = var.metadata.resource_group_type } : {}
+    local.metadata.product_group != "" ? { product_group = local.metadata.product_group } : {},
+    local.metadata.product_name != "" ? { product_name = local.metadata.product_name } : {},
+    local.metadata.resource_group_type != "" ? { resource_group_type = local.metadata.resource_group_type } : {}
   ) : module.metadata.names
 
-  tags = merge(var.metadata.additional_tags, { "owner" = var.owner.name, "owner_email" = var.owner.email })
+  tags = merge(local.metadata.additional_tags, { "owner" = local.owner.name, "owner_email" = local.owner.email })
 
   get_vnet_config = fileexists("../vnet/data/config.json") ? jsondecode(file("../vnet/data/config.json")) : null
 
