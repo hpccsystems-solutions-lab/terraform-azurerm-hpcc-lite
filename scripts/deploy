@@ -16,13 +16,13 @@ function assert_fail () {
 # If kubernetes cluster does exist but there are no pods in the default namespace 
 # then delete only hpcc/data
 ns=`kubectl get ns 2>&1|egrep -v NAME|sed "s/  *.*$//"`
-if [[ "$ns" == *"Unable to connect to the server"* ]];then
+if [[ "$ns" == *"Unable"* ]];then
   # force rm data/config.json in hpcc and aks directories
   echo "Forcibly delete hpcc/data and aks/data"
   rm -vrf hpcc/data; rm -vrf aks/data
 fi
 p=`kubectl get pods 2>&1`
-if [[ "$p" == *"No resources found in default namespace"* ]];then
+if [[ "$p" == *"Unable"* ]] || [[ "$p" == *"No resources found in default namespace"* ]];then
   # force rm data/config.json in hpcc only
   echo "Forcibly delete hpcc/data only"
   rm -vrf hpcc/data
