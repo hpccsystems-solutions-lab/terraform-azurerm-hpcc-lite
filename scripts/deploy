@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ "$1" != "" ];then
+  name=$1
+else
+  echo "$0 has no arguments. It must of 1 argument that is 'vnet' or 'aks' or 'hpcc'. EXITING.";exit 1;
+fi
 #========================================================================
 function assert_fail () {
     echo ">>>>>>>>>>>>>>>>>>> EXECUTING: $*"
@@ -21,8 +26,8 @@ if [[ "$ns" == *"Unable"* ]];then
   echo "Forcibly delete hpcc/data and aks/data"
   rm -vrf hpcc/data; rm -vrf aks/data
 fi
-p=`kubectl get pods 2>&1`
-if [[ "$p" == *"Unable"* ]] || [[ "$p" == *"No resources found in default namespace"* ]];then
+pods=`kubectl get pods 2>&1`
+if [[ "$pods" == *"Unable"* ]] || [[ "$pods" == *"No resources found in default namespace"* ]];then
   # force rm data/config.json in hpcc only
   echo "Forcibly delete hpcc/data only"
   rm -vrf hpcc/data
@@ -38,34 +43,32 @@ if [ -e "vnet/data/config.json" ];then
      echo "vnet resource group, \"$rg\" does not exists. So deleting vnet/data/config.json"
      rm -vrf vnet/data
 else
-     echo "vnet resource group, \"$rg\" does exists. So NOT deleting vnet/data/config.json"
+     echo "vnet resource group, \"$rg\" DOES exists. So NOT deleting vnet/data/config.json"
   fi
 fi
 #------------------------------------------------------------------------
-cd $1;
+cd $name; # cd into vnet or aks or hpcc
 
 # put the root directory's lite.auto.tfvars (either all of part) in either aks or hpcc
 # directory.
-name=$(basename `pwd`)
-if [ -e "../lite.auto.tfvars" ] && [ -e "/tmp/${name}.lite.auto.tfvars" ];then
-  diff=`diff /tmp/${name}.lite.auto.tfvars ../lite.auto.tfvars`
+if [ -e "../lite.auto.tfvars" ];then 
+  if [ -e "/tmp/${name}.lite.auto.tfvars" ];then
+    diff=`diff /tmp/${name}.lite.auto.tfvars ../lite.auto.tfvars`
+  else
+    diff=""
+  fi
+else
+  echo "The root directory does not have a file called 'lite.aute.tfvars'. It must. EXITING";exit 1;
 fi
 if [ "$name" == "hpcc" ];then
-  if [ -e "../lite.auto.tfvars" ];then
+    echo "Coping root's lite.auto.tfvars to /tmp and $name directory."
     cp -v ../lite.auto.tfvars /tmp/${name}.lite.auto.tfvars
+    cp -v ../lite.auto.tfvars .
     cp -v ../lite-variables.tf .
-  else
-    echo "ERROR: The file 'lite.auto.tfvars' file must exist in the root directory and it does not. So, we exit with an error."
-    exit 1
-  fi
 elif [ "$name" == "aks" ];then
-  if [ -e "../lite.auto.tfvars" ];then
     egrep "^aks_" ../lite.auto.tfvars > /tmp/${name}.lite.auto.tfvars
+    egrep "^aks_" ../lite.auto.tfvars > lite.auto.tfvars
     ../scripts/extract-aks-variables ../lite-variables.tf > lite-variables.tf
-  else
-    echo "ERROR: The file 'lite.auto.tfvars' file must exist in the root directory and it does not. So, we exit with an error."
-    exit 1
-  fi
 fi
 #------------------------------------------------------------------------
 plan=`/home/azureuser/mkplan ${name}_deployment.plan`
@@ -80,3 +83,4 @@ echo "=============== Deploy $name. Executing 'terraform plan -out=$plan' ======
 assert_fail terraform plan -out=$plan
 echo "=============== Deploy $name. Executing 'terraform apply $plan'  ===============";
 assert_fail terraform apply $plan
+rm *.tfstate*;rm .terraform.lock.hcl ;sudo rm -r .terraform
