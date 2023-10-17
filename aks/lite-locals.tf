@@ -8,6 +8,8 @@ locals {
     email = var.aks_admin_email
   }
 
+  owner_name_initials = lower(join("",[for x in split(" ",local.owner.name): substr(x,0,1)]))
+
   metadata = {
     project             = "tlhhpccplatform"
     product_name        = "tlhhpccplatform"
