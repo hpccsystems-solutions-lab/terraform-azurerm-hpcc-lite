@@ -1,5 +1,5 @@
 #!/bin/bash
-repodir=`dirname `pwd`/deploy|sed "s/\/scripts\/*//"`
+repodir=$(echo `pwd`|sed "s/\/scripts\/*//")
 if [ "$1" != "" ];then
   name=$1
 else
@@ -13,6 +13,8 @@ function assert_fail () {
     else
         echo;echo ">>>>>>>>>>>>>>>>>>> FAILED: $*. EXITING!";echo
 	rm -vrf data
+        cd $repodir
+        rm *.tfstate*;rm .terraform.lock.hcl ;sudo rm -r .terraform
         exit 1
     fi
 }
