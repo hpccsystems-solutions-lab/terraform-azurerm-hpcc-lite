@@ -21,9 +21,8 @@
 module "aks" {
   depends_on = [random_string.string]
   #source     = "github.com/gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
-  #source     = "git@github.com:gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
-  #source     = "/home/azureuser/temp/terraform-azurerm-aks"
-  source     = "/home/azureuser/tlhumphrey2/rba-rsg-terraform-azurerm-aks"
+  source     = "git@github.com:gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
+  #source     = "/home/azureuser/tlhumphrey2/rba-rsg-terraform-azurerm-aks"
 
   providers = {
     kubernetes = kubernetes.default
@@ -53,7 +52,7 @@ module "aks" {
 
   rbac_bindings = var.rbac_bindings
 
-  availability_zones = var.availability_zones
+  #availability_zones = var.availability_zones
   node_groups        = var.node_groups
 
   core_services_config = {

@@ -1,5 +1,5 @@
 locals {
-  helm_chart_timeout=600
+  helm_chart_timeout=300
   #hpcc_version = "8.6.20"
 
   owner = {
@@ -7,15 +7,17 @@ locals {
     email = var.aks_admin_email
   }
 
+  owner_name_initials = lower(join("",[for x in split(" ",local.owner.name): substr(x,0,1)]))
+
   metadata = {
-    project             = var.product_name
-    product_name        = var.product_name
+    project             = format("%shpccplatform", local.owner_name_initials)
+    product_name        = format("%shpccplatform", local.owner_name_initials)
     business_unit       = "commercial"
     environment         = "sandbox"
     market              = "us"
-    product_group       = "tlhhpcc"
+    product_group        = format("%shpcc", local.owner_name_initials)
     resource_group_type = "app"
-    sre_team            = var.product_name
+    sre_team            = format("%shpccplatform", local.owner_name_initials)
     subscription_type   = "dev"
     additional_tags     = { "justification" = "testing" }
     location            = var.aks_azure_region # Acceptable values: eastus, centralus
