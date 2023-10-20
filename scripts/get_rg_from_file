@@ -2,10 +2,10 @@
 if ( scalar(@ARGV) > 0 ){
   $config_file = shift @ARGV;
 } else{
-  die "FATAL ERROR: config file path must be given on command line\n";
+  die "FATAL ERROR: In $0. Config file path must be given on command line\n";
 }
 undef $/;
-open(IN, $config_file) || die "Can't open config file, \"$config_file\"\n";
+open(IN, $config_file) || die "In $0. Can't open config file, \"$config_file\"\n";
 $_ = <IN>;
 close(IN);
 

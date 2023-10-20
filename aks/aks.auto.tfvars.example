@@ -1,15 +1,11 @@
-cluster_version            = "1.25"
+cluster_version            = "1.26"
 cluster_ordinal            = 1 //cluster name suffix
 sku_tier                   = "free"
-dns_resource_group         = "app-dns-prod-eastus2"
-internal_domain            = "my-dns-zone.io"
 hpcc_log_analytics_enabled = false
 
 rbac_bindings = {
   cluster_admin_users = {
-    # "service_principal1" = "",
-    # "user1"              = ""
-    # "user2"              = ""
+    # "admin" = "<your azure account id>",
 
   }
 
@@ -17,39 +13,9 @@ rbac_bindings = {
   cluster_view_groups = []
 }
 
-core_services_config = {
-  alertmanager = {
-    smtp_host = "smtp-hostname.ds:25"
-    smtp_from = "demo@lexisnexisrisk.com"
-    routes    = []
-    receivers = []
-  }
-
-  # coredns = {
-  #   forward_zones = {
-  #     "" = ""
-  #   }
-  # }
-
-  external_dns = {
-    public_domain_filters = ["my-dns-zone.io"]
-  }
-
-  # cert_manager = {
-  #   acme_dns_zones      = ["my-dns-zone.io"]
-  #   default_issuer_name = "zerossl"
-  # }
-
-  ingress_internal_core = {
-    domain           = "my-dns-zone.io"
-    subdomain_suffix = "hpcc" // dns record suffix //must be unique accross subscription
-    public_dns       = true
-  }
-}
-
 cluster_endpoint_access_cidrs  = ["0.0.0.0/0"]
 
-availability_zones = [1,2]
+availability_zones = [1]
 
 node_groups = {
   thorpool = {

@@ -12,23 +12,23 @@ module "metadata" {
 
   naming_rules = module.naming.yaml
 
-  market              = var.metadata.market
-  location            = var.metadata.location
-  sre_team            = var.metadata.sre_team
-  environment         = var.metadata.environment
-  product_name        = var.metadata.product_name
-  business_unit       = var.metadata.business_unit
-  product_group       = var.metadata.product_group
-  subscription_type   = var.metadata.subscription_type
-  resource_group_type = var.metadata.resource_group_type
+  market              = local.metadata.market
+  location            = local.metadata.location
+  sre_team            = local.metadata.sre_team
+  environment         = local.metadata.environment
+  product_name        = local.metadata.product_name
+  business_unit       = local.metadata.business_unit
+  product_group       = local.metadata.product_group
+  subscription_type   = local.metadata.subscription_type
+  resource_group_type = local.metadata.resource_group_type
   subscription_id     = data.azurerm_subscription.current.id
-  project             = var.metadata.project
+  project             = local.metadata.project
 }
 
 module "resource_groups" {
   source = "github.com/Azure-Terraform/terraform-azurerm-resource-group.git?ref=v2.1.0"
 
-  for_each = var.resource_groups
+  for_each = local.resource_groups
 
   unique_name = true
   location    = module.metadata.location

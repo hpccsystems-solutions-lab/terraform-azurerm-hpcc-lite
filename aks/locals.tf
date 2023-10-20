@@ -1,4 +1,42 @@
+resource "random_string" "name" {
+  length  = 3
+  special = false
+  numeric = false
+  upper   = false
+}
+
 locals {
+  aks_automation = {
+    local_authentication_enabled  = false
+    public_network_access_enabled = false
+    automation_account_name       = "aks-stop-demo-${random_string.name.result}"
+
+    schedule = [
+      {
+        schedule_name   = "aks_stop"
+        description     = "Stops the AKS weekday nights at 6PM EST"
+        runbook_name    = "aks_startstop_runbook"
+        frequency       = "Week" //OneTime, Day, Hour, Week, or Month.
+        interval        = "1"    //cannot be set when frequency is `OneTime`
+        operation       = "stop"
+        daylight_saving = true
+        start_time      = "18:00" // At least 5 minutes in the future
+        week_days       = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+      },
+      # {
+      #   schedule_name   = "aks_start"
+      #   description     = "Starts the AKS weekday nights at 6AM EST"
+      #   runbook_name    = "aks_startstop_runbook"
+      #   frequency       = "Week" //OneTime, Day, Hour, Week, or Month.
+      #   interval        = "1"    //cannot be set when frequency is `OneTime`
+      #   operation       = "start"
+      #   daylight_saving = true
+      #   start_time      = "06:00" // At least 5 minutes in the future
+      #   week_days       = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+      # }
+    ]
+  }
+
   azure_auth_env = {
     AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
     AZURE_SUBSCRIPTION_ID = data.azurerm_client_config.current.subscription_id
@@ -47,10 +85,10 @@ locals {
   tomorrow     = formatdate("YYYY-MM-DD", timeadd(local.current_time, "24h"))
   # today        = formatdate("YYYY-MM-DD", timeadd(local.current_time, "1h"))
 
-  utc_offset = var.aks_automation.schedule[0].daylight_saving ? 4 : 5
+  utc_offset = local.aks_automation.schedule[0].daylight_saving ? 4 : 5
 
   script   = { for item in fileset("${path.root}/scripts", "*") : (item) => file("${path.root}/scripts/${item}") }
-  schedule = { for s in var.aks_automation.schedule : "${s.schedule_name}" => s }
+  schedule = { for s in local.aks_automation.schedule : "${s.schedule_name}" => s }
 
   az_command    = "az aks get-credentials --name ${local.cluster_name} --resource-group ${module.resource_groups["azure_kubernetes_service"].name}  --admin --overwrite-existing"
   is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true

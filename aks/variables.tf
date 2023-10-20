@@ -160,27 +160,6 @@ variable "runbook" {
   default = [{}]
 }
 
-variable "aks_automation" {
-  description = "Arguments to automate the Azure Kubernetes Cluster"
-  type = object({
-    automation_account_name       = string
-    local_authentication_enabled  = optional(bool, false)
-    public_network_access_enabled = optional(bool, false)
-
-    schedule = list(object({
-      description     = optional(string, "Stop the Kubernetes cluster.")
-      schedule_name   = optional(string, "aks_stop")
-      runbook_name    = optional(string, "aks_startstop_runbook") # name of the runbook
-      frequency       = string
-      interval        = string
-      start_time      = string
-      week_days       = list(string)
-      operation       = optional(string, "stop")
-      daylight_saving = optional(bool, false)
-    }))
-  })
-}
-
 variable "timezone" {
   description = "Name of timezone"
   type        = string

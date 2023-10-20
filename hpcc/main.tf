@@ -39,12 +39,9 @@ module "metadata" {
   }
 }*/
 
-resource "null_resource" "launch_svc_url" {
-  count = (module.hpcc.hpcc_status == "deployed") ? 1 : 0
-
-  provisioner "local-exec" {
-    command     = "../scripts/hpcc_is_deployed"
-  }
+resource "local_file" "configjson" {
+  content  = "hpcc was successfully deployed!"
+  filename = "${path.module}/data/config.json"
 
   depends_on = [ module.hpcc ]
 }
