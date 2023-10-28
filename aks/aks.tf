@@ -54,7 +54,7 @@ module "aks" {
 
   rbac_bindings = var.rbac_bindings
 
-  #availability_zones = var.availability_zones
+  availability_zones = var.availability_zones
   node_groups        = var.node_groups
 
   core_services_config = {
