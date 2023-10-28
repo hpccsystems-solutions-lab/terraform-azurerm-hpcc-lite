@@ -21,7 +21,6 @@ locals {
 
   get_vnet_config    = fileexists("../vnet/data/config.json") ? jsondecode(file("../vnet/data/config.json")) : null
   get_aks_config     = fileexists("../aks/data/config.json") ? jsondecode(file("../aks/data/config.json")) : null
-  #get_storage_config = local.external_storage_exists ? jsondecode(file("../storage/data/config.json")) : null
   get_storage_config = fileexists("../storage/data/config.json") ? jsondecode(file("../storage/data/config.json")) : null
 
   external_storage_exists = fileexists("../storage/data/config.json") || local.external_storage_config != null

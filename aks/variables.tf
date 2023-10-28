@@ -80,7 +80,7 @@ variable "sku_tier" {
   description = "Pricing tier for the Azure Kubernetes Service managed cluster; \"free\" & \"paid\" are supported. For production clusters or clusters with more than 10 nodes this should be set to \"paid\"."
   type        = string
   nullable    = false
-  default     = "free"
+  default     = "FREE"
 
   validation {
     condition     = contains(["free", "paid"], var.sku_tier)

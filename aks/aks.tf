@@ -21,8 +21,10 @@
 module "aks" {
   depends_on = [random_string.string]
   #source     = "github.com/gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
-  source     = "git@github.com:gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
+  #source     = "git@github.com:gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
   #source     = "/home/azureuser/tlhumphrey2/rba-rsg-terraform-azurerm-aks"
+  source     = "/home/azureuser/temp/HPCC-27615/terraform-azurerm-aks"
+  #source     = "/home/azureuser/temp/OSS/terraform-azurerm-aks"
 
   providers = {
     kubernetes = kubernetes.default
@@ -75,8 +77,8 @@ module "aks" {
     blob = { enabled = true }
   }
 
-  # tlh logging = var.logging
-  logging = null
+  logging = var.logging
+  #logging = null
 
   experimental = {
     oms_agent                            = var.hpcc_log_analytics_enabled || var.experimental.oms_agent

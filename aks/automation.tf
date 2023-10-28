@@ -1,3 +1,4 @@
+/*
 resource "azurerm_automation_account" "automation_account" {
   name                = local.aks_automation.automation_account_name
   location            = local.location
@@ -63,3 +64,4 @@ resource "azurerm_automation_job_schedule" "job_schedule" {
     automationaccount = local.aks_automation.automation_account_name
   }
 }
+*/
