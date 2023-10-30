@@ -41,7 +41,7 @@ module "aks" {
   # for v1.6.2 aks: sku_tier_paid   = false
   sku_tier = var.sku_tier
 
-  logging_monitoring_enabled = var.logging_monitoring_enabled
+  logging_monitoring_enabled = var.aks_logging_monitoring_enabled
 
   cluster_endpoint_access_cidrs = var.cluster_endpoint_access_cidrs
 
