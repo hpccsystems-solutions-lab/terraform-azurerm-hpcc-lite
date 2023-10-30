@@ -23,6 +23,8 @@ module "hpcc" {
   #source = "/home/azureuser/temp/opinionated-terraform-azurerm-hpcc"
   source = "/home/azureuser/tlhumphrey2/RBA-terraform-azurerm-hpcc"
 
+  depends_on = [ local.get_aks_config ]
+
   environment = local.metadata.environment
   productname = local.metadata.product_name
 
