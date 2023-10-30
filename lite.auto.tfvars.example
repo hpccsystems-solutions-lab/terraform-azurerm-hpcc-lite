@@ -217,3 +217,11 @@ enable_premium_storage=false
 # Example entry: "htpasswd.txt"
 
 authn_htpasswd_filename=""
+
+#------------------------------------------------------------------------------
+
+# You can optionally turn logging and monitoring on or off by setting the 
+# following variable, where true means logging and monitoring will be done
+# while false means it won't be done.
+
+aks_logging_monitoring_enabled=false

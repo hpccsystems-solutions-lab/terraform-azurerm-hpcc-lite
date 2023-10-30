@@ -200,7 +200,7 @@ variable "cluster_endpoint_access_cidrs" {
   }
 }
 
-variable "logging_monitoring_enabled" {
+variable "aks_logging_monitoring_enabled" {
   description = "If true then logging and monitoring will occur else it will not."
   type        = bool
   nullable    = false
