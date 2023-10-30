@@ -471,7 +471,7 @@ locals {
 
   onprem_lz_settings = {}
 
-  ignore_external_storage = true
+  ignore_external_storage = false
 
   admin_services_node_selector = {}
 
