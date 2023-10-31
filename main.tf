@@ -15,7 +15,7 @@ resource "null_resource" "deploy_aks" {
 }
 
 resource "null_resource" "deploy_storage" {
-  count = (var.ignore_external_storage == false)? 1 : 0
+  count = (var.external_storage_desired == true)? 1 : 0
 
   provisioner "local-exec" {
     command     = "scripts/deploy storage"
@@ -26,10 +26,10 @@ resource "null_resource" "deploy_storage" {
 }
 
 resource "null_resource" "external_storage" {
-  count = (var.ignore_external_storage == false)? 1 : 0
+  count = (var.external_storage_desired == true)? 1 : 0
 
   provisioner "local-exec" {
-    command     = "scripts/external_storage ${path.module} ${var.ignore_external_storage}"
+    command     = "scripts/external_storage ${path.module} ${var.external_storage_desired}"
   }
 
   #depends_on = [ null_resource.deploy_vnet, null_resource.deploy_aks ]

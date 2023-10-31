@@ -1,10 +1,10 @@
 #!/usr/bin/perl
 $repopath = shift @ARGV;
-$ignore_external_storage = shift @ARGV;
+$external_storage_desired = shift @ARGV;
 
-#print "DEBUG: {\"repopath\" : \"$repopath\", \"ignore_external_storage\" : \"$ignore_external_storage\"}\n";
+#print "DEBUG: {\"repopath\" : \"$repopath\", \"external_storage_desired\" : \"$external_storage_desired\"}\n";
 
-if ( $ignore_external_storage eq "true" ){
+if ( $external_storage_desired eq "false" ){
   #print "DEBUG: EXITING because ignore_external_storage is true.\n";
   exit 0;
 }else{
