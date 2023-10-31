@@ -14,11 +14,33 @@ resource "null_resource" "deploy_aks" {
   depends_on = [ null_resource.deploy_vnet ]
 }
 
+resource "null_resource" "deploy_storage" {
+  count = (var.ignore_external_storage == false)? 1 : 0
+
+  provisioner "local-exec" {
+    command     = "scripts/deploy storage"
+  }
+
+  #depends_on = [ null_resource.deploy_vnet, null_resource.deploy_aks ]
+  depends_on = [ null_resource.deploy_vnet ]
+}
+
+resource "null_resource" "external_storage" {
+  count = (var.ignore_external_storage == false)? 1 : 0
+
+  provisioner "local-exec" {
+    command     = "scripts/external_storage ${path.module} ${var.ignore_external_storage}"
+  }
+
+  #depends_on = [ null_resource.deploy_vnet, null_resource.deploy_aks ]
+  depends_on = [ null_resource.deploy_vnet ]
+}
+
 resource "null_resource" "deploy_hpcc" {
 
   provisioner "local-exec" {
     command     = "scripts/deploy hpcc"
   }
 
-  depends_on = [  null_resource.deploy_aks ]
+  depends_on = [  null_resource.deploy_aks, null_resource.deploy_vnet, null_resource.external_storage ]
 }

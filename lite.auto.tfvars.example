@@ -225,3 +225,11 @@ authn_htpasswd_filename=""
 # while false means it won't be done.
 
 aks_logging_monitoring_enabled=false
+
+#------------------------------------------------------------------------------
+
+# If you definitely want ephemeral storage instead of external storage then
+# set this variable to true otherwise set it to false.
+
+ignore_external_storage=true
+

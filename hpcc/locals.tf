@@ -35,14 +35,14 @@ locals {
 
   domain = coalesce(local.internal_domain, format("us-%s.%s.azure.lnrsg.io", "local.metadata.product_name", "dev"))
 
-  internal_storage_enabled = (local.external_storage_exists == true) && (local.ignore_external_storage == true) ? true : local.external_storage_exists == true && local.ignore_external_storage == false ? false : true
-  #internal_storage_enabled = local.external_storage_exists == true && local.ignore_external_storage == true ? true : local.external_storage_exists == true && local.ignore_external_storage == false ? false : true
+  internal_storage_enabled = (local.external_storage_exists == true) && (var.ignore_external_storage == true) ? true : local.external_storage_exists == true && var.ignore_external_storage == false ? false : true
+  #internal_storage_enabled = local.external_storage_exists == true && var.ignore_external_storage == true ? true : local.external_storage_exists == true && var.ignore_external_storage == false ? false : true
   # external_services_storage_enabled = local.external_services_storage_exists == true && local.ignore_external_services_storage == false ? true : local.external_services_storage_exists == true && local.ignore_external_services_storage == true ? false : true
 
   #hpcc_namespace = local.hpcc_namespace.existing_namespace != null ? local.hpcc_namespace.existing_namespace : local.hpcc_namespace.create_namespace == true ? kubernetes_namespace.hpcc[0].metadata[0].name : fileexists("../logging/data/hpcc_namespace.txt") ? file("../logging/data/hpcc_namespace.txt") : "default"
   hpcc_namespace = "default"
 
-  external_storage_config = local.get_storage_config != null && local.ignore_external_storage == false ? [
+  external_storage_config = local.get_storage_config != null && var.ignore_external_storage == false ? [
     for plane in local.get_storage_config.external_storage_config :
     {
       category        = plane.category
