@@ -9,5 +9,5 @@ open(IN, $config_file) || die "In $0. Can't open config file, \"$config_file\"\n
 $_ = <IN>;
 close(IN);
 
-$rg = $1 if ( /"resource_group_name":"([^"]+)"/ );
+$rg = $1 if ( /"resource_group(?:_name)?":\s*"([^"]+)"/s );
 print $rg;

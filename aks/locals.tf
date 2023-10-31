@@ -14,13 +14,13 @@ locals {
     schedule = [
       {
         schedule_name   = "aks_stop"
-        description     = "Stops the AKS weekday nights at 6PM EST"
+        description     = "Stops the AKS weekday nights at 6PM MST"
         runbook_name    = "aks_startstop_runbook"
         frequency       = "Week" //OneTime, Day, Hour, Week, or Month.
         interval        = "1"    //cannot be set when frequency is `OneTime`
         operation       = "stop"
         daylight_saving = true
-        start_time      = "18:00" // At least 5 minutes in the future
+        start_time      = "20:00" // At least 5 minutes in the future
         week_days       = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
       },
       # {

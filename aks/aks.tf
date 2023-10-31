@@ -22,6 +22,7 @@ module "aks" {
   depends_on = [random_string.string]
   #source     = "github.com/gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
   #source     = "git@github.com:gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
+  #source     = "git@github.com:gfortil/terraform-azurerm-aks.git?ref=OSS"
   #source     = "/home/azureuser/tlhumphrey2/rba-rsg-terraform-azurerm-aks"
   #source     = "/home/azureuser/temp/HPCC-27615/terraform-azurerm-aks"
   source     = "/home/azureuser/temp/OSS/terraform-azurerm-aks"

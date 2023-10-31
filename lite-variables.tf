@@ -2,11 +2,15 @@
 # Prompted variables (user will be asked to supply them at plan/apply time
 # if a .tfvars file is not supplied); there are no default values
 ###############################################################################
+variable "external_storage_desired" {
+  description = "If you definitely want ephemeral storage instead of external, this should be false. For external storage this should be true"
+  type        = bool
+  default     = false
+}
 variable "enable_thor" {
   description = "REQUIRED.  If you want a thor cluster."
   type        = bool
 }
-
 
 variable "a_record_name" {
   type        = string

@@ -1,10 +1,10 @@
 #!/bin/bash
-thisdir=$(d=`dirname $0`;cd $d;pwd;cd ..)
-repodir=$(echo `pwd`|sed "s/\/scripts\/*//")
-if [ "$1" != "" ];then
+thisdir=$(dirname $0)
+repodir=$(echo $thisdir|sed "s/\/scripts\/*//")
+if [ "$1" != "" ] && [[ $1 =~ hpcc|aks|vnet|storage ]];then
   name=$1
 else
-  echo "$0 has no arguments. It must of 1 argument that is 'vnet' or 'aks' or 'hpcc'. EXITING.";exit 1;
+  echo "$0 has no arguments. It must of 1 argument that is 'vnet' or 'storage' or 'aks' or 'hpcc'. EXITING.";exit 1;
 fi
 #========================================================================
 function assert_fail () {
@@ -20,13 +20,12 @@ function assert_fail () {
     fi
 }
 #========================================================================
-# make sure data/config.json doesn't exist if kubernetes cluster doesn't exist
+# If kubernetes cluster doesn't exist then make sure aks/data/config.json 
+# and hpcc/data/config.json doesn't exist
 # Delete both hpcc/data and aks/data if kubernetes cluster doesn't exist
 ns=`kubectl get ns 2>&1|egrep -v NAME|sed "s/  *.*$//"`
 pods=`kubectl get pods 2>&1`
-if [[ "$ns" == *"Unable"* ]];then
-  # force rm data/config.json in hpcc and aks directories
-  echo "Forcibly delete hpcc/data and aks/data"
+if [[ "$ns" == *"Unable"* ]];then # kubenetes doesn't exist of there are no namespaces
   rm -vrf hpcc/data;cd hpcc; rm *.tfstate*;rm .terraform.lock.hcl ;sudo rm -r .terraform;cd ..
   rm -vrf aks/data;cd aks; rm *.tfstate*;rm .terraform.lock.hcl ;sudo rm -r .terraform;cd ..
 # If kubernetes cluster does exist but there are no pods in the default namespace 
@@ -37,31 +36,33 @@ elif [[ "$pods" == *"Unable"* ]] || [[ "$pods" == *"No resources found in defaul
   rm -vrf hpcc/data;cd hpcc; rm *.tfstate*;rm .terraform.lock.hcl ;sudo rm -r .terraform;cd ..
 fi
 #------------------------------------------------------------------------
-# See if $dir/data/config.json exists. If it does then from the file get
+# See if $dir/data/config.json exists, where $dir is vnet or aks or storage.
+# If $dir/data/config.json does exist then from the file get
 # the resource group name and then check to see if resource group exists.
 # if it doesn't exists then delete $dir/data/config.json
 #------------------------------------------------------------------------
-for dir in aks vnet;do
+for dir in aks vnet storage;do
   if [ -e "$dir/data/config.json" ];then
     # Get resource group name from file
-    rg=`scripts/get_rg_from_file $dir/data/config.json`
-    if [ $(az group exists --name $rg) = false ]; then
-       echo "In $0. vnet resource group, \"$rg\" does not exists. So deleting vnet/data and any tfstate files id $dir."
+    rg=`$thisdir/get_rg_from_file $dir/data/config.json`
+    rgexist=`az group exists --name $rg`
+    if [ "$rgexist" == "false" ]; then
+       echo "In $0. $dir resource group, \"$rg\" does not exists. So deleting vnet/data and any tfstate files id $dir."
        rm -vrf $dir/data
        cd $dir; rm *.tfstate*;rm .terraform.lock.hcl ;sudo rm -r .terraform;cd ..
   else
-       echo "In $0. vnet resource group, \"$rg\" DOES exists. So NOT deleting vnet/data."
+       echo "In $0. $dir resource group, \"$rg\" DOES exists. So NOT deleting vnet/data."
     fi
   fi
 done
 #------------------------------------------------------------------------
 
-cd $name; # cd into vnet or aks or hpcc
+cd $name; # cd into vnet or storage or aks or hpcc
 
 # put the root directory's lite.auto.tfvars (either all of part) in either aks or hpcc
 # directory.
 if [ -e "../lite.auto.tfvars" ];then 
-  # Check of there has been a change since last apply.
+  # Check if there has been a change since last apply.
   if [ -e "/tmp/${name}.lite.auto.tfvars" ];then
     diff=`diff /tmp/${name}.lite.auto.tfvars ../lite.auto.tfvars`
   else
@@ -75,7 +76,7 @@ if [ "$name" == "hpcc" ];then
     cp -v ../lite.auto.tfvars /tmp/${name}.lite.auto.tfvars
     cp -v ../lite.auto.tfvars .
     cp -v ../lite-variables.tf .
-elif [ "$name" == "aks" ] || [ "$name" == "vnet" ];then
+elif [ "$name" == "aks" ] || [ "$name" == "vnet" ] || [ "$name" == "storage" ];then
     egrep "^aks_" ../lite.auto.tfvars > /tmp/${name}.lite.auto.tfvars
     egrep "^aks_" ../lite.auto.tfvars > lite.auto.tfvars
     ../scripts/extract-aks-variables ../lite-variables.tf > lite-variables.tf
@@ -94,11 +95,9 @@ echo "=============== Deploy $name. Executing 'terraform init' ===============";
 assert_fail terraform init 
 echo "=============== Deploy $name. Executing 'terraform plan -out=$plan' ===============";
 assert_fail terraform plan -out=$plan
-echo "=============== Deploy $name. Executing 'terraform apply $plan'  ===============";
-assert_fail terraform apply $plan
-#r=`pwd`
-#if [ "$name" == "hpcc" ];then
-# cd $repodir
-# rm *.tfstate*;rm .terraform.lock.hcl ;sudo rm -r .terraform
-# cd $r
-#fi
+if [ -e "$plan" ];then
+  echo "=============== Deploy $name. Executing 'terraform apply $plan'  ===============";
+  assert_fail terraform apply -auto-approve $plan
+else
+   echo "@@@@@@@@@@ No changes. Your infrastructure matches the configuration. So, terraform apply for $name will not be done. @@@@@@@@@@"
+fi

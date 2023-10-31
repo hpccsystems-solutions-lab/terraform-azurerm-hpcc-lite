@@ -4,9 +4,9 @@ module "storage" {
   #source = "/home/azureuser/tlhumphrey2/terraform-azurerm-hpcc-storage"
   source = "/home/azureuser/temp/HPCC-27615/terraform-azurerm-hpcc-storage"
 
-  owner                      = var.owner
+  owner                      = local.owner
   disable_naming_conventions = var.disable_naming_conventions
-  metadata                   = var.metadata
+  metadata                   = local.metadata
   subnet_ids                 = local.subnet_ids
   storage_accounts           = var.storage_accounts
 }

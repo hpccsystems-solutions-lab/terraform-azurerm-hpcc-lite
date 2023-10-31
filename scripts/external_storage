@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+$repopath = shift @ARGV;
+$external_storage_desired = shift @ARGV;
+
+#print "DEBUG: {\"repopath\" : \"$repopath\", \"external_storage_desired\" : \"$external_storage_desired\"}\n";
+
+if ( $external_storage_desired eq "false" ){
+  #print "DEBUG: EXITING because ignore_external_storage is true.\n";
+  exit 0;
+}else{
+   #print "DEBUG: EXITING because ignore_external_storage is NOT true.\n";
+    while ( ! -e "$repopath/storage/data/config.json" ) {
+       sleep 10;
+    }
+    exit 0;
+}

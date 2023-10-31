@@ -1,9 +1,16 @@
 #!//usr/bin/perl
+$HOME = $ENV{'HOME'};
 $tmpl = "/home/azureuser/tflogs/<repo_name>-<month_date>.plan";
 $month_date = `date -d "$D" '+%Y';date -d "$D" '+%m';date -d "$D" '+%d'`;
 $timezone_difference=6;
 $H = `date +'%H'`;chomp $H;
-$H = $H-$timezone_difference;
+#print STDERR "DEBUG: H=\"$H\"\n";
+if ( $H <= $timezone_difference ){
+   $H = 25 - $timezone_difference;
+}else{
+   $H = $H-$timezone_difference;
+}
+#print STDERR "DEBUG: After timezone difference: H=\"$H\"\n";
 $H = sprintf("%02d",$H);
 $M = `date +'%M'`;chomp $M;
 $M = sprintf("%02d",$M);
@@ -13,7 +20,10 @@ $repo_name = "";
 if (scalar(@ARGV)>0){
   $repo_name =  shift @ARGV;
 } else {
-  die "FATAL ERROR. Plan name must be given on command line after 'mkplan'.";
+  $cdir=`pwd`;chomp $cdir;
+  $reHOME = $HOME; $reHOME =~ s/(\/)/\\$1/g;
+  $repo_name = $cdir; $repo_name =~ s/^$reHOME\///;
+  #print "DEBUG: No arguments: cdir=\"$cdir\", reHOME=\"$reHOME\", repo_name=\"$repo_name\"\n";
 }
 $repo_name =~ s/^\/home\/azureuser\/tflogs\///;
 $repo_name =~ s/\-\d{8}\-\d{1,2}\.?\d{1,2}\.plan//;
@@ -22,5 +32,6 @@ $repo_name =~ s/\//-/g;
 $_ = $tmpl;
 s/<repo_name>/$repo_name/;
 s/<month_date>/$month_date/;
+print STDERR "$_\n";
 print "$_\n";
 
