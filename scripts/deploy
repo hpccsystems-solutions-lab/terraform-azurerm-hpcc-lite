@@ -1,5 +1,5 @@
 #!/bin/bash
-thisdir=$(dirname $0)
+thisdir=`pwd`/`dirname $0`
 repodir=$(echo $thisdir|sed "s/\/scripts\/*//")
 if [ "$1" != "" ] && [[ $1 =~ hpcc|aks|vnet|storage ]];then
   name=$1
@@ -85,7 +85,9 @@ fi
 if [ ! -d "$HOME/tflogs" ];then
   mkdir $HOME/tflogs
 fi
+#echo "DEBUG: thisdir=\"$thisdir\", repodir=\"$repodir\", name=\"$name\""
 plan=`$thisdir/mkplan deploy_${name}.plan`
+#echo "DEBUG: plan=\"$plan\"";exit 1
 if [ "$diff" == "" ] && [ -d "data" ] && [ -f "data/config.json" ]; then echo "Complete! $name is already deployed";exit 0; fi
 if [ "$name" != "vnet" ];then
   cp -v /tmp/${name}.lite.auto.tfvars .

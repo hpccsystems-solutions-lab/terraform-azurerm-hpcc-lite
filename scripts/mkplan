@@ -32,6 +32,5 @@ $repo_name =~ s/\//-/g;
 $_ = $tmpl;
 s/<repo_name>/$repo_name/;
 s/<month_date>/$month_date/;
-print STDERR "$_\n";
 print "$_\n";
 
