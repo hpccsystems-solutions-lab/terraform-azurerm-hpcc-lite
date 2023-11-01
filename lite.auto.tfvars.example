@@ -39,7 +39,7 @@ hpcc_version="8.6.14"
 # Value type: boolean
 # Example entry: false
 
-enable_roxie=true
+aks_enable_roxie=true
 
 #------------------------------------------------------------------------------
 

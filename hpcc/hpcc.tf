@@ -92,7 +92,7 @@ module "hpcc" {
   external_storage_config = local.external_storage_config
 
   spill_volumes                = local.spill_volumes
-  enable_roxie                 = var.enable_roxie
+  enable_roxie                 = var.aks_enable_roxie
   roxie_config                 = local.roxie_config
   thor_config                  = local.thor_config
   vault_config                 = local.vault_config

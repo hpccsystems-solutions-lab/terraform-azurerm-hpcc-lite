@@ -6,6 +6,88 @@ resource "random_string" "name" {
 }
 
 locals {
+  roxiepool = {
+    ultra_ssd         = false
+    node_os           = "ubuntu"
+    node_type         = "gp"
+    node_type_version = "v2"
+    #node_size         = "2xlarge"
+    node_size         = "large"
+    single_group      = false
+    min_capacity      = 1
+    max_capacity      = 3
+    # placement_group_key = null
+    labels = {
+      "lnrs.io/tier" = "standard"
+      "workload"     = "roxiepool"
+    }
+    taints = []
+    tags   = {}
+  }
+
+  node_groups0 = {
+    thorpool = {
+      ultra_ssd         = false
+      node_os           = "ubuntu"
+      node_type         = "gp"      # gp, gpd, mem, memd, stor
+      node_type_version = "v2"      # v1, v2
+      #node_size         = "2xlarge" # large, xlarge, 2xlarge, 4xlarge, 8xlarge, 12xlarge, 16xlarge, 18xlarge, 20xlarge, 24xlarge, 26xlarge
+      node_size         = "large" # large, xlarge, 2xlarge, 4xlarge, 8xlarge, 12xlarge, 16xlarge, 18xlarge, 20xlarge, 24xlarge, 26xlarge
+      single_group      = false
+      min_capacity      = 3
+      max_capacity      = 6
+      # placement_group_key = null
+      labels = {
+        "lnrs.io/tier" = "standard"
+        "workload"     = "thorpool"
+      }
+      taints = []
+      tags   = {}
+    },
+
+    servpool = {
+      ultra_ssd         = false
+      node_os           = "ubuntu"
+      node_type         = "gpd"
+      node_type_version = "v1"
+      #node_size         = "4xlarge"
+      node_size         = "2xlarge"
+      single_group      = false
+      min_capacity      = 1
+      max_capacity      = 3
+      # placement_group_key = null
+      labels = {
+        "lnrs.io/tier" = "standard"
+        "workload"     = "servpool"
+      }
+      taints = []
+      tags   = {}
+    },
+
+    spraypool = {
+      ultra_ssd         = false
+      node_os           = "ubuntu"
+      node_type         = "gp"
+      node_type_version = "v1"
+      node_size         = "2xlarge"
+      #node_size         = "1xlarge" # NOT ALLOWED
+      #node_size         = "4xlarge"
+      single_group      = false
+      min_capacity      = 3
+      max_capacity      = 6
+      # placement_group_key = null
+      labels = {
+        "lnrs.io/tier"  = "standard"
+        "workload"      = "spraypool"
+        "spray-service" = "spraypool"
+      }
+      taints = []
+      tags   = {}
+    }
+  }
+
+  node_groups = var.aks_enable_roxie? merge( local.node_groups0, { roxiepool = local.roxiepool } ) : local.node_groups0
+
   aks_automation = {
     local_authentication_enabled  = false
     public_network_access_enabled = false

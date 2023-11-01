@@ -59,7 +59,7 @@ module "aks" {
   rbac_bindings = var.rbac_bindings
 
   availability_zones = var.availability_zones
-  node_groups        = var.node_groups
+  node_groups        = local.node_groups
 
   core_services_config = {
     alertmanager = local.core_services_config.alertmanager

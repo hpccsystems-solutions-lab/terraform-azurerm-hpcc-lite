@@ -1,25 +1,28 @@
 #-----------------------------------------------------------------------------
 
+# Name of the A record, of following dns zone, where the ecl watch ip is placed
+# This A record will be created and therefore should not exist in the following
+# dns zone.
+# Example entry: "my-product". This should be something project specific rather
+# than something generic.
+
+a_record_name="<desired eclwatch A record name>"
+
+#-----------------------------------------------------------------------------
+
 # Name of an existing dns zone.
 # Example entry: "hpcczone.us-hpccsystems-dev.azure.lnrsg.io"
+# REQUIRED
 
-aks_dns_zone_name="<REQUIRED dns zone name>"
+aks_dns_zone_name="<dns zone name of zone already created>"
 
 #-----------------------------------------------------------------------------
 
 # Name of the resource group of the above dns zone.
 # Example entry: "app-dns-prod-eastus2"
+# REQUIRED
 
-aks_dns_zone_resource_group_name="<REQUIRED dns zone resource group name>"
-
-#------------------------------------------------------------------------------
-
-# Abbreviated product name, suitable for use in Azure naming.
-# Must be 3-16 characters in length, all lowercase letters or numbers, no spaces.
-# Value type: string
-# Example entry: "my-product"
-
-product_name="tlhhpcc"
+aks_dns_zone_resource_group_name="<resource group of dns zone given in 'aks_dns_zone_name'>"
 
 #------------------------------------------------------------------------------
 
@@ -27,7 +30,7 @@ product_name="tlhhpcc"
 # Only versions in nn.nn.nn format are supported.
 # Value type: string
 
-hpcc_version="8.10.1" # Currently not used
+hpcc_version="8.6.14"
 
 #------------------------------------------------------------------------------
 
@@ -36,7 +39,7 @@ hpcc_version="8.10.1" # Currently not used
 # Value type: boolean
 # Example entry: false
 
-enable_roxie=false
+aks_enable_roxie=true
 
 #------------------------------------------------------------------------------
 
@@ -45,7 +48,7 @@ enable_roxie=false
 # Value type: boolean
 # Example entry: false
 
-enable_code_security=false
+enable_code_security=true
 
 #------------------------------------------------------------------------------
 
@@ -91,8 +94,9 @@ storage_data_gb=100
 # The 'name' portion must be unique.
 # To add no tags, use '{}'.
 # Value type: map of string
+# Example: extra_tags={ "owner"="Jane Doe", "owner_email"="jane.doe@gmail.com" }
 
-extra_tags={} # Currently not used
+extra_tags={}
 
 #------------------------------------------------------------------------------
 
@@ -117,7 +121,7 @@ aks_max_node_count=4
 # Value type: string
 # Example entry: "jane.doe@hpccsystems.com"
 
-aks_admin_email="jane.doe@hpccsystems.com"
+aks_admin_email="jane.doe@gmail.com"
 
 #------------------------------------------------------------------------------
 
@@ -162,7 +166,7 @@ aks_admin_ip_cidr_map={}
 # To add no CIDR addresses, use '[]'.
 # Value type: list of string
 
-hpcc_user_ip_cidr_list=[ "20.14.220.189/32", "66.241.32.0/24"]
+hpcc_user_ip_cidr_list=[]
 
 #------------------------------------------------------------------------------
 
@@ -182,16 +186,6 @@ storage_account_name=""
 # Value type: string
 
 storage_account_resource_group_name=""
-
-#==============================================================================
-# Optional settings
-#==============================================================================
-
-# The global image name of the HPCC docker image to deploy.
-# Must be one of ["platform-core", "platform-ml", "platform-gnn"].
-# Default value: "platform-core"
-
-# hpcc_image_name="platform-core"
 
 #------------------------------------------------------------------------------
 
@@ -217,3 +211,12 @@ enable_premium_storage=false
 # Example entry: "htpasswd.txt"
 
 authn_htpasswd_filename=""
+
+#------------------------------------------------------------------------------
+
+# If you definitely want ephemeral storage instead of external storage then
+# set this variable to true otherwise set it to false.
+
+external_storage_desired=false
+
+#------------------------------------------------------------------------------
