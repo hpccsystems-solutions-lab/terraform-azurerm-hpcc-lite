@@ -113,15 +113,6 @@ variable "aks_node_size" {
   description = "REQUIRED.  The VM size for each node in the HPCC Systems node pool.\nRecommend \"Standard_B4ms\" or better.\nSee https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information."
 }
 
-variable "product_name" {
-  type        = string
-  description = "REQUIRED.  Abbreviated product name, suitable for use in Azure naming.\nMust be 3-16, all lowercase or numeric characters.\nExample entry: myproduct"
-  validation {
-    condition     = can(regex("^[a-z][a-z0-9]{2,15}$", var.product_name))
-    error_message = "Value must be [a-z0-9]{3,16}."
-  }
-}
-
 variable "storage_data_gb" {
   type        = number
   description = "REQUIRED.  The amount of storage reserved for data in gigabytes.\nMust be 10 or more.\nIf a storage account is defined (see below) then this value is ignored."
@@ -168,34 +159,6 @@ variable "authn_htpasswd_filename" {
   default     = ""
 }
 
-variable "hpcc_image_name" {
-  type        = string
-  description = "REQUIRED.  The global image name of the HPCC docker image to deploy.\nMust be one of [\"platform-core\", \"platform-ml\", \"platform-gnn\"].\nDefault value: platform-core"
-  default     = "platform-core"
-  validation {
-    condition     = contains(["platform-core", "platform-ml", "platform-gnn"], var.hpcc_image_name)
-    error_message = "Value must be one of [\"platform-core\", \"platform-ml\", \"platform-gnn\"]."
-  }
-}
-
-/*variable "hpcc_namespace" {
-  type        = string
-  description = "REQUIRED.  The Kubernetes namespace in which to install the HPCC modules (if enabled).\nDefault value: default"
-  default     = "default"
-  validation {
-    condition     = var.hpcc_namespace != ""
-    error_message = "Namespace must be a non-empty string."
-  }
-}*/
-/*variable "hpcc_namespace" {
-  description = "Kubernetes namespace where resources will be created."
-  type = object({
-    existing_namespace = optional(string)
-    labels             = optional(map(string), { name = "hpcc" })
-    create_namespace   = optional(bool, true)
-  })
-  default = {}
-}*/
 variable "hpcc_namespace" {
   description = "Kubernetes namespace where resources will be created."
   type = object({
