@@ -55,7 +55,7 @@ variable "enable_code_security" {
   type        = bool
 }
 
-variable "enable_roxie" {
+variable "aks_enable_roxie" {
   description = "REQUIRED.  Enable ROXIE?\nThis will also expose port 8002 on the cluster.\nExample entry: false"
   type        = bool
 }

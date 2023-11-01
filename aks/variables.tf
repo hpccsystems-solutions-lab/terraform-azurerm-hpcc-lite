@@ -99,35 +99,6 @@ variable "rbac_bindings" {
   default  = {}
 }
 
-variable "node_groups" {
-  description = "Node groups to configure."
-  type = map(object({
-    node_arch           = optional(string)
-    node_os             = optional(string)
-    node_type           = optional(string)
-    node_type_variant   = optional(string)
-    node_type_version   = optional(string)
-    node_size           = string
-    single_group        = optional(bool)
-    min_capacity        = optional(number)
-    max_capacity        = number
-    os_config           = optional(map(any))
-    ultra_ssd           = optional(bool)
-    placement_group_key = optional(string)
-    max_pods            = optional(number)
-    max_surge           = optional(string)
-    labels              = optional(map(string))
-    taints = optional(list(object({
-      key    = string
-      value  = string
-      effect = string
-    })))
-    tags = optional(map(string))
-  }))
-  nullable = false
-  default  = {}
-}
-
 variable "experimental" {
   description = "Configure experimental features."
   type = object({

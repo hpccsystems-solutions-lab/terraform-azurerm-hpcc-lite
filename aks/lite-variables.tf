@@ -1,3 +1,9 @@
+variable "aks_enable_roxie" {
+  description = "REQUIRED.  Enable ROXIE?\nThis will also expose port 8002 on the cluster.\nExample entry: false"
+  type        = bool
+  default     = false
+}
+
 variable "aks_admin_email" {
   type        = string
   description = "REQUIRED.  Email address of the administrator of this HPCC Systems cluster.\nExample entry: jane.doe@hpccsystems.com"

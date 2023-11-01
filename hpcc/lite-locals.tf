@@ -196,7 +196,7 @@ locals {
 
   roxie_config = [
     {
-      disabled                       = (var.enable_roxie == true)? false : true
+      disabled                       = (var.aks_enable_roxie == true)? false : true
       name                           = "roxie"
       nodeSelector                   = {}
       numChannels                    = 2
