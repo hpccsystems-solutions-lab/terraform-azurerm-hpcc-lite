@@ -13,7 +13,8 @@
 # version control.
 #
 # example.tfvars
-**/*.tfvars
+*.tfvars
+*/*.tfvars
 **/*.json
 
 # Ignore data files 

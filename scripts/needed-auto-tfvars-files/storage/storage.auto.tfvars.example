@@ -1,0 +1,152 @@
+storage_accounts = { # storage account
+  adminsvc1 = {
+    delete_protection         = false //Set to false to allow deletion
+    prefix_name               = "adminsvc1"
+    storage_type              = "azurefiles"
+    #authorized_ip_ranges = { anyone = "97.118.251.104" }
+    #authorized_ip_ranges = { anyone = "209.243.55.98" }
+    #authorized_ip_ranges = { anyone = "20.96.186.106" }
+    #authorized_ip_ranges      = { anyone = "97.118.251.104" }
+    #authorized_ip_ranges      = { anyone = "0.0.0.0/0" }
+    authorized_ip_ranges      = {}
+    replication_type          = "ZRS"
+    subnet_ids                = {}
+    file_share_retention_days = 7
+    access_tier               = "Hot"
+    account_kind              = "FileStorage"
+    account_tier              = "Premium"
+
+    planes = {
+      dali = {
+        category = "dali"
+        name     = "dali"
+        sub_path = "dalistorage"
+        size     = 100
+        sku      = ""
+        rwmany   = true
+        protocol = "nfs"
+      }
+    }
+  }
+
+  adminsvc2 = {
+    delete_protection                    = false //Set to false to allow deletion
+    prefix_name                          = "adminsvc2"
+    storage_type                         = "blobnfs"
+    #authorized_ip_ranges = { anyone = "97.118.251.104" }
+    #authorized_ip_ranges = { anyone = "209.243.55.98" }
+    #authorized_ip_ranges = { anyone = "20.96.186.106" }
+    #authorized_ip_ranges      = { anyone = "97.118.251.104" }
+    #authorized_ip_ranges      = { anyone = "0.0.0.0/0" }
+    authorized_ip_ranges                 = {}
+    replication_type                     = "ZRS"
+    subnet_ids                           = {}
+    blob_soft_delete_retention_days      = 7
+    container_soft_delete_retention_days = 7
+    access_tier                          = "Hot"
+    account_kind                         = "StorageV2"
+    account_tier                         = "Standard"
+
+    planes = {
+      dll = {
+        category = "dll"
+        name     = "dll"
+        sub_path = "queries"
+        size     = 100
+        sku      = ""
+        rwmany   = true
+      }
+
+      lz = {
+        category = "lz"
+        name     = "mydropzone"
+        sub_path = "dropzone"
+        size     = 100
+        sku      = ""
+        rwmany   = true
+      }
+
+      sasha = {
+        category = "sasha"
+        name     = "sasha"
+        sub_path = "sashastorage"
+        size     = 100
+        sku      = ""
+        rwmany   = true
+      }
+
+      debug = {
+        category = "debug"
+        name     = "debug"
+        sub_path = "debug"
+        size     = 100
+        sku      = ""
+        rwmany   = true
+      }
+    }
+  }
+
+  data1 = {
+    delete_protection                    = false //Set to false to allow deletion
+    prefix_name                          = "data1"
+    storage_type                         = "blobnfs"
+    #authorized_ip_ranges = { anyone = "97.118.251.104" }
+    #authorized_ip_ranges = { anyone = "209.243.55.98" }
+    #authorized_ip_ranges = { anyone = "20.96.186.106" }
+    #authorized_ip_ranges      = { anyone = "97.118.251.104" }
+    #authorized_ip_ranges      = { anyone = "0.0.0.0/0" }
+    authorized_ip_ranges                 = {}
+    replication_type                     = "ZRS"
+    #replication_type                     = "GRS"
+    subnet_ids                           = {}
+    blob_soft_delete_retention_days      = 7
+    container_soft_delete_retention_days = 7
+    access_tier                          = "Hot"
+    account_kind                         = "StorageV2"
+    #account_kind                         = "BlobStorage"
+    account_tier                         = "Standard"
+
+    planes = {
+      data = {
+        category = "data"
+        name     = "data"
+        sub_path = "hpcc-data"
+        size     = 100
+        sku      = ""
+        rwmany   = true
+      }
+    }
+  }
+
+  data2 = {
+    delete_protection                    = false //Set to false to allow deletion
+    prefix_name                          = "data2"
+    storage_type                         = "blobnfs"
+    #authorized_ip_ranges = { anyone = "97.118.251.104" }
+    #authorized_ip_ranges = { anyone = "209.243.55.98" }
+    #authorized_ip_ranges = { anyone = "20.96.186.106" }
+    #authorized_ip_ranges      = { anyone = "97.118.251.104" }
+    #authorized_ip_ranges      = { anyone = "0.0.0.0/0" }
+    authorized_ip_ranges                 = {}
+    replication_type                     = "ZRS"
+    #replication_type                     = "LRS"
+    subnet_ids                           = {}
+    blob_soft_delete_retention_days      = 7
+    container_soft_delete_retention_days = 7
+    access_tier                          = "Hot"
+    account_kind                         = "StorageV2"
+    #account_kind                         = "BlobStorage"
+    account_tier                         = "Standard"
+
+    planes = {
+      data = {
+        category = "data"
+        name     = "data"
+        sub_path = "hpcc-data"
+        size     = 100
+        sku      = ""
+        rwmany   = true
+      }
+    }
+  }
+}

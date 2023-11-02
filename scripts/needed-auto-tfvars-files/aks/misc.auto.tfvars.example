@@ -1,0 +1,22 @@
+resource_groups = { # rg
+  azure_kubernetes_service = {
+    tags = { "enclosed resource" = "open source aks" }
+  }
+  # azure_log_analytics_workspace = {
+  #   tags = { "enclosed resource" = "azure log analytics workspace" }
+  # }
+}
+
+# # auto_connect - Automatically connect to the kubernetes cluster from the host machine.
+auto_connect = true
+
+# # disable_naming_conventions - Disable naming conventions
+# # disable_naming_conventions = true 
+
+# azure_auth = {
+#   #   AAD_CLIENT_ID     = ""
+#   #   AAD_CLIENT_SECRET = ""
+#   #   AAD_TENANT_ID     = ""
+#   #   AAD_PRINCIPAL_ID  = ""
+#   SUBSCRIPTION_ID = ""
+# }
