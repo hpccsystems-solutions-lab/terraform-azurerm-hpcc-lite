@@ -2,11 +2,23 @@
 # Prompted variables (user will be asked to supply them at plan/apply time
 # if a .tfvars file is not supplied); there are no default values
 ###############################################################################
+variable "my_azure_id" {
+  description = "REQUIRED. The id of your azure account."
+  type        = string
+}
+
+variable "aks_logging_monitoring_enabled" {
+  description = "Used to get logging and monitoring of kubernetes and hpcc cluster."
+  type        = bool
+  default     = false
+}
+
 variable "external_storage_desired" {
   description = "If you definitely want ephemeral storage instead of external, this should be false. For external storage this should be true"
   type        = bool
   default     = false
 }
+
 variable "enable_thor" {
   description = "REQUIRED.  If you want a thor cluster."
   type        = bool

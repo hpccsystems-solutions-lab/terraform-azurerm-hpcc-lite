@@ -220,3 +220,16 @@ authn_htpasswd_filename=""
 external_storage_desired=false
 
 #------------------------------------------------------------------------------
+
+# This variable enable you to ask for logging and monitoring of the kubernetes
+# and hpcc cluster (true means enable logging and monitoring, false means don't.
+
+aks_logging_monitoring_enabled=false
+
+#------------------------------------------------------------------------------
+
+# Put your azure account id here. It will look like the following:
+# 6c5edc79-34fd-333a-9b59-61ec21d7e42d
+
+my_azure_id="<your azure account id>"
+
