@@ -1,5 +1,5 @@
-variable "aks_enable_roxie" {
-  description = "REQUIRED.  Enable ROXIE?\nThis will also expose port 8002 on the cluster.\nExample entry: false"
+variable "aks_logging_monitoring_enabled" {
+  description = "Used to get logging and monitoring of kubernetes and hpcc cluster."
   type        = bool
   default     = false
 }
@@ -25,6 +25,11 @@ variable "aks_azure_region" {
     condition     = contains(["eastus", "eastus2", "centralus"], var.aks_azure_region)
     error_message = "Value must be one of [\"eastus\", \"eastus2\", \"centralus\"]."
   }
+}
+
+variable "aks_enable_roxie" {
+  description = "REQUIRED.  Enable ROXIE?\nThis will also expose port 8002 on the cluster.\nExample entry: false"
+  type        = bool
 }
 
 variable "aks_dns_zone_resource_group_name" {

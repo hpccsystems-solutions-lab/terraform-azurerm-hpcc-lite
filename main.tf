@@ -8,7 +8,7 @@ resource "null_resource" "deploy_vnet" {
 resource "null_resource" "deploy_aks" {
 
   provisioner "local-exec" {
-    command     = "scripts/deploy aks"
+    command     = "scripts/deploy aks ${var.my_azure_id}"
   }
 
   depends_on = [ null_resource.deploy_vnet ]
@@ -21,8 +21,7 @@ resource "null_resource" "deploy_storage" {
     command     = "scripts/deploy storage"
   }
 
-  #depends_on = [ null_resource.deploy_vnet, null_resource.deploy_aks ]
-  depends_on = [ null_resource.deploy_vnet ]
+  depends_on = [ null_resource.deploy_vnet, null_resource.deploy_aks ]
 }
 
 resource "null_resource" "external_storage" {
