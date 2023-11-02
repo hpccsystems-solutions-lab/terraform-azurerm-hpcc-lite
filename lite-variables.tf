@@ -14,7 +14,7 @@ variable "aks_logging_monitoring_enabled" {
 }
 
 variable "external_storage_desired" {
-  description = "If you definitely want ephemeral storage instead of external, this should be false. For external storage this should be true"
+  description = "If you want external storage instead of ephemeral, this should be true. For ephemeral storage this should be false"
   type        = bool
   default     = false
 }
