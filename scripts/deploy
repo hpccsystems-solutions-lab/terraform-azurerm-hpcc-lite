@@ -9,7 +9,8 @@ fi
 if [ "$1" == "aks" ];then
   if [ "$2" != "" ];then
     my_azure_id=$2
-    cp -v $thisdir/needed-auto.tfvars-files/aks/*.auto.tfvars $repodir/aks
+    cp -v $thisdir/needed-auto-tfvars-files/aks/aks.auto.tfvars.example $repodir/aks/aks.auto.tfvars
+    cp -v $thisdir/needed-auto-tfvars-files/aks/misc.auto.tfvars.example $repodir/aks/misc.auto.tfvars
     sed -i "s/<my_azure_id>/$my_azure_id/" $repodir/aks/aks.auto.tfvars
   else
     echo "In $0. First argument was \"$name\". There should be a 2nd argument (my_azure_id). But it was missing. EXITING.";exit 1;
@@ -90,7 +91,7 @@ elif [ "$name" == "aks" ] || [ "$name" == "vnet" ] || [ "$name" == "storage" ];t
     egrep "^aks_" ../lite.auto.tfvars > lite.auto.tfvars
     ../scripts/extract-aks-variables ../lite-variables.tf > lite-variables.tf
     if [ "$name" == "storage" ];then
-       cp -v $thisdir/needed-auto.tfvars-files/storage/*.auto.tfvars .
+       cp -v $thisdir/needed-auto-tfvars-files/storage/storage.auto.tfvars.example ./storage.auto.tfvars
     fi
 fi
 #------------------------------------------------------------------------
