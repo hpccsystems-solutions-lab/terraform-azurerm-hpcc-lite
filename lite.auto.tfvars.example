@@ -214,7 +214,7 @@ authn_htpasswd_filename=""
 
 #------------------------------------------------------------------------------
 
-# If you definitely want ephemeral storage instead of external storage then
+# If you want external storage instead of ephemeral storage then
 # set this variable to true otherwise set it to false.
 
 external_storage_desired=false
