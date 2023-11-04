@@ -38,10 +38,3 @@ module "metadata" {
     interpreter = local.is_windows_os ? ["PowerShell", "-Command"] : ["/bin/bash", "-c"]
   }
 }*/
-
-resource "local_file" "configjson" {
-  content  = "hpcc was successfully deployed!"
-  filename = "${path.module}/data/config.json"
-
-  depends_on = [ module.hpcc ]
-}
