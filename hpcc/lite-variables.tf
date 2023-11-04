@@ -14,7 +14,7 @@ variable "aks_logging_monitoring_enabled" {
 }
 
 variable "external_storage_desired" {
-  description = "If you definitely want ephemeral storage instead of external, this should be false. For external storage this should be true"
+  description = "If you want external storage instead of ephemeral, this should be true. For ephemeral storage this should be false"
   type        = bool
   default     = false
 }
@@ -22,6 +22,7 @@ variable "external_storage_desired" {
 variable "enable_thor" {
   description = "REQUIRED.  If you want a thor cluster."
   type        = bool
+  default     = true
 }
 
 variable "a_record_name" {
@@ -65,11 +66,13 @@ variable "aks_azure_region" {
 variable "enable_code_security" {
   description = "REQUIRED.  Enable code security?\nIf true, only signed ECL code will be allowed to create embedded language functions, use PIPE(), etc.\nExample entry: false"
   type        = bool
+  default     = false
 }
 
 variable "aks_enable_roxie" {
   description = "REQUIRED.  Enable ROXIE?\nThis will also expose port 8002 on the cluster.\nExample entry: false"
   type        = bool
+  default     = false
 }
 
 variable "extra_tags" {
@@ -80,14 +83,12 @@ variable "extra_tags" {
 
 variable "aks_dns_zone_resource_group_name" {
   type        = string
-  description = "OPTIONAL: Name of the resource group containing the dns zone."
-  default     = ""
+  description = "REQUIRED. Name of the resource group containing the dns zone."
 }
 
 variable "aks_dns_zone_name" {
   type        = string
-  description = "OPTIONAL: dns zone name. The name of existing dns zone."
-  default     = ""
+  description = "REQUIRED. dns zone name. The name of existing dns zone."
 }
 
 variable "hpcc_user_ip_cidr_list" {
@@ -132,6 +133,7 @@ variable "storage_data_gb" {
     condition     = var.storage_data_gb >= 10
     error_message = "Value must be 10 or more."
   }
+  default    = 100
 }
 
 variable "storage_lz_gb" {
@@ -141,6 +143,7 @@ variable "storage_lz_gb" {
     condition     = var.storage_lz_gb >= 1
     error_message = "Value must be 1 or more."
   }
+  default    = 25
 }
 
 variable "thor_max_jobs" {
@@ -150,6 +153,7 @@ variable "thor_max_jobs" {
     condition     = var.thor_max_jobs >= 1
     error_message = "Value must be 1 or more."
   }
+  default    = 2
 }
 
 variable "thor_num_workers" {
@@ -159,6 +163,7 @@ variable "thor_num_workers" {
     condition     = var.thor_num_workers >= 1
     error_message = "Value must be 1 or more."
   }
+  default    = 2
 }
 
 ###############################################################################
