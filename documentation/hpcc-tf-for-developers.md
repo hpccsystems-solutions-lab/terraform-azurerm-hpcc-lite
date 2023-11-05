@@ -168,3 +168,207 @@ Let's look at the main.tf file what you're going to see is very very similar to 
 The most important file in this directory is the hpcc.tf file as you can guess this deploys pCC cluster
      
 
+## Appendix A Resources Create by HPCC Deployment
+
+| Resources Created by HPCC Deployment                         |
+| :----------------------------------------------------------- |
+| `local_file.config.json`                                      |
+| `random_integer.random`                                      |
+| `module.hpcc.azurerm_storage_account.azurefiles_admin_services[0]` |
+| `module.hpcc.azurerm_storage_account.blob_nfs_admin_services[0]` |
+| `module.hpcc.azurerm_storage_container.blob_nfs_admin_services["debug"]` |
+| `module.hpcc.azurerm_storage_container.blob_nfs_admin_services["dll"]` |
+| `module.hpcc.azurerm_storage_container.blob_nfs_admin_services["mydropzone"]` |
+| `module.hpcc.azurerm_storage_container.blob_nfs_admin_services["sasha"]` |
+| `module.hpcc.azurerm_storage_share.azurefiles_admin_services["dali"]` |
+| `module.hpcc.helm_release.hpcc`                              |
+| `module.hpcc.kubernetes_persistent_volume.azurefiles["dali"]` |
+| `module.hpcc.kubernetes_persistent_volume.blob_nfs["data-1"]` |
+| `module.hpcc.kubernetes_persistent_volume.blob_nfs["data-2"]` |
+| `module.hpcc.kubernetes_persistent_volume.blob_nfs["debug"]` |
+| `module.hpcc.kubernetes_persistent_volume.blob_nfs["dll"]`   |
+| `module.hpcc.kubernetes_persistent_volume.blob_nfs["mydropzone"]` |
+| `module.hpcc.kubernetes_persistent_volume.blob_nfs["sasha"]` |
+| `module.hpcc.kubernetes_persistent_volume.spill["spill"]`    |
+| `module.hpcc.kubernetes_persistent_volume_claim.azurefiles["dali"]` |
+| `module.hpcc.kubernetes_persistent_volume_claim.blob_nfs["data-1"]` |
+| `module.hpcc.kubernetes_persistent_volume_claim.blob_nfs["data-2"]` |
+| `module.hpcc.kubernetes_persistent_volume_claim.blob_nfs["debug"]` |
+| `module.hpcc.kubernetes_persistent_volume_claim.blob_nfs["dll"]` |
+| `module.hpcc.kubernetes_persistent_volume_claim.blob_nfs["mydropzone"]` |
+| `module.hpcc.kubernetes_persistent_volume_claim.blob_nfs["sasha"]` |
+| `module.hpcc.kubernetes_persistent_volume_claim.spill["spill"]` |
+| `module.hpcc.kubernetes_secret.azurefiles_admin_services[0]` |
+| `module.hpcc.kubernetes_storage_class.premium_zrs_file_share_storage_class[0]` |
+| `module.hpcc.random_string.random`                           |
+| `module.hpcc.random_uuid.volume_handle`                      |
+| `module.hpcc.module.certificates.kubectl_manifest.default_issuer` |
+| `module.hpcc.module.certificates.kubectl_manifest.local_certificate` |
+| `module.hpcc.module.certificates.kubectl_manifest.remote_certificate` |
+| `module.hpcc.module.certificates.kubectl_manifest.signing_certificate` |
+| `module.hpcc.module.data_storage[0].azurerm_storage_account.default["1"]` |
+| `module.hpcc.module.data_storage[0].azurerm_storage_account.default["2"]` |
+| `module.hpcc.module.data_storage[0].azurerm_storage_container.hpcc_data["1"]` |
+| `module.hpcc.module.data_storage[0].azurerm_storage_container.hpcc_data["2"]` |
+
+## Appendix B Resources Created by aks Deployment
+
+|Resources Created by aks Deployment|
+|:------------------------------------------------------------------------------------------------|
+| `data.azuread_group.subscription_owner` |
+| `data.azurerm_advisor_recommendations.advisor` |
+| `data.azurerm_client_config.current` |
+| `data.azurerm_subscription.current` |
+| `data.http.host_ip` |
+| `local_file.output` |
+| `null_resource.az[0]` |
+| `random_integer.int` |
+| `random_string.name` |
+| `random_string.string` |
+| `module.aks.data.azurerm_subscription.current` |
+| `module.aks.kubernetes_config_map.terraform_modules` |
+| `module.aks.kubernetes_config_map_v1_data.terraform_modules` |
+| `module.aks.terraform_data.creation_metadata` |
+| `module.aks.terraform_data.immutable_inputs` |
+| `module.aks.time_static.timestamp` |
+| `module.aks.module.cluster.data.azurerm_client_config.current` |
+| `module.aks.module.cluster.data.azurerm_kubernetes_cluster.default` |
+| `module.aks.module.cluster.data.azurerm_kubernetes_service_versions.default` |
+| `module.aks.module.cluster.data.azurerm_monitor_diagnostic_categories.default` |
+| `module.aks.module.cluster.data.azurerm_public_ip.outbound[0]` |
+| `module.aks.module.cluster.azurerm_kubernetes_cluster.default` |
+| `module.aks.module.cluster.azurerm_role_assignment.network_contributor_network` |
+| `module.aks.module.cluster.azurerm_role_assignment.network_contributor_route_table[0]` |
+| `module.aks.module.cluster.azurerm_user_assigned_identity.default` |
+| `module.aks.module.cluster.terraform_data.maintenance_control_plane_start_date` |
+| `module.aks.module.cluster.terraform_data.maintenance_nodes_start_date` |
+| `module.aks.module.cluster.time_sleep.modify` |
+| `module.aks.module.cluster_version_tag.shell_script.default` |
+| `module.aks.module.core_config.kubernetes_labels.system_namespace["default"]` |
+| `module.aks.module.core_config.kubernetes_labels.system_namespace["kube-system"]` |
+| `module.aks.module.core_config.kubernetes_namespace.default["cert-manager"]` |
+| `module.aks.module.core_config.kubernetes_namespace.default["dns"]` |
+| `module.aks.module.core_config.kubernetes_namespace.default["ingress-core-internal"]` |
+| `module.aks.module.core_config.kubernetes_namespace.default["logging"]` |
+| `module.aks.module.core_config.kubernetes_namespace.default["monitoring"]` |
+| `module.aks.module.core_config.module.aad_pod_identity.azurerm_role_assignment.k8s_managed_identity_operator_cluster` |
+| `module.aks.module.core_config.module.aad_pod_identity.azurerm_role_assignment.k8s_managed_identity_operator_node` |
+| `module.aks.module.core_config.module.aad_pod_identity.azurerm_role_assignment.k8s_virtual_machine_contributor_node` |
+| `module.aks.module.core_config.module.aad_pod_identity.helm_release.aad_pod_identity` |
+| `module.aks.module.core_config.module.aad_pod_identity.time_sleep.finalizer_wait` |
+| `module.aks.module.core_config.module.cert_manager.helm_release.default` |
+| `module.aks.module.core_config.module.cert_manager.kubectl_manifest.issuers["letsencrypt"]` |
+| `module.aks.module.core_config.module.cert_manager.kubectl_manifest.issuers["letsencrypt_staging"]` |
+| `module.aks.module.core_config.module.cert_manager.kubectl_manifest.issuers["zerossl"]` |
+| `module.aks.module.core_config.module.cert_manager.kubectl_manifest.resource_files["configmap-dashboard-cert-manager.yaml"]` |
+| `module.aks.module.core_config.module.cert_manager.kubectl_manifest.resource_files["poddistributionbudget-cert-manager-webhook.yaml"]` |
+| `module.aks.module.core_config.module.cert_manager.kubectl_manifest.resource_files["prometheusrule-certmanager.yaml"]` |
+| `module.aks.module.core_config.module.cert_manager.kubernetes_secret.zerossl_eabsecret` |
+| `module.aks.module.core_config.module.cert_manager.module.identity.azurerm_federated_identity_credential.default["system:serviceaccount:cert-manager:cert-manager"]` |
+| `module.aks.module.core_config.module.cert_manager.module.identity.azurerm_role_assignment.default[0]` |
+| `module.aks.module.core_config.module.cert_manager.module.identity.azurerm_user_assigned_identity.default` |
+| `module.aks.module.core_config.module.coredns.kubectl_manifest.resource_files["prometheusrule-coredns.yaml"]` |
+| `module.aks.module.core_config.module.coredns.kubectl_manifest.resource_objects["coredns_custom"]` |
+| `module.aks.module.core_config.module.crds.module.crds["aad-pod-identity"].kubectl_manifest.crds["azureassignedidentities.aadpodidentity.k8s.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["aad-pod-identity"].kubectl_manifest.crds["azureidentities.aadpodidentity.k8s.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["aad-pod-identity"].kubectl_manifest.crds["azureidentitybindings.aadpodidentity.k8s.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["aad-pod-identity"].kubectl_manifest.crds["azurepodidentityexceptions.aadpodidentity.k8s.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["cert-manager"].kubectl_manifest.crds["certificaterequests.cert-manager.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["cert-manager"].kubectl_manifest.crds["certificates.cert-manager.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["cert-manager"].kubectl_manifest.crds["challenges.acme.cert-manager.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["cert-manager"].kubectl_manifest.crds["clusterissuers.cert-manager.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["cert-manager"].kubectl_manifest.crds["issuers.cert-manager.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["cert-manager"].kubectl_manifest.crds["orders.acme.cert-manager.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["external-dns"].kubectl_manifest.crds["dnsendpoints.externaldns.k8s.io.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["alertmanagerconfigs.monitoring.coreos.com.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["alertmanagers.monitoring.coreos.com.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["podmonitors.monitoring.coreos.com.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["probes.monitoring.coreos.com.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["prometheusagents.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["prometheuses.monitoring.coreos.com.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["prometheusrules.monitoring.coreos.com.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["scrapeconfigs.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["servicemonitors.monitoring.coreos.com.yaml"]` |
+| `module.aks.module.core_config.module.crds.module.crds["kube-prometheus-stack"].kubectl_manifest.crds["thanosrulers.monitoring.coreos.com.yaml"]` |
+| `module.aks.module.core_config.module.external_dns.helm_release.public[0]` |
+| `module.aks.module.core_config.module.external_dns.kubectl_manifest.resource_files["configmap-dashboard-external-dns.yaml"]` |
+| `module.aks.module.core_config.module.external_dns.kubernetes_secret.public_config[0]` |
+| `module.aks.module.core_config.module.external_dns.module.identity_public[0].azurerm_federated_identity_credential.default["system:serviceaccount:dns:external-dns-public"]` |
+| `module.aks.module.core_config.module.external_dns.module.identity_public[0].azurerm_role_assignment.default[0]` |
+| `module.aks.module.core_config.module.external_dns.module.identity_public[0].azurerm_role_assignment.default[1]` |
+| `module.aks.module.core_config.module.external_dns.module.identity_public[0].azurerm_user_assigned_identity.default` |
+| `module.aks.module.core_config.module.ingress_internal_core.helm_release.default` |
+| `module.aks.module.core_config.module.ingress_internal_core.kubectl_manifest.certificate` |
+| `module.aks.module.core_config.module.ingress_internal_core.kubectl_manifest.resource_files["configmap-dashboard-ingress-nginx-core-internal.yaml"]` |
+| `module.aks.module.core_config.module.ingress_internal_core.kubectl_manifest.resource_files["prometheusrule-ingress-nginx-core-internal.yaml"]` |
+| `module.aks.module.core_config.module.ingress_internal_core.time_sleep.lb_detach` |
+| `module.aks.module.core_config.module.pre_upgrade.module.v1_0_0.shell_script.default` |
+| `module.aks.module.core_config.module.pre_upgrade.module.v1_0_0-rc_1.shell_script.default` |
+| `module.aks.module.core_config.module.storage.kubernetes_storage_class.default["azure-disk-premium-ssd-delete"]` |
+| `module.aks.module.core_config.module.storage.kubernetes_storage_class.default["azure-disk-premium-ssd-ephemeral"]` |
+| `module.aks.module.core_config.module.storage.kubernetes_storage_class.default["azure-disk-premium-ssd-retain"]` |
+| `module.aks.module.core_config.module.storage.kubernetes_storage_class.default["azure-disk-premium-ssd-v2-delete"]` |
+| `module.aks.module.core_config.module.storage.kubernetes_storage_class.default["azure-disk-premium-ssd-v2-ephemeral"]` |
+| `module.aks.module.core_config.module.storage.kubernetes_storage_class.default["azure-disk-premium-ssd-v2-retain"]` |
+| `module.aks.module.core_config.module.storage.kubernetes_storage_class.default["azure-disk-standard-ssd-delete"]` |
+| `module.aks.module.core_config.module.storage.kubernetes_storage_class.default["azure-disk-standard-ssd-ephemeral"]` |
+| `module.aks.module.core_config.module.storage.kubernetes_storage_class.default["azure-disk-standard-ssd-retain"]` |
+| `module.aks.module.node_groups.module.bootstrap_node_group_hack.shell_script.default` |
+| `module.aks.module.node_groups.module.system_node_groups["system1"].azurerm_kubernetes_cluster_node_pool.default` |
+| `module.aks.module.node_groups.module.user_node_groups["servpool1"].azurerm_kubernetes_cluster_node_pool.default` |
+| `module.aks.module.node_groups.module.user_node_groups["spraypool1"].azurerm_kubernetes_cluster_node_pool.default` |
+| `module.aks.module.node_groups.module.user_node_groups["thorpool1"].azurerm_kubernetes_cluster_node_pool.default` |
+| `module.aks.module.rbac.azurerm_role_assignment.cluster_user["35cbdc79-7ef5-4d2c-9b59-61ec21d76aa9"]` |
+| `module.aks.module.rbac.kubernetes_cluster_role.aggregate_to_view[0]` |
+| `module.aks.module.rbac.kubernetes_cluster_role_binding.cluster_admin[0]` |
+| `module.metadata.data.azurerm_subscription.current` |
+| `module.resource_groups["azure_kubernetes_service"].azurerm_resource_group.rg` |
+| `module.resource_groups["azure_kubernetes_service"].random_integer.suffix[0]` |
+| `module.subscription.data.azurerm_subscription.selected` |
+
+## Appendix C Resources Created by Deployment of vnet
+
+
+
+| Resources Created by Deployment of vnet                      |
+| :----------------------------------------------------------- |
+| `data.azurerm_advisor_recommendations.advisor`               |
+| `data.azurerm_subscription.current`                          |
+| `data.http.host_ip`                                          |
+| `local_file.output`                                          |
+| `module.metadata.data.azurerm_subscription.current`          |
+| `module.resource_groups["virtual_network"].azurerm_resource_group.rg` |
+| `module.resource_groups["virtual_network"].random_integer.suffix[0]` |
+| `module.subscription.data.azurerm_subscription.selected`     |
+| `module.virtual_network.azurerm_route.aks_route["hpcc-internet"]` |
+| `module.virtual_network.azurerm_route.aks_route["hpcc-local-vnet-10-1-0-0-21"]` |
+| `module.virtual_network.azurerm_route_table.aks_route_table["hpcc"]` |
+| `module.virtual_network.azurerm_subnet_route_table_association.aks["aks-hpcc-private"]` |
+| `module.virtual_network.azurerm_subnet_route_table_association.aks["aks-hpcc-public"]` |
+| `module.virtual_network.azurerm_virtual_network.vnet`        |
+| `module.virtual_network.module.aks_subnet["aks-hpcc-private"].azurerm_subnet.subnet` |
+| `module.virtual_network.module.aks_subnet["aks-hpcc-public"].azurerm_subnet.subnet` |
+
+## Appendix D. Resources Created by Deployment of storage
+
+|Resources Created by Depolyment of storage|
+|:------------------------------------------------------------------------------------|
+| `local_file.config.json` |
+| `module.storage.azurerm_storage_account.azurefiles["adminsvc1"]` |
+| `module.storage.azurerm_storage_account.blobnfs["adminsvc2"]` |
+| `module.storage.azurerm_storage_account.blobnfs["data1"]` |
+| `module.storage.azurerm_storage_account.blobnfs["data2"]` |
+| `module.storage.azurerm_storage_container.blobnfs["1"]` |
+| `module.storage.azurerm_storage_container.blobnfs["2"]` |
+| `module.storage.azurerm_storage_container.blobnfs["3"]` |
+| `module.storage.azurerm_storage_container.blobnfs["4"]` |
+| `module.storage.azurerm_storage_container.blobnfs["5"]` |
+| `module.storage.azurerm_storage_container.blobnfs["6"]` |
+| `module.storage.azurerm_storage_share.azurefiles["0"]` |
+| `module.storage.null_resource.remove0000_from_azurefile["adminsvc1"]` |
+| `module.storage.null_resource.remove0000_from_blobfs["adminsvc2"]` |
+| `module.storage.null_resource.remove0000_from_blobfs["data1"]` |
+| `module.storage.null_resource.remove0000_from_blobfs["data2"]` |
+| `module.storage.random_string.random` |
+| `module.storage.module.resource_groups["storage_accounts"].azurerm_resource_group.rg` |
+| `module.storage.module.resource_groups["storage_accounts"].random_integer.suffix[0]` |
