@@ -2,7 +2,7 @@
 
 This is a slightly-opinionated Terraform module for deploying an HPCC Systems cluster on Azure's kubernetes service (aks).  The goal is to provide a simple method for deploying a cluster from scratch, with only the most important options to consider.
 
-The HPCC Systems cluster created by this module uses ephemeral storage (meaning, the storage will be deleted when the cluster is deleted). But, you can also have Persistent Storage.  See the section titled [Persistent Storage](#persistent_storage), below.
+The HPCC Systems cluster created by this module uses ephemeral storage (meaning, the storage will be deleted when the cluster is deleted). But, you can also have Persistent Storage.  See the section titled [Persistent Storage](#persistent-storage), below.
 
 This repo is a fork of the excellent work performed by Godson Fortil.  The original can be found at [https://github.com/gfortil/terraform-azurerm-hpcc/tree/HPCC-27615].
 
