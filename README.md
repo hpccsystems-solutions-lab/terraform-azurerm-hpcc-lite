@@ -1,8 +1,8 @@
 # Deploy HPCC Systems on Azure under Kubernetes
 
-This is a slightly-opinionated Terraform module for deploying an HPCC Systems cluster on Azure.  The goal is to provide a simple method for deploying a cluster from scratch, with only the most important options to consider.
+This is a slightly-opinionated Terraform module for deploying an HPCC Systems cluster on Azure's kubernetes service (aks).  The goal is to provide a simple method for deploying a cluster from scratch, with only the most important options to consider.
 
-The HPCC Systems cluster this module creates uses ephemeral storage (meaning, the storage will be deleted if the cluster is deleted) or you can ask for Persistent Storage.  See the section titled [Persistent Storage](#persistent_storage), below.
+The HPCC Systems cluster created by this module uses ephemeral storage (meaning, the storage will be deleted when the cluster is deleted). But, you can also have Persistent Storage.  See the section titled [Persistent Storage](#persistent_storage), below.
 
 This repo is a fork of the excellent work performed by Godson Fortil.  The original can be found at [https://github.com/gfortil/terraform-azurerm-hpcc/tree/HPCC-27615].
 
@@ -94,6 +94,10 @@ The following options should be set in your `lite.auto.tfvars` file (or entered 
 | `storage_lz_gb` | number | The amount of storage reserved for the landing zone in gigabytes. Must be 1 or more. If a storage account is defined (see below) then this value is ignored. |
 | `thor_max_jobs` | number | The maximum number of simultaneous Thor jobs allowed. Must be 1 or more. |
 | `thor_num_workers` | number | The number of Thor workers to allocate. Must be 1 or more. |
+
+## Persistent Storage
+
+To get persistent storage, i.e. storage that is not deleted when the hpcc cluster is deleted, set the variable, external_storage_desired, to true.
 
 ## Useful Things
 
