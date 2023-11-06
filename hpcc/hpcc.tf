@@ -45,6 +45,9 @@ module "hpcc" {
     username = local.hpcc_container_registry_auth.username
   } : null
 
+
+  hpcc_user_ip_cidr_list = var.hpcc_user_ip_cidr_list
+
   storage_data_gb = var.storage_data_gb
 
   install_blob_csi_driver = false //Disable CSI driver
