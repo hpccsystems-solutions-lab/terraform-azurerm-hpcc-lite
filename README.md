@@ -1,6 +1,6 @@
 # Deploy HPCC Systems on Azure under Kubernetes
 
-NOTE: A tutorial of this terraform for the developer, or others who are interested, can be found at [https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite/blob/HPCC-27615-easy-deploy/documentation/hpcc-tf-for-developers.md].
+NOTE: A tutorial of this terraform for the developer, or others who are interested, can be found at [https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite/HPCC-27615-easy-deploy/documentation/hpcc-tf-for-developers.md].
 
 This is a slightly-opinionated Terraform module for deploying an HPCC Systems cluster on Azure's kubernetes service (aks).  The goal is to provide a simple method for deploying a cluster from scratch, with only the most important options to consider.
 
