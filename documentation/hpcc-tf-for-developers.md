@@ -81,7 +81,7 @@ The subfolders, except for `scripts`, create components needed by the full syste
 
 The following table tells what files and subdirectories and in the `aks` subdirectory. The deployment of an `aks`happens in this directory. If one deploys from the root directory, the `deploy` script goes to this directory to deploy an `aks`. Also, if you deploy `aks` manually you do it from this directory.
 
-What is deployed by this subdirectory and their order is given in  [_(Appendix A)_](#Appendix-A)
+What is deployed by this subdirectory and their order is given in  [_Appendix A_](#Appendix-A).
 
 
 |aks subdirectory entry name|description|
@@ -106,7 +106,7 @@ What is deployed by this subdirectory and their order is given in  [_(Appendix A
 
 The following table tells what files and subdirectories and in the hpcc subdirectory. The deployment of an hpcc cluster happens in this directory. If one deploys from the root directory, the `deploy` script goes to this directory to deploy an hpcc cluster. Also, if you deploy an hpcc cluster manually you do it from this directory.
 
-What is deployed by this subdirectory and their order is given in Appendix B (#appendix_b).
+What is deployed by this subdirectory and their order is given in  [_Appendix B_](#Appendix-B).
 
 |hpcc subdirectory entry name|description|
 |:--------------------------------|:----------|
@@ -126,7 +126,7 @@ What is deployed by this subdirectory and their order is given in Appendix B (#a
 
 The following table tells what files and subdirectories and in the `storage` subdirectory. The deployment of an `storage` happens in this directory. If one deploys from the root directory, the `deploy` script goes to this directory to deploy `storage`. Also, if you deploy `storage` manually you do it from this directory.
 
-What is deployed by this subdirectory and their order is given in Appendix C (#appendix_c).
+What is deployed by this subdirectory and their order is given in [_Appendix C_](#Appendix-C).
 
 |storage subdirectory entry name|description|
 |:--------------------------------|:----------|
@@ -146,7 +146,7 @@ What is deployed by this subdirectory and their order is given in Appendix C (#a
 
 The following table tells what files and subdirectories are in the `vnet` subdirectory. The deployment of an `vnet` happens in this directory. If one deploys from the root directory, the `deploy` script goes to this directory to deploy `vnet`. Also, if you deploy `vnet` manually you do it from this directory.
 
-What is deployed by this subdirectory and their order is given in Appendix D (#appendix_d).
+What is deployed by this subdirectory and their order is given in  [_Appendix D_](#Appendix-D).
 
 |vnet subdirectory entry name|description|
 |:--------------------------------|:----------|
@@ -164,8 +164,11 @@ What is deployed by this subdirectory and their order is given in Appendix D (#a
 
 ​     
 
+## Appendix A 
 
-## Appendix A. Resources Created by aks Deployment
+<font size="6">**Resources Created by aks Deployment**</font>
+
+
 
 |Resources Created by aks Deployment|
 |:------------------------------------------------------------------------------------------------|
@@ -280,7 +283,9 @@ What is deployed by this subdirectory and their order is given in Appendix D (#a
 | `module.resource_groups["azure_kubernetes_service"].random_integer.suffix[0]` |
 | `module.subscription.data.azurerm_subscription.selected` |
 
-## Appendix B. Resources Created by HPCC Deployment
+## Appendix B
+
+<font size="6">**Resources Created by HPCC Deployment**</font>
 
 
 | Resources Created by HPCC Deployment                         |
@@ -325,7 +330,10 @@ What is deployed by this subdirectory and their order is given in Appendix D (#a
 | `module.hpcc.module.data_storage[0].azurerm_storage_container.hpcc_data["2"]` |
 
 
-## Appendix C. Resources Created by Deployment of storage
+## Appendix C
+
+<font size="6">**Resources Created by Deployment of storage**</font>
+
 
 |Resources Created by Depolyment of storage|
 |:------------------------------------------------------------------------------------|
@@ -349,7 +357,9 @@ What is deployed by this subdirectory and their order is given in Appendix D (#a
 | `module.storage.module.resource_groups["storage_accounts"].azurerm_resource_group.rg` |
 | `module.storage.module.resource_groups["storage_accounts"].random_integer.suffix[0]` |
 
-## Appendix D. Resources Created by Deployment of vnet
+## Appendix D
+
+<font size="6">**Resources Created by Deployment of vnet**</font>
 
 
 | Resources Created by Deployment of vnet                      |
