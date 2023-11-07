@@ -166,9 +166,6 @@ What is deployed by this subdirectory and their order is given in  [_Appendix D_
 
 ## Appendix A 
 
-<font size="6">**Resources Created by aks Deployment**</font>
-
-
 
 |Resources Created by aks Deployment|
 |:------------------------------------------------------------------------------------------------|
@@ -285,8 +282,6 @@ What is deployed by this subdirectory and their order is given in  [_Appendix D_
 
 ## Appendix B
 
-<font size="6">**Resources Created by HPCC Deployment**</font>
-
 
 | Resources Created by HPCC Deployment                         |
 | :----------------------------------------------------------- |
@@ -332,8 +327,6 @@ What is deployed by this subdirectory and their order is given in  [_Appendix D_
 
 ## Appendix C
 
-<font size="6">**Resources Created by Deployment of storage**</font>
-
 
 |Resources Created by Depolyment of storage|
 |:------------------------------------------------------------------------------------|
@@ -358,8 +351,6 @@ What is deployed by this subdirectory and their order is given in  [_Appendix D_
 | `module.storage.module.resource_groups["storage_accounts"].random_integer.suffix[0]` |
 
 ## Appendix D
-
-<font size="6">**Resources Created by Deployment of vnet**</font>
 
 
 | Resources Created by Deployment of vnet                      |
