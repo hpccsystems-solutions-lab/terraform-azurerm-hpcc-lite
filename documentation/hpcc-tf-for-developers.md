@@ -81,7 +81,7 @@ The subfolders, except for `scripts`, create components needed by the full syste
 
 The following table tells what files and subdirectories and in the `aks` subdirectory. The deployment of an `aks`happens in this directory. If one deploys from the root directory, the `deploy` script goes to this directory to deploy an `aks`. Also, if you deploy `aks` manually you do it from this directory.
 
-What is deployed by this subdirectory and their order is given in Appendix A (#appendix_a).
+What is deployed by this subdirectory and their order is given in  [_(Appendix A)_](#Appendix-A)
 
 
 |aks subdirectory entry name|description|
