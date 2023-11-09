@@ -8,6 +8,10 @@ output "deployment_resource_group" {
   value       = local.get_aks_config.resource_group_name
 }
 
+output "external_storage_config_exists" {
+  value       = fileexists("../storage/data/config.json") ? true : false
+}
+
 resource "local_file" "config" {
   content  = "hpcc successfully deployed"
   filename = "${path.module}/data/config.json"

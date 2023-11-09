@@ -74,9 +74,9 @@ cd $name; # cd into vnet or storage or aks or hpcc
 if [ -e "../lite.auto.tfvars" ];then 
   # Check if there has been a change since last apply.
   if [ -e "/tmp/${name}.lite.auto.tfvars" ];then
-    diff=`diff /tmp/${name}.lite.auto.tfvars ../lite.auto.tfvars`
+    tfvarsdiff=`diff /tmp/${name}.lite.auto.tfvars ../lite.auto.tfvars`
   else
-    diff=""
+    tfvarsdiff=""
   fi
 else
   echo "In $0. The root directory does not have a file called 'lite.aute.tfvars'. It must. EXITING";exit 1;
@@ -98,13 +98,14 @@ fi
 if [ ! -d "$HOME/tflogs" ];then
   mkdir $HOME/tflogs
 fi
-#echo "DEBUG: thisdir=\"$thisdir\", repodir=\"$repodir\", name=\"$name\""
+
 plan=`$thisdir/mkplan deploy_${name}.plan`
-#echo "DEBUG: plan=\"$plan\"";exit 1
-if [ "$diff" == "" ] && [ -d "data" ] && [ -f "data/config.json" ]; then echo "Complete! $name is already deployed";exit 0; fi
-if [ "$name" != "vnet" ];then
-  cp -v /tmp/${name}.lite.auto.tfvars .
-fi
+
+if [ "$tfvarsdiff" == "" ] && [ -d "data" ] && [ -f "data/config.json" ]; then echo "Complete! $name is already deployed";exit 0; fi
+
+#if [ "$name" != "vnet" ];then
+# cp -v /tmp/${name}.lite.auto.tfvars .
+#fi
 
 echo "=============== Deploy $name. Executing 'terraform init' ===============";
 assert_fail terraform init 

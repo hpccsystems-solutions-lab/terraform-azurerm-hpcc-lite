@@ -92,7 +92,7 @@ variable "aks_dns_zone_name" {
 }
 
 variable "hpcc_user_ip_cidr_list" {
-  description = "OPTIONAL.  List of additional CIDR addresses that can access this HPCC Systems cluster.\nDefault value is '[]' which means no CIDR addresses.\nTo open to the internet, add \"0.0.0.0/0\"."
+  description = "OPTIONAL.  List of additional CIDR addresses that can access this HPCC Systems cluster.\nDefault value is '[]' which means no CIDR addresses.\nTo open to the internet, Value should be [] add [\"0.0.0.0/0\"]."
   type        = list(string)
   default     = []
 }

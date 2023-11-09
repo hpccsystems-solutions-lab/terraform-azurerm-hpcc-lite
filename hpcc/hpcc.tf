@@ -21,16 +21,15 @@ resource "kubernetes_namespace" "hpcc" {
 module "hpcc" {
   #source = "git@github.com:gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
   #source = "/home/azureuser/temp/opinionated-terraform-azurerm-hpcc"
-  #source = "/home/azureuser/tlhumphrey2/RBA-terraform-azurerm-hpcc"
-  source = "git@github.com:hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git?ref=add-ecl-code-security-misc"
-
-  depends_on = [ local.get_aks_config ]
+  source = "/home/azureuser/tlhumphrey2/RBA-terraform-azurerm-hpcc"
+  #source = "git@github.com:hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git?ref=add-ecl-code-security-misc"
 
   environment = local.metadata.environment
   productname = local.metadata.product_name
 
   internal_domain = local.internal_domain
-  cluster_name    = local.get_aks_config.cluster_name
+  #cluster_name    = local.get_aks_config.cluster_name
+  cluster_name    = jsondecode(file("../aks/data/config.json")).cluster_name
 
   hpcc_container = {
     image_name           = local.hpcc_container != null ? local.hpcc_container.image_name : null
@@ -45,10 +44,7 @@ module "hpcc" {
     username = local.hpcc_container_registry_auth.username
   } : null
 
-
   hpcc_user_ip_cidr_list = var.hpcc_user_ip_cidr_list
-
-  storage_data_gb = var.storage_data_gb
 
   install_blob_csi_driver = false //Disable CSI driver
 
@@ -63,6 +59,9 @@ module "hpcc" {
     labels           = try(var.hpcc_namespace.labels,{})
   }
 
+  #-----------------------------------------------------------------------
+  # Storage variables (internal (ephemeral) or external)
+  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   admin_services_storage_account_settings = {
     replication_type     = local.admin_services_storage_account_settings.replication_type
     authorized_ip_ranges = merge(local.admin_services_storage_account_settings.authorized_ip_ranges, { host_ip = data.http.host_ip.response_body })
@@ -72,8 +71,10 @@ module "hpcc" {
 
   internal_storage_enabled = local.internal_storage_enabled
 
+  storage_data_gb = var.storage_data_gb
+
   data_storage_config = {
-    internal = (local.external_storage_config == null) || (local.internal_storage_enabled == true) ? {
+    internal = (local.internal_storage_enabled == true) ? {
       blob_nfs = {
         data_plane_count = local.data_storage_config.internal.blob_nfs.data_plane_count
         storage_account_settings = {
@@ -85,14 +86,11 @@ module "hpcc" {
       }
     } : null 
 
-    # external = local.internal_data_storage_enabled ? null : {
-    #   blob_nfs = local.get_storage_config != null ? local.get_storage_config.data_storage_planes : local.data_storage_config.external.blob_nfs
-    #   hpcc     = null
-    # }
     external = null
   }
 
   external_storage_config = local.external_storage_config
+  #-----------------------------------------------------------------------
 
   spill_volumes                = local.spill_volumes
   enable_roxie                 = var.aks_enable_roxie

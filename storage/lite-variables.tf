@@ -30,18 +30,17 @@ variable "aks_azure_region" {
 variable "aks_enable_roxie" {
   description = "REQUIRED.  Enable ROXIE?\nThis will also expose port 8002 on the cluster.\nExample entry: false"
   type        = bool
+  default     = false
 }
 
 variable "aks_dns_zone_resource_group_name" {
   type        = string
-  description = "OPTIONAL: Name of the resource group containing the dns zone."
-  default     = ""
+  description = "REQUIRED. Name of the resource group containing the dns zone."
 }
 
 variable "aks_dns_zone_name" {
   type        = string
-  description = "OPTIONAL: dns zone name. The name of existing dns zone."
-  default     = ""
+  description = "REQUIRED. dns zone name. The name of existing dns zone."
 }
 
 variable "aks_admin_ip_cidr_map" {
