@@ -99,7 +99,8 @@ module "hpcc" {
   vault_config                 = local.vault_config
   eclccserver_settings         = local.eclccserver_settings
   spray_service_settings       = local.spray_service_settings
-  admin_services_node_selector = { all = { workload = local.spray_service_settings.nodeSelector } }
+  # tlh 20231109 admin_services_node_selector = { all = { workload = local.spray_service_settings.nodeSelector } }
+  admin_services_node_selector = { all = { workload = "servpool" } }
 
   esp_remoteclients = {
 
