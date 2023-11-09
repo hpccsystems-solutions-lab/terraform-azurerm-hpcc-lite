@@ -130,7 +130,7 @@ locals {
   
   spray_service_settings = {
     replicas     = 6
-    nodeSelector = "spraypool" #"spraypool"
+    nodeSelector = "spraypool"
   }
   
   # ldap = {
@@ -198,8 +198,9 @@ locals {
     {
       disabled                       = (var.aks_enable_roxie == true)? false : true
       name                           = "roxie"
-      nodeSelector                   = {}
-      numChannels                    = 2
+      nodeSelector                   = { workload = "roxiepool" }
+      # tlh 20231109 numChannels                    = 2
+      numChannels                    = 1
       prefix                         = "roxie"
       replicas                       = 2
       serverReplicas                 = 0
@@ -351,6 +352,7 @@ locals {
         cpu    = "1"
         memory = "4G"
       }
+      nodeSelector = { workload = "servpool" }
       egress = "engineEgress"
       cost = {
         perCpu = 1
@@ -369,6 +371,7 @@ locals {
         cpu    = "1"
         memory = "4G"
       }
+      nodeSelector = { workload = "servpool" }
       legacySyntax = false
       options      = []
       cost = {
@@ -381,6 +384,7 @@ locals {
       interval     = 24
       at           = "* * * * *"
       minDeltaSize = 50000
+      nodeSelector = { workload = "servpool" }
       resources = {
         cpu    = "1"
         memory = "4G"
@@ -395,6 +399,7 @@ locals {
 
   dfuserver_settings = {
     maxJobs = 3
+    nodeSelector = { workload = "servpool" }
     resources = {
       cpu    = "1"
       memory = "2G"
@@ -403,6 +408,7 @@ locals {
 
   sasha_config = {
     disabled = false
+    nodeSelector = { workload = "servpool" }
     wu-archiver = {
       disabled = false
       service = {
@@ -483,7 +489,8 @@ locals {
     maxGraphs           = 2
     maxGraphStartupTime = 172800
     numWorkersPerPod    = 1
-    nodeSelector        = {}
+    #nodeSelector        = {}
+    nodeSelector        = { workload = "thorpool" }
     egress              = "engineEgress"
     tolerations_value   = "thorpool"
     managerResources = {
