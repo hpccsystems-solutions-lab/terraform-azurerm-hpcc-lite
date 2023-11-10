@@ -14,6 +14,7 @@ function assert_fail () {
 #========================================================================
 
 if [ "$1" == "vnet" ];then
+  assert_fail kubectl delete pods --all --force
   assert_fail scripts/destroy hpcc
   assert_fail scripts/destroy aks
 elif [ "$1" == "aks" ];then
@@ -21,6 +22,9 @@ elif [ "$1" == "aks" ];then
 fi
 cd $1;
 name=$(basename `pwd`)
+if [ "$name" == "hpcc" ];then
+  assert_fail kubectl delete pods --all --force
+fi
 if [ ! -d "$HOME/tflogs" ];then
   mkdir $HOME/tflogs
 fi
