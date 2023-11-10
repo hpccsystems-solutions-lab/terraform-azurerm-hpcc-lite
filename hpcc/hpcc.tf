@@ -21,8 +21,8 @@ resource "kubernetes_namespace" "hpcc" {
 module "hpcc" {
   #source = "git@github.com:gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
   #source = "/home/azureuser/temp/opinionated-terraform-azurerm-hpcc"
-  source = "/home/azureuser/tlhumphrey2/RBA-terraform-azurerm-hpcc"
-  #source = "git@github.com:hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git?ref=add-ecl-code-security-misc"
+  #source = "/home/azureuser/tlhumphrey2/RBA-terraform-azurerm-hpcc"
+  source = "git@github.com:hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git?ref=add-ecl-code-security-misc"
 
   environment = local.metadata.environment
   productname = local.metadata.product_name
