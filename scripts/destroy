@@ -1,5 +1,7 @@
 #!/bin/bash
-thisdir=$(d=`dirname $0`;cd $d;pwd;cd ..)
+thisdir=$(d=`dirname $0`;cd $d;pwd)
+repodir=`echo $thisdir|sed "s/\/scripts//"`
+#echo "DEBUG: thisdir=\"$thisdir\", repodir=\"$repodir\", Directory where destroy takes place: \"$repodir/$1\"";exit
 #========================================================================
 function assert_fail () {
     echo ">>>>>>>>>>>>>>>>>>> EXECUTING: $*"
@@ -20,7 +22,7 @@ if [ "$1" == "vnet" ];then
 elif [ "$1" == "aks" ];then
   assert_fail scripts/destroy hpcc
 fi
-cd $1;
+cd $repodir/$1;
 name=$(basename `pwd`)
 if [ "$name" == "hpcc" ];then
   assert_fail kubectl delete pods --all --force
