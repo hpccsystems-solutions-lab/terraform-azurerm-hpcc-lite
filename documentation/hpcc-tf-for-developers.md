@@ -1,7 +1,7 @@
 # For Developers: Tutorial of HPCC Easy Deploy Terraform 
 
 This tutorial explains the terraform that deploys HPCC Systems on an azure kubernetes service (aks). The terraform was designed to enable one to deploy HPCC Systems easily.
-The terraform can be found on github. Here is a link to it ([https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite/tree/HPCC-27615-easy-deploy])
+The terraform can be found on github. Here is a link to it ([https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite])
 
 From the root directory of the repository one can deploy all components of the HPCC cluster. Also, one can deploy individual components of the system from these subdirectories: `vnet`, `storage`, `aks`, and `hpcc`. If you want to deploy the individual components manually, here is the order you should do the deployment: 1st `vnet`, 2nd `storage` (if you want persistent storage), 3rd `aks`, and finally `hpcc`.
 

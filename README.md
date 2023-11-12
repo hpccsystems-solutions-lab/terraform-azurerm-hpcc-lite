@@ -27,7 +27,7 @@ This repo is a fork of the excellent work performed by Godson Fortil.  The origi
 1. If necessary, login to Azure.
 	* From the command line, this is usually accomplished with the `az login` command.
 1. Clone this repo to your local system and change current directory.
-	* `git clone -b HPCC-27615-easy-deploy  https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite.git`
+	* `git clone -b https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite.git`
 	* `cd terraform-azurerm-hpcc-lite`
 1. Issue `terraform init` to initialize the Terraform modules.
 1. Decide how you want to supply option values to the module during invocation.  There are three possibilities:
