@@ -27,8 +27,8 @@ variable "enable_thor" {
 
 variable "a_record_name" {
   type        = string
-  description = "OPTIONAL: dns zone A record name"
-  default     = ""
+  description = "REQUIRED: dns zone A record name for eclwatch"
+  default     = "eclwatch-default"
 }
 
 variable "aks_admin_email" {
