@@ -29,8 +29,8 @@ module "hpcc" {
 
   a_record_name   = var.a_record_name
   internal_domain = local.internal_domain
-  #cluster_name    = local.get_aks_config.cluster_name
   cluster_name    = jsondecode(file("../aks/data/config.json")).cluster_name
+  hpcc_version    = var.hpcc_version
 
   hpcc_container = {
     image_name           = local.hpcc_container != null ? local.hpcc_container.image_name : null
