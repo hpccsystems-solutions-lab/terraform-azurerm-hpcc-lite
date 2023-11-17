@@ -11,3 +11,8 @@ data "azuread_group" "subscription_owner" {
 
 data "azurerm_client_config" "current" {
 }
+
+data "local_file" "aks" {
+  filename = "../aks/data/config.json"
+}
+

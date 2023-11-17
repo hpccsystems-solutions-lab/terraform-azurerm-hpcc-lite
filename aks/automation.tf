@@ -1,11 +1,12 @@
+/*
 resource "azurerm_automation_account" "automation_account" {
-  name                = var.aks_automation.automation_account_name
+  name                = local.aks_automation.automation_account_name
   location            = local.location
   resource_group_name = module.resource_groups["azure_kubernetes_service"].name
   sku_name            = var.sku_name
   tags                = local.tags
-  # local_authentication_enabled  = var.aks_automation.local_authentication_enabled
-  public_network_access_enabled = var.aks_automation.public_network_access_enabled
+  # local_authentication_enabled  = local.aks_automation.local_authentication_enabled
+  public_network_access_enabled = local.aks_automation.public_network_access_enabled
 
   identity {
     type = "SystemAssigned"
@@ -60,6 +61,7 @@ resource "azurerm_automation_job_schedule" "job_schedule" {
     resourcename      = module.aks.cluster_name
     resourcegroupname = module.resource_groups["azure_kubernetes_service"].name
     operation         = each.value.operation
-    automationaccount = var.aks_automation.automation_account_name
+    automationaccount = local.aks_automation.automation_account_name
   }
 }
+*/

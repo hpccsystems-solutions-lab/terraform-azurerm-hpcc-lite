@@ -1,0 +1,19 @@
+cluster_version            = "1.26" # latest version
+cluster_ordinal            = 1 //cluster name suffix
+sku_tier                   = "FREE"
+hpcc_log_analytics_enabled = false
+
+rbac_bindings = {
+  cluster_admin_users = {
+    # "service_principal1" = "",
+    # "user1"              = ""
+    "admin"              = "<my_azure_id>"
+  }
+
+  cluster_view_users  = {}
+  cluster_view_groups = []
+}
+
+cluster_endpoint_access_cidrs  = ["0.0.0.0/0"]
+
+availability_zones = [1]

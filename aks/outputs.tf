@@ -23,4 +23,6 @@ output "cluster_resource_group_name" {
 resource "local_file" "output" {
   content  = local.config
   filename = "${path.module}/data/config.json"
+
+  depends_on = [ module.aks ]
 }

@@ -17,24 +17,33 @@ module "metadata" {
 
   naming_rules = module.naming.yaml
 
-  market              = var.metadata.market
+  market              = local.metadata.market
   location            = local.location
-  sre_team            = var.metadata.sre_team
-  environment         = var.metadata.environment
-  product_name        = var.metadata.product_name
-  business_unit       = var.metadata.business_unit
-  product_group       = var.metadata.product_group
-  subscription_type   = var.metadata.subscription_type
-  resource_group_type = var.metadata.resource_group_type
+  sre_team            = local.metadata.sre_team
+  environment         = local.metadata.environment
+  product_name        = local.metadata.product_name
+  business_unit       = local.metadata.business_unit
+  product_group       = local.metadata.product_group
+  subscription_type   = local.metadata.subscription_type
+  resource_group_type = local.metadata.resource_group_type
   subscription_id     = module.subscription.output.subscription_id
-  project             = var.metadata.project
+  project             = local.metadata.project
 }
 
-resource "null_resource" "launch_svc_url" {
-  for_each = module.hpcc.hpcc_status == "deployed" ? local.svc_domains : {}
+resource "null_resource" "delete_ephemeral_storage_accounts" {
+  count = var.external_storage_desired && (local.external_storage_config != []) ? 1 : 0
+
+  provisioner "local-exec" {
+    command     = "scripts/delete_ephemeral_storage_accounts ${local.get_aks_config.resource_group_name}"
+  }
+  depends_on = [module.hpcc]
+}
+
+/*resource "null_resource" "launch_svc_url" {
+  for_each = (module.hpcc.hpcc_status == "deployed") && (local.auto_launch_svc.eclwatch == true) ? local.svc_domains : {}
 
   provisioner "local-exec" {
     command     = local.is_windows_os ? "Start-Process ${each.value}" : "open ${each.value} || xdg-open ${each.value}"
     interpreter = local.is_windows_os ? ["PowerShell", "-Command"] : ["/bin/bash", "-c"]
   }
-}
+}*/

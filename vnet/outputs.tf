@@ -29,6 +29,8 @@ output "vnet_name" {
 resource "local_file" "output" {
   content  = local.config
   filename = "${path.module}/data/config.json"
+
+  depends_on = [ module.virtual_network ]
 }
 
 
