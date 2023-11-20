@@ -22,8 +22,8 @@ if [ "$1" == "vnet" ];then
 elif [ "$1" == "aks" ];then
   assert_fail scripts/destroy hpcc
 fi
-cd $repodir/$1;
-name=$(basename `pwd`)
+cd $1;
+name=$1
 if [ "$name" == "hpcc" ];then
   assert_fail kubectl delete pods --all --force
 fi
