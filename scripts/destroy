@@ -16,7 +16,6 @@ function assert_fail () {
 #========================================================================
 
 if [ "$1" == "vnet" ];then
-  assert_fail kubectl delete pods --all --force
   assert_fail scripts/destroy hpcc
   assert_fail scripts/destroy aks
 elif [ "$1" == "aks" ];then
