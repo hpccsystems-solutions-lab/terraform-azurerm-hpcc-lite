@@ -20,7 +20,10 @@ elif [ "$1" == "aks" ];then
   assert_fail scripts/destroy hpcc
 fi
 cd $1;
-name=$(basename `pwd`)
+name=$1
+if [ "$name" == "hpcc" ];then
+  assert_fail kubectl delete pods --all --force
+fi
 if [ ! -d "$HOME/tflogs" ];then
   mkdir $HOME/tflogs
 fi
