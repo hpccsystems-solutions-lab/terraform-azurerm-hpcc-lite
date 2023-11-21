@@ -32,5 +32,3 @@ resource "local_file" "output" {
 
   depends_on = [ module.virtual_network ]
 }
-
-

@@ -24,6 +24,7 @@ resource "null_resource" "deploy_storage" {
   depends_on = [ null_resource.deploy_vnet, null_resource.deploy_aks ]
 }
 
+# if external storage is desired, this resource makes sure it exists. 'deploy_hpcc' depends on this.
 resource "null_resource" "external_storage" {
   count = (var.external_storage_desired == true)? 1 : 0
 
@@ -31,7 +32,6 @@ resource "null_resource" "external_storage" {
     command     = "scripts/external_storage ${path.module} ${var.external_storage_desired}"
   }
 
-  #depends_on = [ null_resource.deploy_vnet, null_resource.deploy_aks ]
   depends_on = [ null_resource.deploy_vnet ]
 }
 

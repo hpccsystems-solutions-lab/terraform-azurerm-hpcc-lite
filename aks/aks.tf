@@ -1,32 +1,7 @@
-# resource "kubernetes_secret" "private_docker_registry" {
-#   count = can(var.registry.server) && can(var.registry.username) && can(var.registry.password) ? 1 : 0
-#   metadata {
-#     name = "docker-cfg"
-#   }
-#   type = "kubernetes.io/dockerconfigjson"
-#   data = {
-#     ".dockerconfigjson" = jsonencode({
-#       auths = {
-#         "${var.registry.server}" = {
-#           "username" = var.registry.username
-#           "password" = var.registry.password
-#           "email"    = var.admin.email
-#           "auth"     = base64encode("${var.registry.username}:${var.registry.password}")
-#         }
-#       }
-#     })
-#   }
-# }
-
 module "aks" {
   depends_on = [random_string.string]
-  #source     = "github.com/gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
-  #source     = "git@github.com:gfortil/terraform-azurerm-aks.git?ref=HPCC-27615"
-  #source     = "git@github.com:gfortil/terraform-azurerm-aks.git?ref=OSS"
-  #source     = "/home/azureuser/tlhumphrey2/rba-rsg-terraform-azurerm-aks"
-  #source     = "/home/azureuser/temp/HPCC-27615/terraform-azurerm-aks"
-  #source     = "/home/azureuser/temp/OSS/terraform-azurerm-aks"
-  source     = "git@github.com:hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git?ref=make-logging-and-monitoring-optional"
+  #source     = "git@github.com:hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git?ref=make-logging-and-monitoring-optional"
+  source     = "/home/azureuser/temp/OSS/terraform-azurerm-aks"
 
   providers = {
     kubernetes = kubernetes.default
@@ -82,12 +57,4 @@ module "aks" {
   }
 
   logging = var.logging
-  #logging = null
-
-  experimental = {
-    oms_agent                            = var.hpcc_log_analytics_enabled || var.experimental.oms_agent
-    oms_agent_log_analytics_workspace_id = fileexists("../logging/data/workspace_resource_id.txt") ? file("../logging/data/workspace_resource_id.txt") : var.experimental.oms_agent_log_analytics_workspace_id != null ? var.experimental.oms_agent_log_analytics_workspace_id : null
-    #tlh tried this oms_agent                            = null
-    #tlh tried this oms_agent_log_analytics_workspace_id = null
-  }
 }
