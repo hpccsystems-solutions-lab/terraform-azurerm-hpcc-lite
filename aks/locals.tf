@@ -11,7 +11,7 @@ locals {
     node_os           = "ubuntu"
     node_type         = "gp"
     node_type_version = "v2"
-    node_size         = "large"
+    node_size         = var.aks_node_size
     single_group      = false
     min_capacity      = 1
     max_capacity      = 3
@@ -29,7 +29,7 @@ locals {
       node_os           = "ubuntu"
       node_type         = "gp"      # gp, gpd, mem, memd, stor
       node_type_version = "v2"      # v1, v2
-      node_size         = "large" # large, xlarge, 2xlarge, 4xlarge, 8xlarge, 12xlarge, 16xlarge, 18xlarge, 20xlarge, 24xlarge, 26xlarge
+      node_size         = var.aks_node_size
       single_group      = false
       min_capacity      = 3
       max_capacity      = 6
@@ -46,7 +46,7 @@ locals {
       node_os           = "ubuntu"
       node_type         = "gpd"
       node_type_version = "v1"
-      node_size         = "2xlarge"
+      node_size         = var.aks_node_size
       single_group      = false
       min_capacity      = 1
       max_capacity      = 3
@@ -63,7 +63,7 @@ locals {
       node_os           = "ubuntu"
       node_type         = "gp"
       node_type_version = "v1"
-      node_size         = "2xlarge"
+      node_size         = var.aks_node_size
       single_group      = false
       min_capacity      = 3
       max_capacity      = 6
