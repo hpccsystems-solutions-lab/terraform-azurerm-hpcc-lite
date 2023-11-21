@@ -1,7 +1,6 @@
 #!/bin/bash
 thisdir=$(d=`dirname $0`;cd $d;pwd)
 repodir=`echo $thisdir|sed "s/\/scripts//"`
-#echo "DEBUG: thisdir=\"$thisdir\", repodir=\"$repodir\", Directory where destroy takes place: \"$repodir/$1\"";exit
 #========================================================================
 function assert_fail () {
     echo ">>>>>>>>>>>>>>>>>>> EXECUTING: $*"

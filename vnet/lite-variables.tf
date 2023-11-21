@@ -1,3 +1,4 @@
+# All 'aks_' variables are before any other variables.
 variable "aks_logging_monitoring_enabled" {
   description = "Used to get logging and monitoring of kubernetes and hpcc cluster."
   type        = bool
@@ -62,3 +63,4 @@ variable "aks_node_size" {
   type        = string
   description = "REQUIRED.  The VM size for each node in the HPCC Systems node pool.\nRecommend \"Standard_B4ms\" or better.\nSee https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information."
 }
+#===== end of aks variables =====

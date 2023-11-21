@@ -5,19 +5,6 @@ variable "tags" {
   default     = {}
 }
 
-# variable "azure_auth" {
-#   description = "Azure authentication"
-#   type = object({
-#     AAD_CLIENT_ID     = optional(string)
-#     AAD_CLIENT_SECRET = optional(string)
-#     AAD_TENANT_ID     = optional(string)
-#     AAD_PRINCIPAL_ID  = optional(string)
-#     SUBSCRIPTION_ID   = string
-#   })
-
-#   nullable = false
-# }
-
 variable "auto_connect" {
   description = "Automatically connect to the Kubernetes cluster from the host machine by overwriting the current context."
   type        = bool

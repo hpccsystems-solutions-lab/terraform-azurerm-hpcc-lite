@@ -1,12 +1,12 @@
 # Deploy HPCC Systems on Azure under Kubernetes
 
-NOTE: A tutorial of this terraform for the developer, or others who are interested, can be found [here](documentation/hpcc-tf-for-developers.md).
+NOTE: A tutorial of this Terraform for the developer, or others who are interested, can be found [here](documentation/hpcc-tf-for-developers.md).
 
 This is a slightly-opinionated Terraform module for deploying an HPCC Systems cluster on Azure's kubernetes service (aks).  The goal is to provide a simple method for deploying a cluster from scratch, with only the most important options to consider.
 
-The HPCC Systems cluster created by this module uses ephemeral storage (meaning, the storage will be deleted when the cluster is deleted). But, you can also have Persistent Storage.  See the section titled [Persistent Storage](#persistent-storage), below.
+The HPCC Systems cluster created by this module uses ephemeral storage, which is the default. This means the storage will be deleted when the cluster is deleted) But, you can also have Persistent Storage.  See the section titled [Persistent Storage](#persistent-storage), below.
 
-This repo is a fork of the excellent work performed by Godson Fortil.  The original can be found at [https://github.com/gfortil/terraform-azurerm-hpcc/tree/HPCC-27615].
+This repo is a fork of the excellent work performed by Godson Fortil.  The original can be found in branch, HPCC-27615 of [https://github.com/gfortil/Terraform-azurerm-hpcc].
 
 ## Requirements
 
@@ -17,8 +17,6 @@ This repo is a fork of the excellent work performed by Godson Fortil.  The origi
 * <font color="red">**kubectl**</font> The Kubernetes client (kubectl) is also required so you can inspect and manage the Azure Kubernetes cluster.  Instructions for download and installing that can be found at [https://kubernetes.io/releases/download/](https://kubernetes.io/releases/download/).  Make sure you have version 1.22.0 or later.
 
 * <font color="red">**Azure CLI**</font> To work with Azure, you will need to install the Azure Command Line tools.  Instructions can be found at [https://docs.microsoft.com/en-us/cli/azure/install-azure-cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).  Even if you think you won't be working with Azure, this module does leverage the command line tools to manipulate network security groups within kubernetes clusters.  TL;DR: Make sure you have the command line tools installed.
-
-* This module will create an AKS cluster in your current **default** Azure subscription.  You can view your current subscriptions, and determine which is the default, using the `az account list --output table` command.  To set a default subscription, use `az account set --subscription "My_Subscription"`.
 
 * To successfully create everything you will need to have Azure's `Contributor` role plus access to `Microsoft.Authorization/*/Write` and `Microsoft.Authorization/*/Delete` permissions on your subscription.  You may have to create a custom role for this.  Of course, Azure's `Owner` role includes everything so if you're the subscription's owner then you're good to go.
 
@@ -32,14 +30,15 @@ This repo is a fork of the excellent work performed by Godson Fortil.  The origi
 1. Issue `terraform init` to initialize the Terraform modules.
 1. Decide how you want to supply option values to the module during invocation.  There are three possibilities:
 	1. Invoke the `terraform apply` command and enter values for each option as Terraform prompts for it, then enter `yes` at the final prompt to begin building the cluster.
-	1. **Recommended:**  Create a `lite.auto.tfvars` file containing the values for each option, invoke `terraform apply`, then enter `yes` at the final prompt to begin building the cluster.  The easiest way to do that is to copy the example file and then edit the copy:
-		* `cp lite.auto.tfvars.example lite.auto.tfvars`
-	1. Use -var arguments on the command line when executing the terraform tool to set each of the values found in the .tfvars file.  This method is useful if you are driving the creation of the cluster from a script.
+	1. **Recommended:**  Create a `lite.auto.tfvars` file containing the values for each option, invoke `terraform apply`, then enter `yes` at the final prompt to begin building the cluster.  The easiest way to creat `lite.auto.tfvars` is to copy the example file, `lite.auto.tfvars.example`, and then edit the copy:
+		* `cp -v lite.auto.tfvars.example lite.auto.tfvars`
+	1. Use -var arguments on the command line when executing the Terraform tool to set each of the values found in the .tfvars file.  This method is useful if you are driving the creation of the cluster from a script.
 1. After the Kubernetes cluster is deployed, your local `kubectl` tool can be used to interact with it.  At some point during the deployment `kubectl` will acquire the login credentials for the cluster and it will be the current context (so any `kubectl` commands you enter will be directed to that cluster by default).
 
 At the end of a successful deployment these items are output:
-* The URL used to access ECL Watch.
-* The deployment azure resource group.
+* The URL used to access ECL Watch, `eclwatch_url`.
+* The deployment azure resource group, `deployment_resource_group`.
+* Whether there is external storage or not, `external_storage_config_exists`.
 
 ## Available Options
 
@@ -78,8 +77,8 @@ The following options should be set in your `lite.auto.tfvars` file (or entered 
 | `aks_admin_ip_cidr_map` | map of string | Map of name => CIDR IP addresses that can administrate this AKS. Format is '{"name"="cidr" [, "name"="cidr"]*}'. The 'name' portion must be unique. To add no CIDR addresses, use '{}'. The corporate network and your current IP address will be added automatically, and these addresses will have access to the HPCC cluster as a user. |
 | `aks_admin_name` | string | Name of the administrator of this HPCC Systems cluster. Example entry: "Jane Doe" |
 | `aks_azure_region` | string | The Azure region abbreviation in which to create these resources. Must be one of ["eastus", "eastus2", "centralus"]. Example entry: "eastus" |
-| `aks_dns_zone_name` | string | Name of an existing dns zone. Example entry: "hpcczone.us-hpccsystems-dev.azure.lnrsg.io" |
-| `aks_dns_zone_resource_group_name` | string | Name of the resource group of the above dns zone. Example entry: "app-dns-prod-eastus2" |
+| `aks_dns_zone_name` | string | Name of an existing Azure DNS Zone. Example entry: "hpcczone.us-hpccsystems-dev.azure.lnrsg.io" |
+| `aks_dns_zone_resource_group_name` | string | Name of the resource group of the above Azure DNS Zone. Example entry: "app-dns-prod-eastus2" |
 | `aks_enable_roxie` | boolean | Enable ROXIE? This will also expose port 8002 on the cluster. Example entry: false |
 | `aks_max_node_count` | number | The maximum number of VM nodes to allocate for the HPCC Systems node pool. Must be 2 or more. |
 | `aks_node_size` | string | The VM size for each node in the HPCC Systems node pool. Recommend "Standard_B4ms" or better. See https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information. |
@@ -99,10 +98,15 @@ The following options should be set in your `lite.auto.tfvars` file (or entered 
 
 ## Persistent Storage
 
-To get persistent storage, i.e. storage that is not deleted when the hpcc cluster is deleted, set the variable, external_storage_desired, to true.
+To get persistent storage, i.e. storage that is not deleted when the HPCC cluster is deleted, set the variable, `external_storage_desired`, to true.
 
 ## Useful Things
 
+* Useful `az cli` commands:
+	* `az account list --output table`
+		* Shows your current subscriptions, and determine which is the default
+	* `az account set --subscription "My_Subscription"`
+		* Sets the default subscription
 * Useful `kubectl` commands once the cluster is deployed:
 	* `kubectl get pods`
 		* Shows Kubernetes pods for the current cluster.

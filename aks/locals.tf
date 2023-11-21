@@ -11,12 +11,10 @@ locals {
     node_os           = "ubuntu"
     node_type         = "gp"
     node_type_version = "v2"
-    #node_size         = "2xlarge"
     node_size         = "large"
     single_group      = false
     min_capacity      = 1
     max_capacity      = 3
-    # placement_group_key = null
     labels = {
       "lnrs.io/tier" = "standard"
       "workload"     = "roxiepool"
@@ -31,12 +29,10 @@ locals {
       node_os           = "ubuntu"
       node_type         = "gp"      # gp, gpd, mem, memd, stor
       node_type_version = "v2"      # v1, v2
-      #node_size         = "2xlarge" # large, xlarge, 2xlarge, 4xlarge, 8xlarge, 12xlarge, 16xlarge, 18xlarge, 20xlarge, 24xlarge, 26xlarge
       node_size         = "large" # large, xlarge, 2xlarge, 4xlarge, 8xlarge, 12xlarge, 16xlarge, 18xlarge, 20xlarge, 24xlarge, 26xlarge
       single_group      = false
       min_capacity      = 3
       max_capacity      = 6
-      # placement_group_key = null
       labels = {
         "lnrs.io/tier" = "standard"
         "workload"     = "thorpool"
@@ -50,12 +46,10 @@ locals {
       node_os           = "ubuntu"
       node_type         = "gpd"
       node_type_version = "v1"
-      #node_size         = "4xlarge"
       node_size         = "2xlarge"
       single_group      = false
       min_capacity      = 1
       max_capacity      = 3
-      # placement_group_key = null
       labels = {
         "lnrs.io/tier" = "standard"
         "workload"     = "servpool"
@@ -70,12 +64,9 @@ locals {
       node_type         = "gp"
       node_type_version = "v1"
       node_size         = "2xlarge"
-      #node_size         = "1xlarge" # NOT ALLOWED
-      #node_size         = "4xlarge"
       single_group      = false
       min_capacity      = 3
       max_capacity      = 6
-      # placement_group_key = null
       labels = {
         "lnrs.io/tier"  = "standard"
         "workload"      = "spraypool"
@@ -105,17 +96,6 @@ locals {
         start_time      = "20:00" // At least 5 minutes in the future
         week_days       = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
       },
-      # {
-      #   schedule_name   = "aks_start"
-      #   description     = "Starts the AKS weekday nights at 6AM EST"
-      #   runbook_name    = "aks_startstop_runbook"
-      #   frequency       = "Week" //OneTime, Day, Hour, Week, or Month.
-      #   interval        = "1"    //cannot be set when frequency is `OneTime`
-      #   operation       = "start"
-      #   daylight_saving = true
-      #   start_time      = "06:00" // At least 5 minutes in the future
-      #   week_days       = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-      # }
     ]
   }
 
@@ -165,7 +145,6 @@ locals {
   current_hour = tonumber(formatdate("HH", local.current_time))
   today        = formatdate("YYYY-MM-DD", local.current_time)
   tomorrow     = formatdate("YYYY-MM-DD", timeadd(local.current_time, "24h"))
-  # today        = formatdate("YYYY-MM-DD", timeadd(local.current_time, "1h"))
 
   utc_offset = local.aks_automation.schedule[0].daylight_saving ? 4 : 5
 

@@ -1,34 +1,8 @@
-###############################################################################
-# Prompted variables (user will be asked to supply them at plan/apply time
-# if a .tfvars file is not supplied); there are no default values
-###############################################################################
-variable "my_azure_id" {
-  description = "REQUIRED. The id of your azure account."
-  type        = string
-}
-
+# All 'aks_' variables are before any other variables.
 variable "aks_logging_monitoring_enabled" {
   description = "Used to get logging and monitoring of kubernetes and hpcc cluster."
   type        = bool
   default     = false
-}
-
-variable "external_storage_desired" {
-  description = "If you want external storage instead of ephemeral, this should be true. For ephemeral storage this should be false"
-  type        = bool
-  default     = false
-}
-
-variable "enable_thor" {
-  description = "REQUIRED.  If you want a thor cluster."
-  type        = bool
-  default     = true
-}
-
-variable "a_record_name" {
-  type        = string
-  description = "OPTIONAL: dns zone A record name"
-  default     = ""
 }
 
 variable "aks_admin_email" {
@@ -45,15 +19,6 @@ variable "aks_admin_name" {
   description = "REQUIRED.  Name of the administrator of this HPCC Systems cluster.\nExample entry: Jane Doe"
 }
 
-variable "admin_username" {
-  type        = string
-  description = "REQUIRED.  Username of the administrator of this HPCC Systems cluster.\nExample entry: jdoe"
-  validation {
-    condition     = length(var.admin_username) > 1 && length(regexall(" ", var.admin_username)) == 0
-    error_message = "Value must at least two characters in length and contain no spaces."
-  }
-}
-
 variable "aks_azure_region" {
   type        = string
   description = "REQUIRED.  The Azure region abbreviation in which to create these resources.\nMust be one of [\"eastus\", \"eastus2\", \"centralus\"].\nExample entry: eastus2"
@@ -63,22 +28,10 @@ variable "aks_azure_region" {
   }
 }
 
-variable "enable_code_security" {
-  description = "REQUIRED.  Enable code security?\nIf true, only signed ECL code will be allowed to create embedded language functions, use PIPE(), etc.\nExample entry: false"
-  type        = bool
-  default     = false
-}
-
 variable "aks_enable_roxie" {
   description = "REQUIRED.  Enable ROXIE?\nThis will also expose port 8002 on the cluster.\nExample entry: false"
   type        = bool
   default     = false
-}
-
-variable "extra_tags" {
-  description = "OPTIONAL.  Map of name => value tags that can will be associated with the cluster.\nFormat is '{\"name\"=\"value\" [, \"name\"=\"value\"]*}'.\nThe 'name' portion must be unique.\nTo add no tags, enter '{}'. This is OPTIONAL and defaults to an empty string map."
-  type        = map(string)
-  default     = {}
 }
 
 variable "aks_dns_zone_resource_group_name" {
@@ -89,22 +42,6 @@ variable "aks_dns_zone_resource_group_name" {
 variable "aks_dns_zone_name" {
   type        = string
   description = "REQUIRED. dns zone name. The name of existing dns zone."
-}
-
-variable "hpcc_user_ip_cidr_list" {
-  description = "OPTIONAL.  List of additional CIDR addresses that can access this HPCC Systems cluster.\nDefault value is '[]' which means no CIDR addresses.\nTo open to the internet, add \"0.0.0.0/0\"."
-  type        = list(string)
-  default     = []
-}
-
-variable "hpcc_version" {
-  description = "The version of HPCC Systems to install.\nOnly versions in nn.nn.nn format are supported. Default is 'latest'"
-  type        = string
-  validation {
-    condition     = (var.hpcc_version == "latest") || can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(-rc\\d{1,3})?$", var.hpcc_version))
-    error_message = "Value must be 'latest' OR in nn.nn.nn format and 8.6.0 or higher."
-  }
-  default = "latest"
 }
 
 variable "aks_admin_ip_cidr_map" {
@@ -125,6 +62,67 @@ variable "aks_max_node_count" {
 variable "aks_node_size" {
   type        = string
   description = "REQUIRED.  The VM size for each node in the HPCC Systems node pool.\nRecommend \"Standard_B4ms\" or better.\nSee https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information."
+}
+#===== end of aks variables =====
+
+variable "my_azure_id" {
+  description = "REQUIRED. The id of your azure account."
+  type        = string
+}
+
+variable "external_storage_desired" {
+  description = "If you want external storage instead of ephemeral, this should be true. For ephemeral storage this should be false"
+  type        = bool
+  default     = false
+}
+
+variable "enable_thor" {
+  description = "REQUIRED.  If you want a thor cluster."
+  type        = bool
+  default     = true
+}
+
+variable "a_record_name" {
+  type        = string
+  description = "OPTIONAL: dns zone A record name"
+  default     = ""
+}
+
+variable "admin_username" {
+  type        = string
+  description = "REQUIRED.  Username of the administrator of this HPCC Systems cluster.\nExample entry: jdoe"
+  validation {
+    condition     = length(var.admin_username) > 1 && length(regexall(" ", var.admin_username)) == 0
+    error_message = "Value must at least two characters in length and contain no spaces."
+  }
+}
+
+variable "enable_code_security" {
+  description = "REQUIRED.  Enable code security?\nIf true, only signed ECL code will be allowed to create embedded language functions, use PIPE(), etc.\nExample entry: false"
+  type        = bool
+  default     = false
+}
+
+variable "extra_tags" {
+  description = "OPTIONAL.  Map of name => value tags that can will be associated with the cluster.\nFormat is '{\"name\"=\"value\" [, \"name\"=\"value\"]*}'.\nThe 'name' portion must be unique.\nTo add no tags, enter '{}'. This is OPTIONAL and defaults to an empty string map."
+  type        = map(string)
+  default     = {}
+}
+
+variable "hpcc_user_ip_cidr_list" {
+  description = "OPTIONAL.  List of additional CIDR addresses that can access this HPCC Systems cluster.\nDefault value is '[]' which means no CIDR addresses.\nTo open to the internet, add \"0.0.0.0/0\"."
+  type        = list(string)
+  default     = []
+}
+
+variable "hpcc_version" {
+  description = "The version of HPCC Systems to install.\nOnly versions in nn.nn.nn format are supported. Default is 'latest'"
+  type        = string
+  validation {
+    condition     = (var.hpcc_version == "latest") || can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(-rc\\d{1,3})?$", var.hpcc_version))
+    error_message = "Value must be 'latest' OR in nn.nn.nn format and 8.6.0 or higher."
+  }
+  default = "latest"
 }
 
 variable "storage_data_gb" {

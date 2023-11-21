@@ -32,21 +32,12 @@ locals {
       receivers = []
     }
 
-    # coredns = {
-    #   forward_zones = {
-    #     "" = ""
-    #   }
-    # }
     coredns = {}
 
     external_dns = {
       public_domain_filters = [var.aks_dns_zone_name]
     }
 
-    # cert_manager = {
-    #   acme_dns_zones      = [var.aks_dns_zone_name]
-    #   default_issuer_name = "zerossl"
-    # }
     cert_manager = {}
 
     ingress_internal_core = {
