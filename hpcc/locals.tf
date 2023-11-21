@@ -54,8 +54,6 @@ locals {
 
   location = local.use_existing_vnet != null ? local.use_existing_vnet.location : local.get_vnet_config.location
 
-  # hpcc_chart_major_minor_point_version = local.helm_chart_version != null ? regex("[\\d+?.\\d+?.\\d+?]+", local.helm_chart_version) : "master"
-
   domain = coalesce(local.internal_domain, format("us-%s.%s.azure.lnrsg.io", "local.metadata.product_name", "dev"))
 
   svc_domains   = { eclwatch = local.auto_launch_svc.eclwatch ? "https://eclwatch-${local.hpcc_namespace}.${local.domain}:18010" : null }

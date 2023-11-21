@@ -1,6 +1,5 @@
 locals {
   helm_chart_timeout=300
-  #hpcc_version = "8.6.20"
 
   owner = {
     name  = var.admin_username
@@ -25,63 +24,15 @@ locals {
 
   tags = merge(local.metadata.additional_tags, var.extra_tags)
 
-  # # disable_naming_conventions - Disable naming conventions
-  # # disable_naming_conventions = true 
   disable_naming_conventions = false
   
-  # # auto_launch_eclwatch - Automatically launch ECLWatch web interface.
-  #auto_launch_eclwatch = true
   auto_launch_svc = {
     eclwatch = false
   }
-
-  # azure_auth = {
-  #   #   AAD_CLIENT_ID     = ""
-  #   #   AAD_CLIENT_SECRET = ""
-  #   #   AAD_TENANT_ID     = ""
-  #   #   AAD_PRINCIPAL_ID  = ""
-  #   SUBSCRIPTION_ID = ""
-  # }
-  
-  # hpcc_container = {
-  #   version = "9.2.0"
-  #   image_name    = "platform-core-ln"
-  #   image_root    = "jfrog.com/glb-docker-virtual"
-  #   #   custom_chart_version = "9.2.0-rc1"
-  #   #   custom_image_version = "9.2.0-demo"
-  # }
- 
-  # hpcc_container_registry_auth = {
-  #   username = "value"
-  #   password = "value"
-  # }
   
   internal_domain = var.aks_dns_zone_name // Example: hpcczone.us-hpccsystems-dev.azure.lnrsg.io
   
   external = {}
-  # external = {
-  #   blob_nfs = [{
-  #     container_id         = ""
-  #     container_name       = ""
-  #     id                   = ""
-  #     resource_group_name  = var.storage_account_resource_group_name
-  #     storage_account_id   = ""
-  #     storage_account_name = var.storage_account_name
-  #   }]
-  #   # hpc_cache = [{
-  #   #   id     = ""
-  #   #   path   = ""
-  #   #   server = ""
-  #   }]
-  #   hpcc = [{
-  #     name = ""
-  #     planes = list(object({
-  #       local  = ""
-  #       remote = ""
-  #     }))
-  #     service = ""
-  #   }]
-  # }
   
   admin_services_storage_account_settings = {
     replication_type = "ZRS" #LRS only if using HPC Cache
@@ -106,12 +57,6 @@ locals {
           delete_protection = false
         }
       }
-      # hpc_cache = {
-      #   enabled                     = false
-      #   size                        = "small"
-      #   cache_update_frequency      = "3h"
-      #   storage_account_data_planes = null
-      # }
     }
     external = null
   }
@@ -132,36 +77,6 @@ locals {
     replicas     = 6
     nodeSelector = "spraypool"
   }
-  
-  # ldap = {
-  #   ldap_server = "" //Server IP
-  #   dali = {
-  #     hpcc_admin_password = ""
-  #     hpcc_admin_username = ""
-  #     ldap_admin_password = ""
-  #     ldap_admin_username = ""
-  #     adminGroupName      = "HPCC-Admins"
-  #     filesBasedn         = "ou=files,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     groupsBasedn        = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     resourcesBasedn     = "ou=smc,ou=espservices,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     systemBasedn        = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     usersBasedn         = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     workunitsBasedn     = "ou=workunits,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #   }
-  #   esp = {
-  #     hpcc_admin_password = ""
-  #     hpcc_admin_username = ""
-  #     ldap_admin_password = ""
-  #     ldap_admin_username = ""
-  #     adminGroupName      = "HPCC-Admins"
-  #     filesBasedn         = "ou=files,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     groupsBasedn        = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     resourcesBasedn     = "ou=smc,ou=espservices,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     systemBasedn        = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     usersBasedn         = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     workunitsBasedn     = "ou=workunits,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #   }
-  # }
 
   roxie_internal_service = {
     name        = "iroxie"
@@ -199,7 +114,6 @@ locals {
       disabled                       = (var.aks_enable_roxie == true)? false : true
       name                           = "roxie"
       nodeSelector                   = { workload = "roxiepool" }
-      # tlh 20231109 numChannels                    = 2
       numChannels                    = 1
       prefix                         = "roxie"
       replicas                       = 2
@@ -423,7 +337,6 @@ locals {
       throttle        = 0
       retryinterval   = 6
       keepResultFiles = false
-      # egress          = "engineEgress"
     }
 
     dfuwu-archiver = {
@@ -437,7 +350,6 @@ locals {
       cutoff   = 14
       at       = "* * * * *"
       throttle = 0
-      # egress   = "engineEgress"
     }
 
     dfurecovery-archiver = {
@@ -446,7 +358,6 @@ locals {
       limit    = 20
       cutoff   = 4
       at       = "* * * * *"
-      # egress   = "engineEgress"
     }
 
     file-expiry = {
@@ -456,7 +367,6 @@ locals {
       persistExpiryDefault = 7
       expiryDefault        = 4
       user                 = "sasha"
-      # egress               = "engineEgress"
     }
   }
 
@@ -489,7 +399,6 @@ locals {
     maxGraphs           = 2
     maxGraphStartupTime = 172800
     numWorkersPerPod    = 1
-    #nodeSelector        = {}
     nodeSelector        = { workload = "thorpool" }
     egress              = "engineEgress"
     tolerations_value   = "thorpool"

@@ -1,27 +1,4 @@
-resource "kubernetes_namespace" "hpcc" {
-  count = var.hpcc_namespace.create_namespace && !fileexists("../logging/data/hpcc_namespace.txt") ? 1 : 0
-
-  metadata {
-    labels = try(var.hpcc_namespace.labels,{})
-
-    generate_name = "${var.hpcc_namespace.prefix_name}${trimspace(local.owner.name)}"
-  }
-}
-
-/*resource "kubernetes_namespace" "hpcc" {
-  count = (var.hpcc_namespace == []) || !var.hpcc_namespace.create_namespace || fileexists("../logging/data/hpcc_namespace.txt") ? 0 : 1
-
-  metadata {
-    labels = try(var.hpcc_namespace.labels,{})
-    name   = "${substr(trimspace(local.owner.name), 0, 5)}${random_integer.random.result}"
-    # generate_name = "${trimspace(local.owner.name)}"
-  }
-}*/
-
 module "hpcc" {
-  #source = "git@github.com:gfortil/opinionated-terraform-azurerm-hpcc?ref=HPCC-27615"
-  #source = "/home/azureuser/temp/opinionated-terraform-azurerm-hpcc"
-  #source = "/home/azureuser/tlhumphrey2/RBA-terraform-azurerm-hpcc"
   source = "git@github.com:hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git?ref=add-ecl-code-security-misc"
 
   environment = local.metadata.environment
@@ -53,7 +30,6 @@ module "hpcc" {
   location            = local.metadata.location
   tags                = module.metadata.tags
 
-  # namespace = local.hpcc_namespace
   namespace = {
     create_namespace = false
     name             = local.hpcc_namespace
@@ -100,7 +76,6 @@ module "hpcc" {
   vault_config                 = local.vault_config
   eclccserver_settings         = local.eclccserver_settings
   spray_service_settings       = local.spray_service_settings
-  # tlh 20231109 admin_services_node_selector = { all = { workload = local.spray_service_settings.nodeSelector } }
   admin_services_node_selector = { all = { workload = "servpool" } }
 
   esp_remoteclients = {
@@ -120,7 +95,7 @@ module "hpcc" {
   }
 
   helm_chart_timeout         = local.helm_chart_timeout
-  helm_chart_files_overrides = concat(local.helm_chart_files_overrides, fileexists("../logging/data/logaccess_body.yaml") ? ["../logging/data/logaccess_body.yaml"] : [])
+  helm_chart_files_overrides = local.helm_chart_files_overrides
   ldap_config                = local.ldap_config
 
   enable_code_security       = var.enable_code_security
