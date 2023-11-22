@@ -41,5 +41,5 @@ resource "null_resource" "deploy_hpcc" {
     command     = "scripts/deploy hpcc"
   }
 
-  depends_on = [  null_resource.deploy_aks, null_resource.deploy_vnet, null_resource.external_storage ]
+  depends_on = [  null_resource.deploy_aks, null_resource.deploy_vnet, null_resource.external_storage, null_resource.deploy_storage ]
 }
