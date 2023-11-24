@@ -1,5 +1,5 @@
 locals {
-  helm_chart_timeout=300
+  helm_chart_timeout=600
 
   owner = {
     name  = var.admin_username
