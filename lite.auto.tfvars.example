@@ -105,7 +105,7 @@ extra_tags={}
 # See https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information.
 # Value type: string
 
-aks_node_size="Standard_D4s_v4"
+aks_node_sizes = { roxie = "2xlarge", serv = "4xlarge", spray = "2xlarge", thor = "2xlarge" }
 
 #------------------------------------------------------------------------------
 
