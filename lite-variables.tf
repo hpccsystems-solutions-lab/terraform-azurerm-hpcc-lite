@@ -59,9 +59,14 @@ variable "aks_max_node_count" {
   }
 }
 
-variable "aks_node_size" {
-  type        = string
+variable "aks_node_sizes" {
   description = "REQUIRED.  The VM size for each node in the HPCC Systems node pool.\nRecommend \"Standard_B4ms\" or better.\nSee https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information."
+  type = object({
+    roxie           = optional(string, "2xlarge")
+    serv            = optional(string, "4xlarge")
+    spray           = optional(string, "2xlarge")
+    thor            = optional(string, "2xlarge")
+  })
 }
 #===== end of aks variables =====
 
