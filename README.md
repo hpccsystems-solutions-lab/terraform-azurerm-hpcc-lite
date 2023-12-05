@@ -70,31 +70,31 @@ Options have data types.  The ones used in this module are:
 
 The following options should be set in your `lite.auto.tfvars` file (or entered interactively, if you choose to not create a file).  Only a few of them have default values. The rest are required.  The 'Updateable' column indicates whether, for any given option, it is possible to successfully apply the update against an already-running HPCC k8s cluster.
 
-|Option|Type|Description|
-|:-----|:---|:----------|
-| `admin_username` | string | Username of the administrator of this HPCC Systems cluster. Example entry: "jdoe" |
-| `aks_admin_email` | string | Email address of the administrator of this HPCC Systems cluster. Example entry: "jane.doe@hpccsystems.com" |
-| `aks_admin_ip_cidr_map` | map of string | Map of name => CIDR IP addresses that can administrate this AKS. Format is '{"name"="cidr" [, "name"="cidr"]*}'. The 'name' portion must be unique. To add no CIDR addresses, use '{}'. The corporate network and your current IP address will be added automatically, and these addresses will have access to the HPCC cluster as a user. |
-| `aks_admin_name` | string | Name of the administrator of this HPCC Systems cluster. Example entry: "Jane Doe" |
-| `aks_azure_region` | string | The Azure region abbreviation in which to create these resources. Must be one of ["eastus", "eastus2", "centralus"]. Example entry: "eastus" |
-| `aks_dns_zone_name` | string | Name of an existing Azure DNS Zone. Example entry: "hpcczone.us-hpccsystems-dev.azure.lnrsg.io" |
-| `aks_dns_zone_resource_group_name` | string | Name of the resource group of the above Azure DNS Zone. Example entry: "app-dns-prod-eastus2" |
-| `aks_enable_roxie` | boolean | Enable ROXIE? This will also expose port 8002 on the cluster. Example entry: false |
-| `aks_max_node_count` | number | The maximum number of VM nodes to allocate for the HPCC Systems node pool. Must be 2 or more. |
-| `aks_node_size` | string | The VM size for each node in the HPCC Systems node pool. Recommend "Standard_B4ms" or better. See https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information. |
-| `authn_htpasswd_filename` | string | If you would like to use htpasswd to authenticate users to the cluster, enter the filename of the htpasswd file.  This file should be uploaded to the Azure 'dllsshare' file share in order for the HPCC processes to find it. A corollary is that persistent storage is enabled. An empty string indicates that htpasswd is not to be used for authentication. Example entry: "htpasswd.txt" |
-| `enable_code_security` | boolean | Enable code security? If true, only signed ECL code will be allowed to create embedded language functions, use PIPE(), etc. Example entry: false |
-| `enable_premium_storage` | boolean | If true, premium ($$$) storage will be used for the following storage shares: Dali. OPTIONAL, defaults to false. |
-| `enable_thor` | boolean | If you want a thor cluster then 'enable_thor' must be set to true Otherwise it is set to false |
-| `external_storage_desired` | boolean | If you want external storage instead of ephemeral storage then set this variable to true otherwise set it to false. |
-| `extra_tags` | map of string | Map of name => value tags that can will be associated with the cluster. Format is '{"name"="value" [, "name"="value"]*}'. The 'name' portion must be unique. To add no tags, use '{}'. |
-| `hpcc_user_ip_cidr_list` | list of string | List of explicit CIDR addresses that can access this HPCC Systems cluster. To allow public access, specify "0.0.0.0/0". To add no CIDR addresses, use '[]'. |
-| `hpcc_version` | string | The version of HPCC Systems to install. Only versions in nn.nn.nn format are supported. |
-| `my_azure_id` | string | Your azure account object id. Find this on azure portal, by going to 'users' then search for your name and click on it. The account object id is called 'Object ID'. There is a link next to it that lets you copy it. |
-| `storage_data_gb` | number | The amount of storage reserved for data in gigabytes. Must be 1 or more. If a storage account is defined (see below) then this value is ignored. |
-| `storage_lz_gb` | number | The amount of storage reserved for the landing zone in gigabytes. Must be 1 or more. If a storage account is defined (see below) then this value is ignored. |
-| `thor_max_jobs` | number | The maximum number of simultaneous Thor jobs allowed. Must be 1 or more. |
-| `thor_num_workers` | number | The number of Thor workers to allocate. Must be 1 or more. |
+|Option|Type|Description|Updatable|
+|:-----|:---|:----------|:--------|
+| `a_record_name` | string | Name of the A record, of following dns zone, where the ecl watch ip is placed This A record will be created and therefore should not exist in the following dns zone. Example entry: "my-product". This should be something project specific rather than something generic. | Y |
+| `admin_username` | string | Username of the administrator of this HPCC Systems cluster. Example entry: "jdoe" | N |
+| `aks_admin_email` | string | Email address of the administrator of this HPCC Systems cluster. Example entry: "jane.doe@hpccsystems.com" | Y |
+| `aks_admin_ip_cidr_map` | map of string | Map of name => CIDR IP addresses that can administrate this AKS. Format is '{"name"="cidr" [, "name"="cidr"]*}'. The 'name' portion must be unique. To add no CIDR addresses, use '{}'. The corporate network and your current IP address will be added automatically, and these addresses will have access to the HPCC cluster as a user. | Y |
+| `aks_admin_name` | string | Name of the administrator of this HPCC Systems cluster. Example entry: "Jane Doe" | Y |
+| `aks_azure_region` | string | The Azure region abbreviation in which to create these resources. Must be one of ["eastus", "eastus2", "centralus"]. Example entry: "eastus" | N |
+| `aks_dns_zone_name` | string | Name of an existing dns zone. Example entry: "hpcczone.us-hpccsystems-dev.azure.lnrsg.io" | N |
+| `aks_dns_zone_resource_group_name` | string | Name of the resource group of the above dns zone. Example entry: "app-dns-prod-eastus2" | N |
+| `aks_enable_roxie` | boolean | Enable ROXIE? This will also expose port 8002 on the cluster. Example entry: false | Y |
+| `aks_logging_monitoring_enabled` | boolean | This variable enable you to ask for logging and monitoring of the kubernetes and hpcc cluster (true means enable logging and monitoring, false means don't. | N |
+| `aks_node_sizes ` | string | The VM size for each node in the HPCC Systems node pool. Recommend "Standard_B4ms" or better. See https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information. | N |
+| `authn_htpasswd_filename` | string | If you would like to use htpasswd to authenticate users to the cluster, enter the filename of the htpasswd file.  This file should be uploaded to the Azure 'dllsshare' file share in order for the HPCC processes to find it. A corollary is that persistent storage is enabled. An empty string indicates that htpasswd is not to be used for authentication. Example entry: "htpasswd.txt" | Y |
+| `enable_code_security` | boolean | Enable code security? If true, only signed ECL code will be allowed to create embedded language functions, use PIPE(), etc. Example entry: false | Y |
+| `enable_thor` | boolean | If you want a thor cluster then 'enable_thor' must be set to true Otherwise it is set to false | Y |
+| `external_storage_desired` | boolean | If you want external storage instead of ephemeral storage then set this variable to true otherwise set it to false. | Y |
+| `extra_tags` | map of string | Map of name => value tags that can will be associated with the cluster. Format is '{"name"="value" [, "name"="value"]*}'. The 'name' portion must be unique. To add no tags, use '{}'. | Y |
+| `hpcc_user_ip_cidr_list` | list of string | List of explicit CIDR addresses that can access this HPCC Systems cluster. To allow public access, set value to ["0.0.0.0/0"] or []. | Y |
+| `hpcc_version` | string | The version of HPCC Systems to install. Only versions in nn.nn.nn format are supported. | Y |
+| `my_azure_id` | string | Your azure account object id. Find this on azure portal, by going to 'users' then search for your name and click on it. The account object id is called 'Object ID'. There is a link next to it that lets you copy it. | N |
+| `storage_data_gb` | number | The amount of storage reserved for data in gigabytes. Must be 1 or more. If a storage account is defined (see below) then this value is ignored. | Y |
+| `storage_lz_gb` | number | The amount of storage reserved for the landing zone in gigabytes. Must be 1 or more. If a storage account is defined (see below) then this value is ignored. | Y |
+| `thor_max_jobs` | number | The maximum number of simultaneous Thor jobs allowed. Must be 1 or more. | Y |
+| `thor_num_workers` | number | The number of Thor workers to allocate. Must be 1 or more. | Y |
 
 ## Persistent Storage
 
