@@ -407,7 +407,7 @@ locals {
       memory = "4G"
     }
     workerResources = {
-      cpu    = 3
+      cpu    = 4
       memory = "4G"
     }
     workerMemory = {
