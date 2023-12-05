@@ -263,7 +263,7 @@ locals {
       type              = "hthor"
       spillPlane        = "spill"
       resources = {
-        cpu    = "1"
+        cpu    = "2"
         memory = "4G"
       }
       nodeSelector = { workload = "servpool" }
