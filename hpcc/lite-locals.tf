@@ -403,8 +403,8 @@ locals {
     egress              = "engineEgress"
     tolerations_value   = "thorpool"
     managerResources = {
-      cpu    = 1
-      memory = "2G"
+      cpu    = 2
+      memory = "4G"
     }
     workerResources = {
       cpu    = 3
