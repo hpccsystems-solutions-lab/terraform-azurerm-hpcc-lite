@@ -18,11 +18,10 @@ locals {
     resource_group_type = "app"
     sre_team            = format("%shpccplatform", local.owner_name_initials)
     subscription_type   = "dev"
-    additional_tags     = { "justification" = "testing" }
     location            = var.aks_azure_region # Acceptable values: eastus, centralus
   }
 
-  tags = merge(local.metadata.additional_tags, var.extra_tags)
+  tags = var.extra_tags
 
   disable_naming_conventions = false
   

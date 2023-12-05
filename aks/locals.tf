@@ -117,7 +117,7 @@ locals {
     local.metadata.resource_group_type != "" ? { resource_group_type = local.metadata.resource_group_type } : {}
   ) : module.metadata.names
 
-  tags = merge(local.metadata.additional_tags, { "owner" = local.owner.name, "owner_email" = local.owner.email })
+  tags = { "owner" = local.owner.name, "owner_email" = local.owner.email }
 
   get_vnet_config = fileexists("../vnet/data/config.json") ? jsondecode(file("../vnet/data/config.json")) : null
 

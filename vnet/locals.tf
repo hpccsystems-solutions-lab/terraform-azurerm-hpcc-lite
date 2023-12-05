@@ -16,7 +16,6 @@ locals {
     resource_group_type = "app"
     sre_team            = format("%shpccplatform", local.owner_name_initials)
     subscription_type   = "dev"
-    additional_tags     = { "justification" = "testing" }
     location            = var.aks_azure_region # Acceptable values: eastus, centralus
   }
 
@@ -39,7 +38,7 @@ locals {
     local.metadata.resource_group_type != "" ? { resource_group_type = local.metadata.resource_group_type } : {}
   ) : module.metadata.names
 
-  tags = merge(local.metadata.additional_tags, { "owner" = local.owner.name, "owner_email" = local.owner.email })
+  tags = { "owner" = local.owner.name, "owner_email" = local.owner.email }
 
 
   private_subnet_id   = module.virtual_network.aks.hpcc.subnets["private"].id
