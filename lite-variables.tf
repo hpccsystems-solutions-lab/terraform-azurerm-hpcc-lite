@@ -50,15 +50,6 @@ variable "aks_admin_ip_cidr_map" {
   default     = {}
 }
 
-variable "aks_max_node_count" {
-  type        = number
-  description = "REQUIRED.  The maximum number of VM nodes to allocate for the HPCC Systems node pool.\nMust be 2 or more."
-  validation {
-    condition     = var.aks_max_node_count >= 2
-    error_message = "Value must be 2 or more."
-  }
-}
-
 variable "aks_node_sizes" {
   description = "REQUIRED.  The VM size for each node in the HPCC Systems node pool.\nRecommend \"Standard_B4ms\" or better.\nSee https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information."
   type = object({
@@ -200,16 +191,4 @@ variable "enable_premium_storage" {
   type        = bool
   description = "OPTIONAL.  If true, premium ($$$) storage will be used for the following storage shares: Dali.\nDefaults to false."
   default     = false
-}
-
-variable "storage_account_name" {
-  type        = string
-  description = "OPTIONAL.  If you are attaching to an existing storage account, enter its name here.\nLeave blank if you do not have a storage account.\nIf you enter something here then you must also enter a resource group for the storage account.\nExample entry: my-product-sa"
-  default     = ""
-}
-
-variable "storage_account_resource_group_name" {
-  type        = string
-  description = "OPTIONAL.  If you are attaching to an existing storage account, enter its resource group name here.\nLeave blank if you do not have a storage account.\nIf you enter something here then you must also enter a name for the storage account."
-  default     = ""
 }

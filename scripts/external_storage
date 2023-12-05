@@ -9,7 +9,7 @@ else
    #echo "DEBUG: EXITING because ignore_external_storage is NOT true."
     while [ ! -e "$repopath/storage/data/config.json" ];do
        echo "This file does not exist, yet: $repopath/storage/data/config.json"
-       sleep 10;
+       sleep 20;
     done
     exit 0;
 fi
