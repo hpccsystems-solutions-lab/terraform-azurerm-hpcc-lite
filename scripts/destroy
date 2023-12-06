@@ -1,6 +1,6 @@
 #!/bin/bash
-thisdir=$(d=`dirname $0`;cd $d;pwd)
-repodir=`echo $thisdir|sed "s/\/scripts//"`
+thisdir=$(d=$(dirname $0);cd $d;pwd)
+repodir=$(echo $thisdir|sed "s/\/scripts//")
 #========================================================================
 function assert_fail () {
     echo ">>>>>>>>>>>>>>>>>>> EXECUTING: $*"
@@ -21,19 +21,19 @@ elif [ "$1" == "aks" ];then
   assert_fail scripts/destroy hpcc
 fi
 cd $repodir/$1;
-name=$(basename `pwd`)
+name=$(basename $(pwd))
 if [ "$name" == "hpcc" ];then
   assert_fail kubectl delete pods --all --force
 fi
 if [ ! -d "$HOME/tflogs" ];then
   mkdir $HOME/tflogs
 fi
-plan=`$thisdir/mkplan ${name}_destroy.plan`
+plan=$($thisdir/mkplan ${name}_destroy.plan)
 if [ ! -d "data" ] || [ ! -f "data/config.json" ]; then echo "$name is already destroyed";exit 0; fi
 
 echo "=============== Destroying $name. Executing 'terraform destroy' ===============";
 assert_fail terraform destroy -auto-approve
 rm -vr data
 cd ..
-r=`terraform state list|egrep "_$name"`
+r=$(terraform state list|egrep "_$name")
 terraform state rm $r

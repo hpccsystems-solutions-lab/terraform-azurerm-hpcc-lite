@@ -6,7 +6,7 @@ else
 fi
 echo "In $0. Inputted resource groups is \"$rg\"";
 sleep 20;
-estos=`az resource list --resource-group $rg|egrep "id\":.*storageAccounts\/hpcc"|sed "s/^ *\"id\": \"//"|sed "s/\", *$//"`
+estos=$(az resource list --resource-group $rg|egrep "id\":.*storageAccounts\/hpcc"|sed "s/^ *\"id\": \"//"|sed "s/\", *$//")
 if [ "$estos" == "" ];then
   echo "In $0 There are no hpcc storage accounts in the resource group, $rg. EXITING.";exit;
 fi

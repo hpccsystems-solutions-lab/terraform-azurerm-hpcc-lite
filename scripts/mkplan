@@ -1,7 +1,7 @@
 #!/bin/bash
-month_date=`date -d "$D" '+%Y';date -d "$D" '+%m';date -d "$D" '+%d'`
+month_date=$(date -d "$D" '+%Y';date -d "$D" '+%m';date -d "$D" '+%d')
 timezone_difference=6
-H=`date +'%H'`
+H=$(date +'%H')
 #echo "H=\"$H\", timezone_difference=\"$timezone_difference\"" 1>&2
 if [ $H -le $timezone_difference ];then
    H=$((25 - $timezone_difference));
@@ -10,17 +10,17 @@ else
 fi
 #echo "After timezone_difference is subtracted: H=\"$H\"" 1>&2
 printf -v H "%02d" $H
-M=`date +'%M'`
+M=$(date +'%M')
 printf -v M "%02d" $M
-month_date=`echo $month_date|sed "s/  *//g"`;
-month_date="$month_date-$H$M";
+month_date=$(echo $month_date|sed "s/  *//g")
+month_date="$month_date-$H$M"
 repo_name="";
 if [ $# -gt 0 ];then
   repo_name=$1
 else
-  cdir=`pwd`
-  reHOME=`echo $HOME|sed "s/[/]/./g"`
-  repo_name=`echo $cdir|sed "s/^$reHOME.//"|sed "s/[/]/-/g"`;
+  cdir=$(pwd)
+  reHOME=$(echo $HOME|sed "s/[/]/./g")
+  repo_name=$(echo $cdir|sed "s/^$reHOME.//"|sed "s/[/]/-/g")
   #echo "DEBUG: No arguments: cdir=\"$cdir\", reHOME=\"$reHOME\", repo_name=\"$repo_name\"" 1>&2
 fi
 plan_name="$HOME/tflogs/$repo_name-$month_date.plan"

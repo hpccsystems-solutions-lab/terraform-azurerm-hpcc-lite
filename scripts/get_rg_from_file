@@ -6,8 +6,8 @@ else
   exit 1
 fi
 
-rg=`sed "/\"resource_group\": *\"|\"resource_group_name\": *\"/q" $config_file|sed "s/^.*\"resource_group_name\": *\"//"|sed "s/\".*$//"`
+rg=$(sed "/\"resource_group\": *\"|\"resource_group_name\": *\"/q" $config_file|sed "s/^.*\"resource_group_name\": *\"//"|sed "s/\".*$//")
 if [[ "$rg" != *"hpccplatform"* ]];then
-  rg=`sed "/\"resource_group\": *\"|\"resource_group_name\": *\"/q" $config_file|sed "s/^.*\"resource_group\": *\"//"|sed "s/\".*$//"`
+  rg=$(sed "/\"resource_group\": *\"|\"resource_group_name\": *\"/q" $config_file|sed "s/^.*\"resource_group\": *\"//"|sed "s/\".*$//")
 fi
 echo $rg

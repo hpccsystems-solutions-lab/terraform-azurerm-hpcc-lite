@@ -1,5 +1,5 @@
 #!/bin/bash
-thisdir=`pwd`/`dirname $0`
+thisdir=$(pwd)/$(dirname $0)
 repodir=$(echo $thisdir|sed "s/\/scripts\/*//")
 if [ "$1" != "" ] && [[ $1 =~ hpcc|aks|vnet|storage ]];then
   name=$1
@@ -33,8 +33,8 @@ function assert_fail () {
 # If kubernetes cluster doesn't exist then make sure aks/data/config.json 
 # and hpcc/data/config.json doesn't exist
 # Delete both hpcc/data and aks/data if kubernetes cluster doesn't exist
-ns=`kubectl get ns 2>&1|egrep -v NAME|sed "s/  *.*$//"`
-pods=`kubectl get pods 2>&1`
+ns=$(kubectl get ns 2>&1|egrep -v NAME|sed "s/  *.*$//")
+pods=$(kubectl get pods 2>&1)
 if [[ "$ns" == *"Unable"* ]];then # kubenetes doesn't exist of there are no namespaces
   rm -vrf hpcc/data;cd hpcc; rm *.tfstate*;rm .terraform.lock.hcl ;sudo rm -r .terraform;cd ..
   rm -vrf aks/data;cd aks; rm *.tfstate*;rm .terraform.lock.hcl ;sudo rm -r .terraform;cd ..
@@ -54,8 +54,8 @@ fi
 for dir in aks vnet storage;do
   if [ -e "$dir/data/config.json" ];then
     # Get resource group name from file
-    rg=`$thisdir/get_rg_from_file $dir/data/config.json`
-    rgexist=`az group exists --name $rg`
+    rg=$($thisdir/get_rg_from_file $dir/data/config.json)
+    rgexist=$(az group exists --name $rg)
     if [ "$rgexist" == "false" ]; then
        echo "In $0. $dir resource group, \"$rg\" does not exists. So deleting vnet/data and any tfstate files id $dir."
        rm -vrf $dir/data
@@ -77,7 +77,7 @@ cp -v ../scripts/needed-auto-tfvars-files/metadata.tf .
 if [ -e "../lite.auto.tfvars" ];then 
   # Check if there has been a change since last apply.
   if [ -e "/tmp/${name}.lite.auto.tfvars" ];then
-    tfvarsdiff=`diff /tmp/${name}.lite.auto.tfvars ../lite.auto.tfvars`
+    tfvarsdiff=$(diff /tmp/${name}.lite.auto.tfvars ../lite.auto.tfvars)
   else
     tfvarsdiff=""
   fi
@@ -102,7 +102,7 @@ if [ ! -d "$HOME/tflogs" ];then
   mkdir $HOME/tflogs
 fi
 
-plan=`$thisdir/mkplan deploy_${name}.plan`
+plan=$($thisdir/mkplan deploy_${name}.plan)
 
 if [ "$tfvarsdiff" == "" ] && [ -d "data" ] && [ -f "data/config.json" ]; then echo "Complete! $name is already deployed";exit 0; fi
 
