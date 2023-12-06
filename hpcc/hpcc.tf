@@ -1,5 +1,5 @@
 module "hpcc" {
-  source = "git@github.com:hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git?ref=add-ecl-code-security-misc"
+  source = "git@github.com:hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git"
 
   environment = local.metadata.environment
   productname = local.metadata.product_name
