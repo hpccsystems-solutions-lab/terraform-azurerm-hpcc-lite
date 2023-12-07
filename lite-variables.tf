@@ -72,6 +72,16 @@ variable "aks_capacity" {
     thor_min        = optional(number, 3)
     thor_max        = optional(number, 6)
   })
+  default  = {
+    roxie_min       = 1
+    roxie_max       = 3
+    serv_min        = 1
+    serv_max        = 3
+    spray_min       = 3
+    spray_max       = 6
+    thor_min        = 3
+    thor_max        = 6
+  }
 }
 #===== end of aks variables =====
 

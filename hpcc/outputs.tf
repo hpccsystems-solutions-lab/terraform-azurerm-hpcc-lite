@@ -1,6 +1,6 @@
 output "eclwatch_url" {
   description = "Print the ECL Watch URL."
-  value       = format("%s.%s:18010",var.a_record_name, var.aks_dns_zone_name)
+  value       = format("https://%s.%s:18010",var.a_record_name, var.aks_dns_zone_name)
 }
 
 output "deployment_resource_group" {
