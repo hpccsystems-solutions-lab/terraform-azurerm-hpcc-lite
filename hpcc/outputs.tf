@@ -9,6 +9,7 @@ output "deployment_resource_group" {
 }
 
 output "external_storage_config_exists" {
+  description = "Print whether external storage exists, i.e. true of false."
   value       = fileexists("../storage/data/config.json") ? true : false
 }
 

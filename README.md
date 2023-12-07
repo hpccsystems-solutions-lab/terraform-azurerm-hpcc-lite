@@ -35,10 +35,24 @@ This repo is a fork of the excellent work performed by Godson Fortil.  The origi
 	1. Use -var arguments on the command line when executing the Terraform tool to set each of the values found in the .tfvars file.  This method is useful if you are driving the creation of the cluster from a script.
 1. After the Kubernetes cluster is deployed, your local `kubectl` tool can be used to interact with it.  At some point during the deployment `kubectl` will acquire the login credentials for the cluster and it will be the current context (so any `kubectl` commands you enter will be directed to that cluster by default).
 
-At the end of a successful deployment these items are output:
-* The URL used to access ECL Watch, `eclwatch_url`.
-* The deployment azure resource group, `deployment_resource_group`.
-* Whether there is external storage or not, `external_storage_config_exists`.
+At the end of a successful deployment these items are output for  aks, hpcc, and vnet:
+* aks
+	* Advisor recommendations or 'none', `advisor_recommendations`.
+	* Location of the aks credentials, `aks_login`.
+	* Name of the Azure Kubernetes Service, `cluster_name`.
+	* Resource group where the cluster is deployed, `cluster_resource_group_name`.
+* hpcc
+	* The URL used to access ECL Watch, `eclwatch_url`.
+	* The deployment azure resource group, `deployment_resource_group`.
+	* Whether there is external storage or not, `external_storage_config_exists`.
+* vnet
+	* Advisor recommendations or 'none', `advisor_recommendations`.
+	* ID of private subnet, `private_subnet_id`.
+	* ID of public subnet, `public_subnet_id`.
+	* ID of route table, `route_table_id`.
+	* Route table name, `route_table_name`.
+	* Virtual network resource group name, `resource_group_name`.
+	* Virtual network name, `vnet_name`.
 
 ## Available Options
 
