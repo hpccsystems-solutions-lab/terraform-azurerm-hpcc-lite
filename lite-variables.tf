@@ -51,7 +51,7 @@ variable "aks_admin_ip_cidr_map" {
 }
 
 variable "aks_node_sizes" {
-  description = "The VM size for each node of each node pool in the HPCC Systems. Example format is '{ roxie = "xlarge", serv = "2xlarge", spray = "xlarge", thor = "xlarge" }'.\nSee https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information."
+  description = "The VM size for each node of each node pool in the HPCC Systems. Example format is '{ roxie = \"xlarge\", serv = \"2xlarge\", spray = \"xlarge\", thor = \"xlarge\" }'.\nSee https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information."
   type = object({
     roxie           = optional(string, "2xlarge")
     serv            = optional(string, "4xlarge")
