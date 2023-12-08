@@ -1,6 +1,6 @@
 output "advisor_recommendations" {
   description = "Advisor recommendations or 'none'."
-  value = data.azurerm_advisor_recommendations.advisor.recommendations == tolist([])? "none" : data.azurerm_advisor_recommendations.advisor.recommendations
+  value = data.azurerm_advisor_recommendations.advisor.recommendations
 }
 
 output "private_subnet_id" {

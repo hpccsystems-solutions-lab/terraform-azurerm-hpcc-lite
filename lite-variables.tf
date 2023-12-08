@@ -63,23 +63,23 @@ variable "aks_node_sizes" {
 variable "aks_capacity" {
   description = "The min and max number of nodes of each node pool in the HPCC Systems. Example format is '{ roxie_min = 1, roxie_max = 3, serv_min = 1, serv_max = 3, spray_min = 1, spray_max = 3, thor_min = 1, thor_max = 3}'."
   type = object({
-    roxie_min       = optional(number, 1)
+    roxie_min       = optional(number, 0)
     roxie_max       = optional(number, 3)
     serv_min        = optional(number, 1)
     serv_max        = optional(number, 3)
-    spray_min       = optional(number, 3)
+    spray_min       = optional(number, 0)
     spray_max       = optional(number, 6)
-    thor_min        = optional(number, 3)
+    thor_min        = optional(number, 0)
     thor_max        = optional(number, 6)
   })
   default  = {
-    roxie_min       = 1
+    roxie_min       = 0
     roxie_max       = 3
     serv_min        = 1
     serv_max        = 3
-    spray_min       = 3
+    spray_min       = 0
     spray_max       = 6
-    thor_min        = 3
+    thor_min        = 0
     thor_max        = 6
   }
 }
