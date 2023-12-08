@@ -34,7 +34,6 @@ output "vnet_name" {
 }
 
 resource "local_file" "output" {
-  description = "File containing the configuration of the virtual network."
   content  = local.config
   filename = "${path.module}/data/config.json"
 

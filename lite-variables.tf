@@ -55,7 +55,7 @@ variable "aks_node_sizes" {
   type = object({
     roxie           = optional(string, "2xlarge")
     serv            = optional(string, "4xlarge")
-    spray           = optional(string, "2xlarge")
+    spray           = optional(string, "large")
     thor            = optional(string, "2xlarge")
   })
 }

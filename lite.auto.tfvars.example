@@ -124,7 +124,7 @@ extra_tags={}
 # Value type: string
 # Updateable: N
 
-aks_node_sizes = { roxie = "2xlarge", serv = "4xlarge", spray = "2xlarge", thor = "2xlarge" }
+aks_node_sizes = { roxie = "2xlarge", serv = "4xlarge", spray = "large", thor = "2xlarge" }
 
 #------------------------------------------------------------------------------
 
