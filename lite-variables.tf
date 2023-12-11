@@ -58,30 +58,23 @@ variable "aks_node_sizes" {
     spray           = optional(string, "large")
     thor            = optional(string, "xlarge")
   })
+  validation {
+      condition = (length(regexall("^[24]*x*large", var.aks_node_sizes.roxie)) == 1) && (length(regexall("^[24]*x*large", var.aks_node_sizes.serv)) == 1) && (length(regexall("^[24]*x*large", var.aks_node_sizes.spray)) == 1) && (length(regexall("^[24]*x*large", var.aks_node_sizes.thor)) == 1)
+
+      error_message = "All aks_node_sizes must be one of the following: large, xlarge, 2xlarge, or 4xlarge."
+  }
+  default  = {
+    roxie       = "xlarge"
+    serv        = "2xlarge"
+    spray       = "large"
+    thor        = "xlarge"
+  }
 }
 
-variable "aks_capacity" {
-  description = "The min and max number of nodes of each node pool in the HPCC Systems. Example format is '{ roxie_min = 1, roxie_max = 3, serv_min = 1, serv_max = 3, spray_min = 1, spray_max = 3, thor_min = 1, thor_max = 3}'."
-  type = object({
-    roxie_min       = optional(number, 0)
-    roxie_max       = optional(number, 3)
-    serv_min        = optional(number, 1)
-    serv_max        = optional(number, 3)
-    spray_min       = optional(number, 0)
-    spray_max       = optional(number, 6)
-    thor_min        = optional(number, 0)
-    thor_max        = optional(number, 6)
-  })
-  default  = {
-    roxie_min       = 0
-    roxie_max       = 3
-    serv_min        = 1
-    serv_max        = 3
-    spray_min       = 0
-    spray_max       = 6
-    thor_min        = 0
-    thor_max        = 6
-  }
+variable "aks_thorpool_max_capacity" {
+  type        = number
+  description = "The max capacity (or node count) of the thorpool. This is calculated and an argument for terraform plan and appy for aks."
+  default     = 2
 }
 #===== end of aks variables =====
 
@@ -181,6 +174,16 @@ variable "thor_num_workers" {
   validation {
     condition     = var.thor_num_workers >= 1
     error_message = "Value must be 1 or more."
+  }
+  default    = 2
+}
+
+variable "thor_worker_cpus" {
+  type        = number
+  description = "The number of CPUs each Thor worker should have.\nMust be 2, 4, 8 or 16. Also, this should be less than 'cpu' in thor node_size."
+  validation {
+    condition     = ((var.thor_worker_cpus == 2) || (var.thor_worker_cpus == 4) || (var.thor_worker_cpus == 8) || (var.thor_worker_cpus == 16))
+    error_message = "Value must be 2, 4, 8, or 16."
   }
   default    = 2
 }

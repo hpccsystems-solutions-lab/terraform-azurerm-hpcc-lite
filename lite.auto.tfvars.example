@@ -87,6 +87,16 @@ thor_max_jobs=2
 
 #------------------------------------------------------------------------------
 
+# The number of CPUs each Thor worker should have.
+# Must be 2, 4, 8 or 16. Also, this should be less than 'cpu' in thor node_size.
+# REQUIRED
+# Value type: number
+# Updateable: N
+
+thor_worker_cpus=2
+
+#------------------------------------------------------------------------------
+
 # The amount of storage reserved for the landing zone in gigabytes.
 # Must be 1 or more.
 # If a storage account is defined (see below) then this value is ignored.

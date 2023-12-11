@@ -8,7 +8,7 @@ resource "null_resource" "deploy_vnet" {
 resource "null_resource" "deploy_aks" {
 
   provisioner "local-exec" {
-    command     = "scripts/deploy aks ${var.my_azure_id}"
+    command     = "scripts/deploy aks ${var.my_azure_id} ${local.thorpool_max_capacity}"
   }
 
   depends_on = [ null_resource.deploy_vnet ]

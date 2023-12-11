@@ -3,18 +3,28 @@ thisdir=$(pwd)/$(dirname $0)
 repodir=$(echo $thisdir|sed "s/\/scripts\/*//")
 if [ "$1" != "" ] && [[ $1 =~ hpcc|aks|vnet|storage ]];then
   name=$1
+  if [ "$name" == "aks" ];then
+    if [ "$2" != "" ];then
+    my_azure_id=$2
+    else
+      echo "ERROR: name=\"$name\". Need a 2nd argument (my_azure_id) but none given.";exit 1;
+    fi
+  fi
+  if [ "$name" == "aks" ];then
+    if [ "$3" != "" ];then
+      thorpool_max_capacity=$3
+    else
+      echo "ERROR: name=\"$name\". Need a 3rd argument (thorpool max capacity) but none given.";exit 1;
+    fi
+  fi
 else
   echo "$0 has no arguments. It must of 1 argument that is 'vnet' or 'storage' or 'aks' or 'hpcc'. EXITING.";exit 1;
 fi
 if [ "$1" == "aks" ];then
-  if [ "$2" != "" ];then
-    my_azure_id=$2
-    cp -v $thisdir/needed-auto-tfvars-files/aks/aks.auto.tfvars.example $repodir/aks/aks.auto.tfvars
-    cp -v $thisdir/needed-auto-tfvars-files/aks/misc.auto.tfvars.example $repodir/aks/misc.auto.tfvars
-    sed -i "s/<my_azure_id>/$my_azure_id/" $repodir/aks/aks.auto.tfvars
-  else
-    echo "In $0. First argument was \"$name\". There should be a 2nd argument (my_azure_id). But it was missing. EXITING.";exit 1;
-  fi
+   my_azure_id=$2
+   cp -v $thisdir/needed-auto-tfvars-files/aks/aks.auto.tfvars.example $repodir/aks/aks.auto.tfvars
+   cp -v $thisdir/needed-auto-tfvars-files/aks/misc.auto.tfvars.example $repodir/aks/misc.auto.tfvars
+   sed -i "s/<my_azure_id>/$my_azure_id/" $repodir/aks/aks.auto.tfvars
 fi
 #========================================================================
 function assert_fail () {
@@ -85,14 +95,18 @@ else
   echo "In $0. The root directory does not have a file called 'lite.aute.tfvars'. It must. EXITING";exit 1;
 fi
 if [ "$name" == "hpcc" ];then
-    echo "Coping root's lite.auto.tfvars to /tmp and $name directory."
+    echo "Coping root's lite.auto.tfvars to /tmp and $name directory. Also, coping root's lite-locals.tf and lite-variables.tf to $name directory."
     cp -v ../lite.auto.tfvars /tmp/${name}.lite.auto.tfvars
     cp -v ../lite.auto.tfvars .
+    cp -v ../lite-locals.tf .
     cp -v ../lite-variables.tf .
 elif [ "$name" == "aks" ] || [ "$name" == "vnet" ] || [ "$name" == "storage" ];then
     egrep "^aks_" ../lite.auto.tfvars > /tmp/${name}.lite.auto.tfvars
     egrep "^aks_" ../lite.auto.tfvars > lite.auto.tfvars
     ../scripts/extract-aks-variables ../lite-variables.tf > lite-variables.tf
+    if [ "$name" == "aks" ];then
+      echo "aks_thorpool_max_capacity=$thorpool_max_capacity" >> lite.auto.tfvars
+    fi
     if [ "$name" == "storage" ];then
        cp -v $thisdir/needed-auto-tfvars-files/storage/storage.auto.tfvars.example ./storage.auto.tfvars
     fi
@@ -105,10 +119,6 @@ fi
 plan=$($thisdir/mkplan deploy_${name}.plan)
 
 if [ "$tfvarsdiff" == "" ] && [ -d "data" ] && [ -f "data/config.json" ]; then echo "Complete! $name is already deployed";exit 0; fi
-
-#if [ "$name" != "vnet" ];then
-# cp -v /tmp/${name}.lite.auto.tfvars .
-#fi
 
 echo "=============== Deploy $name. Executing 'terraform init' ===============";
 assert_fail terraform init 
