@@ -1,5 +1,6 @@
 module "hpcc" {
-  source = "git@github.com:hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git"
+  #source = "git@github.com:hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git"
+  source = "https://github.com/hpccsystems-solutions-lab/tlh-opinionated-terraform-azurerm-hpcc.git"
 
   environment = local.metadata.environment
   productname = local.metadata.product_name

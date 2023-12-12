@@ -1,6 +1,7 @@
 module "aks" {
   depends_on = [random_string.string]
-  source     = "git@github.com:hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git"
+  #source     = "git@github.com:hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git"
+  source     = "https://github.com/hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git"
   #source     = "/home/azureuser/temp/OSS/terraform-azurerm-aks"
 
   providers = {
