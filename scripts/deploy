@@ -5,7 +5,8 @@ if [ "$1" != "" ] && [[ $1 =~ hpcc|aks|vnet|storage ]];then
   name=$1
   if [ "$name" == "aks" ];then
     if [ "$2" != "" ];then
-    my_azure_id=$2
+      my_azure_id=$2
+      echo "Second argument, i.e. \$2(or my_azure_id)=\"$2\""
     else
       echo "ERROR: name=\"$name\". Need a 2nd argument (my_azure_id) but none given.";exit 1;
     fi
@@ -13,6 +14,7 @@ if [ "$1" != "" ] && [[ $1 =~ hpcc|aks|vnet|storage ]];then
   if [ "$name" == "aks" ];then
     if [ "$3" != "" ];then
       thorpool_max_capacity=$3
+      #echo "DEBUG: name=\"$name\", \$3(or thorpool_max_capacity)=\"$3\"";exit
     else
       echo "ERROR: name=\"$name\". Need a 3rd argument (thorpool max capacity) but none given.";exit 1;
     fi
