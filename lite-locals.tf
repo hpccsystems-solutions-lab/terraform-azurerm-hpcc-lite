@@ -5,19 +5,19 @@ output "thor_num_workers" {
    value = var.thor_num_workers
 }
 output "thor_node_size" {
-   value = var.aks_node_sizes.thor
+   value = local.aks_node_sizes.thor
 }
 output "thor_ns_spec" {
-   value = local.ns_spec[var.aks_node_sizes.thor]
+   value = local.ns_spec[local.aks_node_sizes.thor]
 }
 output "thor_worker_cpus" {
    value = var.thor_worker_cpus
 }
 output "thorWorkersPerNode" {
-   value = "local.ns_spec[${var.aks_node_sizes.thor}].cpu / var.thor_worker_cpus = ${local.thorWorkersPerNode}"
+   value = "local.ns_spec[${local.aks_node_sizes.thor}].cpu / var.thor_worker_cpus = ${local.thorWorkersPerNode}"
 }
 output "thor_worker_ram" {
-   value = "local.ns_spec[${var.aks_node_sizes.thor}].ram / local.thorWorkersPerNode = ${local.thor_worker_ram}"
+   value = "local.ns_spec[${local.aks_node_sizes.thor}].ram / local.thorWorkersPerNode = ${local.thor_worker_ram}"
 }
 output "nodesPer1Job" {
    value = "var.thor_num_workers /  local.thorWorkersPerNode = ${local.nodesPer1Job}"
@@ -26,6 +26,13 @@ output "thorpool_max_capacity" {
    value = "local.nodesPer1Job * var.thor_max_jobs = ${local.thorpool_max_capacity}"
 }
 locals {
+  aks_node_sizes = {
+    roxie       = var.aks_roxie_node_size
+    serv        = var.aks_serv_node_size
+    spray       = var.aks_spray_node_size
+    thor        = var.aks_thor_node_size
+  }
+
   ns_spec = {
     "large" = {
        cpu = 2
@@ -45,11 +52,11 @@ locals {
     }
   }
 
-  twpn = "${ local.ns_spec[var.aks_node_sizes.thor].cpu / var.thor_worker_cpus }"
-  thorWorkersPerNode = ceil(local.twpn) == local.twpn? local.twpn : "local.thorWorkersPerNode, ${local.twpn}, is not an integer because local.ns_spec[${var.aks_node_sizes.thor}].cpu, ${local.ns_spec[var.aks_node_sizes.thor].cpu}, is not a multiple of var.thor_worker_cpus, ${var.thor_worker_cpus}."
+  twpn = "${ local.ns_spec[local.aks_node_sizes.thor].cpu / var.thor_worker_cpus }"
+  thorWorkersPerNode = ceil(local.twpn) == local.twpn? local.twpn : "local.thorWorkersPerNode, ${local.twpn}, is not an integer because local.ns_spec[${local.aks_node_sizes.thor}].cpu, ${local.ns_spec[local.aks_node_sizes.thor].cpu}, is not a multiple of var.thor_worker_cpus, ${var.thor_worker_cpus}."
 
-  twr = "${local.ns_spec[var.aks_node_sizes.thor].ram / local.thorWorkersPerNode }"
-  thor_worker_ram = ceil(local.twr) == local.twr? local.twr : "local.thor_worker_ram, ${local.twr}, is not an integer because local.ns_spec[${var.aks_node_sizes.thor}].ram, ${local.ns_spec[var.aks_node_sizes.thor].ram}, is not a multiple of local.thorWorkersPerNode, ${local.thorWorkersPerNode}."
+  twr = "${local.ns_spec[local.aks_node_sizes.thor].ram / local.thorWorkersPerNode }"
+  thor_worker_ram = ceil(local.twr) == local.twr? local.twr : "local.thor_worker_ram, ${local.twr}, is not an integer because local.ns_spec[${local.aks_node_sizes.thor}].ram, ${local.ns_spec[local.aks_node_sizes.thor].ram}, is not a multiple of local.thorWorkersPerNode, ${local.thorWorkersPerNode}."
 
   np1j = "${var.thor_num_workers /  local.thorWorkersPerNode }"
   nodesPer1Job = ceil(local.np1j) == local.np1j? local.np1j : "local.nodesPer1Job, ${local.np1j}, is not an integer because var.thor_num_workers, ${var.thor_num_workers}, is not a multiple of local.thorWorkersPerNode, ${local.thorWorkersPerNode}."

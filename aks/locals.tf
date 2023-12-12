@@ -11,7 +11,7 @@ locals {
     node_os           = "ubuntu"
     node_type         = "gp"
     node_type_version = "v2"
-    node_size         = var.aks_node_sizes.roxie
+    node_size         = var.aks_roxie_node_size
     single_group      = false
     min_capacity      = 1
     max_capacity      = 3
@@ -29,7 +29,7 @@ locals {
       node_os           = "ubuntu"
       node_type         = "gp"      # gp, gpd, mem, memd, stor
       node_type_version = "v2"      # v1, v2
-      node_size         = var.aks_node_sizes.thor
+      node_size         = var.aks_thor_node_size
       single_group      = false
       min_capacity      = 1
       max_capacity      = var.aks_thorpool_max_capacity
@@ -46,7 +46,7 @@ locals {
       node_os           = "ubuntu"
       node_type         = "gpd"
       node_type_version = "v1"
-      node_size         = var.aks_node_sizes.serv
+      node_size         = var.aks_serv_node_size
       single_group      = false
       min_capacity      = 1
       max_capacity      = 3
@@ -63,7 +63,7 @@ locals {
       node_os           = "ubuntu"
       node_type         = "gp"
       node_type_version = "v1"
-      node_size         = var.aks_node_sizes.spray
+      node_size         = var.aks_spray_node_size
       single_group      = false
       min_capacity      = 0
       max_capacity      = 6

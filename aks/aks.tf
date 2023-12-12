@@ -1,8 +1,8 @@
 module "aks" {
   depends_on = [random_string.string]
   #source     = "git@github.com:hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git"
-  source     = "github.com/hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git"
-  #source     = "/home/azureuser/temp/OSS/terraform-azurerm-aks"
+  #source     = "github.com/hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git"
+  source     = "/home/azureuser/temp/OSS/terraform-azurerm-aks"
 
   providers = {
     kubernetes = kubernetes.default
@@ -30,7 +30,8 @@ module "aks" {
 
   dns_resource_group_lookup = { "${local.internal_domain}" = local.dns_resource_group }
 
-  admin_group_object_ids = [data.azuread_group.subscription_owner.object_id]
+  #admin_group_object_ids = [data.azuread_group.subscription_owner.object_id]
+  admin_group_object_ids = null
 
   rbac_bindings = var.rbac_bindings
 

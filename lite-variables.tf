@@ -50,31 +50,54 @@ variable "aks_admin_ip_cidr_map" {
   default     = {}
 }
 
-variable "aks_node_sizes" {
-  description = "The VM size for each node of each node pool in the HPCC Systems. Example format is '{ roxie = \"xlarge\", serv = \"2xlarge\", spray = \"xlarge\", thor = \"xlarge\" }'.\nSee https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information."
-  type = object({
-    roxie           = optional(string, "xlarge")
-    serv            = optional(string, "2xlarge")
-    spray           = optional(string, "large")
-    thor            = optional(string, "xlarge")
-  })
-  validation {
-      condition = (length(regexall("^[24]*x*large", var.aks_node_sizes.roxie)) == 1) && (length(regexall("^[24]*x*large", var.aks_node_sizes.serv)) == 1) && (length(regexall("^[24]*x*large", var.aks_node_sizes.spray)) == 1) && (length(regexall("^[24]*x*large", var.aks_node_sizes.thor)) == 1)
-
-      error_message = "All aks_node_sizes must be one of the following: large, xlarge, 2xlarge, or 4xlarge."
-  }
-  default  = {
-    roxie       = "xlarge"
-    serv        = "2xlarge"
-    spray       = "large"
-    thor        = "xlarge"
-  }
-}
-
 variable "aks_thorpool_max_capacity" {
   type        = number
   description = "The max capacity (or node count) of the thorpool. This is calculated and an argument for terraform plan and appy for aks."
   default     = 2
+}
+
+variable "aks_roxie_node_size" {
+  type        = string
+  description = "The size of the roxie nodes. Possibilities are 'large', 'xlarge', '2xlarge', and '4xlarge'."
+  validation {
+      condition = (length(regexall("^[24]*x*large", var.aks_roxie_node_size)) == 1)
+
+      error_message = "All node sizes must be one of the following: large, xlarge, 2xlarge, or 4xlarge."
+  }
+  default     = "xlarge"
+}
+
+variable "aks_serv_node_size" {
+  type        = string
+  description = "The size of the serv nodes. Possibilities are 'large', 'xlarge', '2xlarge', and '4xlarge'."
+  validation {
+      condition = (length(regexall("^[24]*x*large", var.aks_serv_node_size)) == 1)
+
+      error_message = "All node sizes must be one of the following: large, xlarge, 2xlarge, or 4xlarge."
+  }
+  default     = "2xlarge"
+}
+
+variable "aks_spray_node_size" {
+  type        = string
+  description = "The size of the spray nodes. Possibilities are 'large', 'xlarge', '2xlarge', and '4xlarge'."
+  validation {
+      condition = (length(regexall("^[24]*x*large", var.aks_spray_node_size)) == 1)
+
+      error_message = "All node sizes must be one of the following: large, xlarge, 2xlarge, or 4xlarge."
+  }
+  default     = "large"
+}
+
+variable "aks_thor_node_size" {
+  type        = string
+  description = "The size of the thor nodes. Possibilities are 'large', 'xlarge', '2xlarge', and '4xlarge'."
+  validation {
+      condition = (length(regexall("^[24]*x*large", var.aks_thor_node_size)) == 1)
+
+      error_message = "All node sizes must be one of the following: large, xlarge, 2xlarge, or 4xlarge."
+  }
+  default     = "xlarge"
 }
 #===== end of aks variables =====
 

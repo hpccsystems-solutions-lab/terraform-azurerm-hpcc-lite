@@ -19,6 +19,7 @@ This repo is a fork of the excellent work performed by Godson Fortil.  The origi
 * <font color="red">**Azure CLI**</font> To work with Azure, you will need to install the Azure Command Line tools.  Instructions can be found at [https://docs.microsoft.com/en-us/cli/azure/install-azure-cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).  Even if you think you won't be working with Azure, this module does leverage the command line tools to manipulate network security groups within kubernetes clusters.  TL;DR: Make sure you have the command line tools installed.
 
 * To successfully create everything you will need to have Azure's `Contributor` role plus access to `Microsoft.Authorization/*/Write` and `Microsoft.Authorization/*/Delete` permissions on your subscription.  You may have to create a custom role for this.  Of course, Azure's `Owner` role includes everything so if you're the subscription's owner then you're good to go.
+* If you run the terraform on an azure VM, then the azure VM must have EncryptionAtHost enabled. You can do this by: 1) Stopping your azure VM; 2) click on `Disk` in the Overview of the azure VM; 3) click on the tab, `Additional Settings`; 4) selecting `yes` radio button under `Encryption at host`.
 
 ## Installing/Using This Module
 
@@ -96,7 +97,10 @@ The following options should be set in your `lite.auto.tfvars` file (or entered 
 | `aks_dns_zone_resource_group_name` | string | Name of the resource group of the above dns zone. Example entry: "app-dns-prod-eastus2" | N |
 | `aks_enable_roxie` | boolean | Enable ROXIE? This will also expose port 8002 on the cluster. Example entry: false | Y |
 | `aks_logging_monitoring_enabled` | boolean | This variable enable you to ask for logging and monitoring of the kubernetes and hpcc cluster (true means enable logging and monitoring, false means don't. | N |
-| `aks_node_sizes ` | map of string | The VM size for each node of each node pool in the HPCC Systems. Example format is '{ roxie = "xlarge", serv = "2xlarge", spray = "xlarge", thor = "xlarge" }'. See https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information. | N |
+| `aks_roxie_node_size ` | string | The VM size for each roxie node in the HPCC Systems. Example format `aks_roxie_node-size`="xlarge".| N |
+| `aks_serv_node_size ` | string | The VM size for each serv node in the HPCC Systems. Example format `aks_serv_node-size`="2xlarge".| N |
+| `aks_spray_node_size ` | string | The VM size for each spray node in the HPCC Systems. Example format `aks_spray_node-size`="2xlarge".| N |
+| `aks_thor_node_size ` | string | The VM size for each thor node in the HPCC Systems. Example format `aks_thor_node-size`="2xlarge".| N |
 | `aks_capacity ` | map of number | The min and max number of nodes of each node pool in the HPCC Systems. Example format is '{ roxie_min = 1, roxie_max = 3, serv_min = 1, serv_max = 3, spray_min = 1, spray_max = 3, thor_min = 1, thor_max = 3}'. | N |
 | `authn_htpasswd_filename` | string | If you would like to use htpasswd to authenticate users to the cluster, enter the filename of the htpasswd file.  This file should be uploaded to the Azure 'dllsshare' file share in order for the HPCC processes to find it. A corollary is that persistent storage is enabled. An empty string indicates that htpasswd is not to be used for authentication. Example entry: "htpasswd.txt" | Y |
 | `enable_code_security` | boolean | Enable code security? If true, only signed ECL code will be allowed to create embedded language functions, use PIPE(), etc. Example entry: false | Y |

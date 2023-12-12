@@ -128,13 +128,39 @@ extra_tags={}
 
 #------------------------------------------------------------------------------
 
-# The VM size for each node in the HPCC Systems node pool.
-# Recommend "Standard_B4ms" or better.
-# See https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general for more information.
+# The VM size for each roxie node in the HPCC Systems node pool.
+# Possible values are: large, xlarge, 2xlarge, and 4xlarge
 # Value type: string
 # Updateable: N
 
-aks_node_sizes = { roxie = "xlarge", serv = "2xlarge", spray = "large", thor = "xlarge" }
+aks_roxie_node_size = "xlarge"
+
+#------------------------------------------------------------------------------
+
+# The VM size for each serv node in the HPCC Systems node pool.
+# Possible values are: large, xlarge, 2xlarge, and 4xlarge
+# Value type: string
+# Updateable: N
+
+aks_serv_node_size = "2xlarge"
+
+#------------------------------------------------------------------------------
+
+# The VM size for each spray node in the HPCC Systems node pool.
+# Possible values are: large, xlarge, 2xlarge, and 4xlarge
+# Value type: string
+# Updateable: N
+
+aks_spray_node_size = "large"
+
+#------------------------------------------------------------------------------
+
+# The VM size for each thor node in the HPCC Systems node pool.
+# Possible values are: large, xlarge, 2xlarge, and 4xlarge
+# Value type: string
+# Updateable: N
+
+aks_thor_node_size = "xlarge"
 
 #------------------------------------------------------------------------------
 
