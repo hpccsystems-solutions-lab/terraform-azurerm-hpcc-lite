@@ -1,8 +1,8 @@
 module "aks" {
   depends_on = [random_string.string]
   #source     = "git@github.com:hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git"
-  #source     = "github.com/hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git"
-  source     = "/home/azureuser/temp/OSS/terraform-azurerm-aks"
+  source     = "github.com/hpccsystems-solutions-lab/tlh-oss-terraform-azurerm-aks.git"
+  #source     = "/home/azureuser/temp/OSS/terraform-azurerm-aks"
 
   providers = {
     kubernetes = kubernetes.default
