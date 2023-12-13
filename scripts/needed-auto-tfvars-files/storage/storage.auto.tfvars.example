@@ -3,11 +3,6 @@ storage_accounts = { # storage account
     delete_protection         = false //Set to false to allow deletion
     prefix_name               = "adminsvc1"
     storage_type              = "azurefiles"
-    #authorized_ip_ranges = { anyone = "97.118.251.104" }
-    #authorized_ip_ranges = { anyone = "209.243.55.98" }
-    #authorized_ip_ranges = { anyone = "20.96.186.106" }
-    #authorized_ip_ranges      = { anyone = "97.118.251.104" }
-    #authorized_ip_ranges      = { anyone = "0.0.0.0/0" }
     authorized_ip_ranges      = {}
     replication_type          = "ZRS"
     subnet_ids                = {}
@@ -33,11 +28,6 @@ storage_accounts = { # storage account
     delete_protection                    = false //Set to false to allow deletion
     prefix_name                          = "adminsvc2"
     storage_type                         = "blobnfs"
-    #authorized_ip_ranges = { anyone = "97.118.251.104" }
-    #authorized_ip_ranges = { anyone = "209.243.55.98" }
-    #authorized_ip_ranges = { anyone = "20.96.186.106" }
-    #authorized_ip_ranges      = { anyone = "97.118.251.104" }
-    #authorized_ip_ranges      = { anyone = "0.0.0.0/0" }
     authorized_ip_ranges                 = {}
     replication_type                     = "ZRS"
     subnet_ids                           = {}
@@ -90,20 +80,13 @@ storage_accounts = { # storage account
     delete_protection                    = false //Set to false to allow deletion
     prefix_name                          = "data1"
     storage_type                         = "blobnfs"
-    #authorized_ip_ranges = { anyone = "97.118.251.104" }
-    #authorized_ip_ranges = { anyone = "209.243.55.98" }
-    #authorized_ip_ranges = { anyone = "20.96.186.106" }
-    #authorized_ip_ranges      = { anyone = "97.118.251.104" }
-    #authorized_ip_ranges      = { anyone = "0.0.0.0/0" }
     authorized_ip_ranges                 = {}
     replication_type                     = "ZRS"
-    #replication_type                     = "GRS"
     subnet_ids                           = {}
     blob_soft_delete_retention_days      = 7
     container_soft_delete_retention_days = 7
     access_tier                          = "Hot"
     account_kind                         = "StorageV2"
-    #account_kind                         = "BlobStorage"
     account_tier                         = "Standard"
 
     planes = {
@@ -122,20 +105,13 @@ storage_accounts = { # storage account
     delete_protection                    = false //Set to false to allow deletion
     prefix_name                          = "data2"
     storage_type                         = "blobnfs"
-    #authorized_ip_ranges = { anyone = "97.118.251.104" }
-    #authorized_ip_ranges = { anyone = "209.243.55.98" }
-    #authorized_ip_ranges = { anyone = "20.96.186.106" }
-    #authorized_ip_ranges      = { anyone = "97.118.251.104" }
-    #authorized_ip_ranges      = { anyone = "0.0.0.0/0" }
     authorized_ip_ranges                 = {}
     replication_type                     = "ZRS"
-    #replication_type                     = "LRS"
     subnet_ids                           = {}
     blob_soft_delete_retention_days      = 7
     container_soft_delete_retention_days = 7
     access_tier                          = "Hot"
     account_kind                         = "StorageV2"
-    #account_kind                         = "BlobStorage"
     account_tier                         = "Standard"
 
     planes = {

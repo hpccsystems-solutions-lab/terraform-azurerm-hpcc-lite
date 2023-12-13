@@ -32,7 +32,7 @@ aks_dns_zone_resource_group_name="<dns zone resource group name>"
 #------------------------------------------------------------------------------
 
 # The version of HPCC Systems to install.
-# Only versions in nn.nn.nn format are supported.
+# Only versions in nn.nn.nn format the 'latest' are supported.
 # Value type: string
 # Updateable: Y
 
@@ -84,16 +84,6 @@ thor_num_workers=2
 # Updateable: Y
 
 thor_max_jobs=2
-
-#------------------------------------------------------------------------------
-
-# The number of CPUs each Thor worker should have.
-# Must be 2, 4, 8 or 16. Also, this should be less than 'cpu' in thor node_size.
-# REQUIRED
-# Value type: number
-# Updateable: N
-
-thor_worker_cpus=2
 
 #------------------------------------------------------------------------------
 

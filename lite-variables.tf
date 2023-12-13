@@ -201,16 +201,6 @@ variable "thor_num_workers" {
   default    = 2
 }
 
-variable "thor_worker_cpus" {
-  type        = number
-  description = "The number of CPUs each Thor worker should have.\nMust be 2, 4, 8 or 16. Also, this should be less than 'cpu' in thor node_size."
-  validation {
-    condition     = ((var.thor_worker_cpus == 2) || (var.thor_worker_cpus == 4) || (var.thor_worker_cpus == 8) || (var.thor_worker_cpus == 16))
-    error_message = "Value must be 2, 4, 8, or 16."
-  }
-  default    = 2
-}
-
 ###############################################################################
 # Optional variables
 ###############################################################################

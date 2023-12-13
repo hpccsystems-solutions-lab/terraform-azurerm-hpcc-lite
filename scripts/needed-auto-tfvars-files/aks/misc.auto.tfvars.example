@@ -9,14 +9,3 @@ resource_groups = { # rg
 
 # # auto_connect - Automatically connect to the kubernetes cluster from the host machine.
 auto_connect = true
-
-# # disable_naming_conventions - Disable naming conventions
-# # disable_naming_conventions = true 
-
-# azure_auth = {
-#   #   AAD_CLIENT_ID     = ""
-#   #   AAD_CLIENT_SECRET = ""
-#   #   AAD_TENANT_ID     = ""
-#   #   AAD_PRINCIPAL_ID  = ""
-#   SUBSCRIPTION_ID = ""
-# }

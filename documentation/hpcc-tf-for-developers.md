@@ -13,6 +13,7 @@ Here is the root directory's contents (<font color="blue">**blue**</font> names 
 
 |Entry Name|Description|
 |:-----|:----------|
+| `lite-locals.tf` | Contains variables used my `hpcc` and `aks` |
 | `lite-variables.tf` | Contains all input variables |
 | `lite.auto.tfvars.example` |Is an example .auto.tfvars file |
 | `main.tf` | Contains most of the terraform code that deploys all components of system |
@@ -86,39 +87,31 @@ The following table tells what files and subdirectories and in the `aks` subdire
 
 |aks subdirectory entry name|description|
 |:------------------------------|:----------|
-| `aks.auto.tfvars` | This file is copied to the `aks` subdirectory when the `deploy` script is executed to deploy `aks`. This file contains `rbac_bindings` is one of this file's variables which contains the variable, `my_azure_id` which is the object id of the user's azure account. This variable is given its value by the script `deploy`.|
 | `aks.tf` | This file contains most of the terraform code needed to deploy `aks`. The main module in this file is the `aks` module. |
-| `automation.tf` | This file contains the terraform code for scheduling the stopping and/or starting of the Kubernetes cluster. |
-| <font color="blue">`data`<\font> | This directory and its contents, `config.json`, are created after the `aks` cluster is successfully deployed. |
 | `data.tf` | This file contains `data` statements that gets resources needed that already exist. |
 | `lite-locals.tf` | This file contains local variables that need variables given in lite.auto.tfvars. In Godson Fortil's repository, which this terraform code was forked, all the variables in this file were input variables defined in `variables.tf`. |
-| `lite-variables.tf` | This file contains the definition of all variables in `lite.auto.tfvars`. This is a subset of the root directory's lite-variables.tf use by `aks`. This file was copied to the `aks` directory by the `deploy` script. |
-| `lite.auto.tfvars` | This file contains all the variables (and their values) whose name beings with `aks_`. These variables and their values are copied from the lite.auto.tfvars file in the root directory. The copy is done by the script, `deploy`. |
 | `locals.tf` | This file contains local variables that were originally in Godson Fortil's repository. |
 | `main.tf` | This file contains resources and modules needed for the deployment. They are: `resource "random_integer" "int`, `resource "random_string" "string`, `module "subscription`, `module "naming`, `module "metadata`, `module "resource_groups`, `resource "null_resource" "az`. |
-| `misc.auto.tfvars` | This file is copied to the `aks` subdirectory when the `deploy` script is executed to deploy `aks`. |
 | `outputs.tf` | This file contains `output` statement which outputs the following: `advisor_recommendations`,`aks_login`,`cluster_name`,`hpcc_log_analytics_enabled`,`cluster_resource_group_name`. |
 | `providers.tf` | This file contains the following providers: `azurerm`,`azuread`,`kubernetes`,`kubernetes`,`kubectl`,`kubectl`,`helm`,`helm`,`shell`. |
 | `variables.tf` | This file contains the variables described in the next table. |
 | `versions.tf` | This file gives the version needed of each provider. |
+| <font color="blue">`scripts`</font> | This directory contains scripts used in the `aks` terraform code. |
 
 ## hpcc subdirectory
 
-The following table tells what files and subdirectories and in the hpcc subdirectory. The deployment of an hpcc cluster happens in this directory. If one deploys from the root directory, the `deploy` script goes to this directory to deploy an hpcc cluster. Also, if you deploy an hpcc cluster manually you do it from this directory.
+The following table tells what files and subdirectories are in the hpcc subdirectory. The deployment of an hpcc cluster happens in this directory. If one deploys from the root directory, the `deploy` script goes to this directory to deploy an hpcc cluster. Also, if you deploy an hpcc cluster manually you do it from this directory.
 
 |hpcc subdirectory entry name|description|
 |:--------------------------------|:----------|
 | `data.tf` | Contains `data` statements providing information about existing resources. |
 | `hpcc.tf` | Contains the `hpcc` module which does most of the work of deploying an hpcc cluster. |
-| `lite-locals.tf` | Contains variables that use lite-variables.tf variables. The contents was in .auto.tfvars of Godson's terraform-azurerm-hpcc, branch HPCC-27615 (which this terraform code is a fork). |
-| `lite-variables.tf` | Contains all variables used for easy deployment. This file is copied in the hpcc directory by the `deploy` script. |
-| `lite.auto.tfvars` | Contains alls the variables used for easy deployment with values of the user. This file is copied in the hpcc directory by the `deploy` script. |
 | `locals.tf` | Contains local variables used in the deployment of the hpcc cluster. Variables in this file also use some of the easy deploy variables in lite-variables.tf. |
 | `main.tf` | Contains modules and resources needed for the deployment of the hpcc cluster. |
 | `outputs.tf` | Contains output statements that show the user important information, like the eclwatch url and the resource group used by most of the resources. |
 | `providers.tf` | Contains providers needed for the hpcc cluster deployment. Also, some of these providers (`kubernetes` and `kubectl`) get credentials for the Kubernetes cluster for authenication. |
 | `versions.tf` | Contains the versions needed for all providers. |
-| <font color="blue">`data`</font> | This directory contains the file `config.json` which is created when the hpcc cluster successfully deploys. |
+| <font color="blue">`scripts`</font> | This directory contains scripts used by the `hpcc` terraform code. |
 
 ## storage subdirectory
 
@@ -126,16 +119,14 @@ The following table tells what files and subdirectories and in the `storage` sub
 
 |storage subdirectory entry name|description|
 |:--------------------------------|:----------|
+| `README.md` | Contains a description of the `storage` module. |
 | `data.tf` | Contains `data` statements providing information about existing resources. |
-| `lite-variables.tf` | This file contains the definition of all variables in `lite.auto.tfvars`. This is a subset of the root directory's lite-variables.tf use by `storage`. This file was copied to the `aks` directory by the `deploy` script. |
 | `locals.tf` | Contains local variables used in the deployment of the `storage`. Variables in this file also use some of the easy deploy variables in lite-variables.tf. |
 | `main.tf` | Contains only the `storage` module |
 | `outputs.tf` | Contains only the resource `local_file` which outputs to a file config.json. This is done only when on a successful deployment of `storage`. |
 | `providers.tf` | Contains only 2 providers: azurerm and azuread |
-| `storage.auto.tfvars` | Contains variables that describe the storage accounts that are created. This file is copied to the `storage` directory by the `deploy` script. |
 | `variables.tf` | Contains variables needed for `storage` deployment. |
 | `versions.tf` | dummy description text |
-| <font color="blue">`data`</font> | This directory contains the file `config.json` which is created when the external storage successfully deploys. |
 
 ## vnet subdirectory
 
@@ -144,9 +135,8 @@ The following table tells what files and subdirectories are in the `vnet` subdir
 
 |vnet subdirectory entry name|description|
 |:--------------------------------|:----------|
+| `README.md` | Contains a description of the `vnet` module. |
 | `data.tf` | Contains `data` statements providing information about existing resources. |
-| `lite-variables.tf` | Contains all variables used for easy deployment. This file is copied in the hpcc directory by the `deploy` script. |
-| `lite.auto.tfvars` | Contains all the variables used for easy deployment with values of the user. This file is copied in the `vnet` directory by the `deploy` script. |
 | `locals.tf` | Contains local variables used in the deployment of `vnet`. Variables in this file also use some of the easy deploy variables in lite-variables.tf. |
 | `main.tf` | Contains modules and resources needed for the deployment of `vnet` |
 | `outputs.tf` | Contains several output statements that output important information to the deployer. Also, this file contains an output state that outputs a file, config.json. This file is only output if there is a successful deployment of `vnet`. |
@@ -154,6 +144,6 @@ The following table tells what files and subdirectories are in the `vnet` subdir
 | `variables.tf` | Contains only one variable, `disable_naming_conventions`. |
 | `versions.tf` | Contains the required versions of `terraform`, `azurerm` and `random`. |
 | `vnet.tf` | Contains the module `virtual_network` which deploys the virtual network used by `aks`, `hpcc`, and `storage`. |
-| <font color="blue">`data`</font> | This directory contains the file `config.json` which is created when the `vnet` is successfully deploys. |
+
 
 ​     

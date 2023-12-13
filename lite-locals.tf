@@ -11,10 +11,10 @@ output "thor_ns_spec" {
    value = local.ns_spec[local.aks_node_sizes.thor]
 }
 output "thor_worker_cpus" {
-   value = var.thor_worker_cpus
+   value = local.thor_worker_cpus
 }
 output "thorWorkersPerNode" {
-   value = "local.ns_spec[${local.aks_node_sizes.thor}].cpu / var.thor_worker_cpus = ${local.thorWorkersPerNode}"
+   value = "local.ns_spec[${local.aks_node_sizes.thor}].cpu / local.thor_worker_cpus = ${local.thorWorkersPerNode}"
 }
 output "thor_worker_ram" {
    value = "local.ns_spec[${local.aks_node_sizes.thor}].ram / local.thorWorkersPerNode = ${local.thor_worker_ram}"
@@ -26,6 +26,8 @@ output "thorpool_max_capacity" {
    value = "local.nodesPer1Job * var.thor_max_jobs = ${local.thorpool_max_capacity}"
 }
 locals {
+  thor_worker_cpus = 2
+
   aks_node_sizes = {
     roxie       = var.aks_roxie_node_size
     serv        = var.aks_serv_node_size
@@ -52,8 +54,8 @@ locals {
     }
   }
 
-  twpn = "${ local.ns_spec[local.aks_node_sizes.thor].cpu / var.thor_worker_cpus }"
-  thorWorkersPerNode = ceil(local.twpn) == local.twpn? local.twpn : "local.thorWorkersPerNode, ${local.twpn}, is not an integer because local.ns_spec[${local.aks_node_sizes.thor}].cpu, ${local.ns_spec[local.aks_node_sizes.thor].cpu}, is not a multiple of var.thor_worker_cpus, ${var.thor_worker_cpus}."
+  twpn = "${ local.ns_spec[local.aks_node_sizes.thor].cpu / local.thor_worker_cpus }"
+  thorWorkersPerNode = ceil(local.twpn) == local.twpn? local.twpn : "local.thorWorkersPerNode, ${local.twpn}, is not an integer because local.ns_spec[${local.aks_node_sizes.thor}].cpu, ${local.ns_spec[local.aks_node_sizes.thor].cpu}, is not a multiple of local.thor_worker_cpus, ${local.thor_worker_cpus}."
 
   twr = "${local.ns_spec[local.aks_node_sizes.thor].ram / local.thorWorkersPerNode }"
   thor_worker_ram = ceil(local.twr) == local.twr? local.twr : "local.thor_worker_ram, ${local.twr}, is not an integer because local.ns_spec[${local.aks_node_sizes.thor}].ram, ${local.ns_spec[local.aks_node_sizes.thor].ram}, is not a multiple of local.thorWorkersPerNode, ${local.thorWorkersPerNode}."
@@ -481,7 +483,7 @@ locals {
       memory = "2G"
     }
     workerResources = {
-      cpu    = var.thor_worker_cpus
+      cpu    = local.thor_worker_cpus
       memory = local.thor_worker_ram
     }
     workerMemory = {
