@@ -12,7 +12,7 @@ The HPCC Systems cluster created by this module uses ephemeral storage, which is
 
 * <font color="red">**helm**</font> Helm is used to deploy the HPCC Systems processes under Kubernetes.  Instructions for downloading and installing Helm are at [https://helm.sh/docs/intro/install](https://helm.sh/docs/intro/install/).
 
-* <font color="red">**kubectl**</font> The Kubernetes client (kubectl) is also required so you can inspect and manage the Azure Kubernetes cluster.  Instructions for download and installing that can be found at [https://kubernetes.io/releases/download/](https://kubernetes.io/releases/download/).  Make sure you have version 1.22.0 or later.
+* <font color="red">**kubectl**</font> The Kubernetes client (Kubectl) is also required so you can inspect and manage the Azure Kubernetes cluster.  Instructions for download and installing that can be found at [https://kubernetes.io/releases/download/](https://kubernetes.io/releases/download/).  Make sure you have version 1.22.0 or later.
 
 * <font color="red">**Azure CLI**</font> To work with Azure, you will need to install the Azure Command Line tools.  Instructions can be found at [https://docs.microsoft.com/en-us/cli/azure/install-azure-cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).  Even if you think you won't be working with Azure, this module does leverage the command line tools to manipulate network security groups within Kubernetes clusters.  TL;DR: Make sure you have the command line tools installed.
 
@@ -135,8 +135,8 @@ To get persistent storage, i.e. storage that is not deleted when the HPCC cluste
 		* Make \<ContextName\> context the current context for future kubectl commands.
 	* `kubectl config unset contexts.<ContextName>`
 		* Delete context named \<ContextName\>.
-		* Note that when you delete the current context, kubectl does not select another context as the current context.  Instead, no context will be current.  You must use `kubectl config use-context <ContextName>` to make another context current.
-* Note that `terraform destroy` does not delete the kubectl context.  You need to use `kubectl config unset contexts.<ContextName>` to get rid of the context from your local system.
+		* Note that when you delete the current context, Kubectl does not select another context as the current context.  Instead, no context will be current.  You must use `kubectl config use-context <ContextName>` to make another context current.
+* Note that `terraform destroy` does not delete the Kubectl context.  You need to use `kubectl config unset contexts.<ContextName>` to get rid of the context from your local system.
 * If a deployment fails and you want to start over, you have two options:
 	* Immediately issue a `terraform destroy` command and let Terraform clean up.
 	* Clean up the resources by hand:
