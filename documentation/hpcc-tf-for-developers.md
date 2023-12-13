@@ -1,6 +1,6 @@
 # For Developers: Tutorial of HPCC Easy Deploy Terraform 
 
-This tutorial explains the terraform code that deploys HPCC Systems on an azure Kubernetes service (aks). The terraform code was designed to enable one to deploy HPCC Systems easily.
+This tutorial explains the terraform code that deploys HPCC Systems on an Azure Kubernetes service (aks). The terraform code was designed to enable one to deploy HPCC Systems easily.
 The terraform code can be found on Github. Here is a link to it ([https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite])
 
 From the root directory of the repository one can deploy all components of the HPCC cluster. Also, one can deploy individual components of the system from these subdirectories: `vnet`, `storage`, `aks`, and `hpcc`. If you want to deploy the individual components manually, here is the order you should do the deployment: 1st `vnet`, 2nd `storage` (if you want persistent storage), 3rd `aks`, and finally `hpcc`.
@@ -50,7 +50,7 @@ The following table shows all the variables in the file, `lite-variables.tf`, an
 | `extra_tags` | map of string | Map of name => value tags that can will be associated with the cluster. Format is '{"name"="value" [, "name"="value"]*}'. The 'name' portion must be unique. To add no tags, use '{}'. |
 | `hpcc_user_ip_cidr_list` | list of string | List of explicit CIDR addresses that can access this HPCC Systems cluster. To allow public access, specify "0.0.0.0/0". To add no CIDR addresses, use '[]'. |
 | `hpcc_version` | string | The version of HPCC Systems to install. Only versions in nn.nn.nn format are supported. |
-| `my_azure_id` | string | Your azure account object id. Find this on azure portal, by going to 'users' then search for your name and click on it. The account object id is called 'Object ID'. There is a link next to it that lets you copy it. |
+| `my_azure_id` | string | Your Azure account object id. Find this on Azure portal, by going to 'users' then search for your name and click on it. The account object id is called 'Object ID'. There is a link next to it that lets you copy it. |
 | `storage_data_gb` | number | The amount of storage reserved for data in gigabytes. Must be 1 or more. If a storage account is defined (see below) then this value is ignored. |
 | `storage_lz_gb` | number | The amount of storage reserved for the landing zone in gigabytes. Must be 1 or more. If a storage account is defined (see below) then this value is ignored. |
 | `thor_max_jobs` | number | The maximum number of simultaneous Thor jobs allowed. Must be 1 or more. |
