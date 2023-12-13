@@ -64,7 +64,6 @@ locals {
   thorpool_max_capacity = ceil("${ local.nodesPer1Job * var.thor_max_jobs }")
 
   helm_chart_timeout=300
-  #hpcc_version = "8.6.20"
 
   owner = {
     name  = var.admin_username
@@ -100,53 +99,8 @@ locals {
     eclwatch = false
   }
 
-  # azure_auth = {
-  #   #   AAD_CLIENT_ID     = ""
-  #   #   AAD_CLIENT_SECRET = ""
-  #   #   AAD_TENANT_ID     = ""
-  #   #   AAD_PRINCIPAL_ID  = ""
-  #   SUBSCRIPTION_ID = ""
-  # }
-  
-  # hpcc_container = {
-  #   version = "9.2.0"
-  #   image_name    = "platform-core-ln"
-  #   image_root    = "jfrog.com/glb-docker-virtual"
-  #   #   custom_chart_version = "9.2.0-rc1"
-  #   #   custom_image_version = "9.2.0-demo"
-  # }
- 
-  # hpcc_container_registry_auth = {
-  #   username = "value"
-  #   password = "value"
-  # }
-  
   internal_domain = var.aks_dns_zone_name // Example: hpcczone.us-hpccsystems-dev.azure.lnrsg.io
   
-  external = {}
-  # external = {
-  #   blob_nfs = [{
-  #     container_id         = ""
-  #     container_name       = ""
-  #     id                   = ""
-  #     resource_group_name  = var.storage_account_resource_group_name
-  #     storage_account_id   = ""
-  #     storage_account_name = var.storage_account_name
-  #   }]
-  #   # hpc_cache = [{
-  #   #   id     = ""
-  #   #   path   = ""
-  #   #   server = ""
-  #   }]
-  #   hpcc = [{
-  #     name = ""
-  #     planes = list(object({
-  #       local  = ""
-  #       remote = ""
-  #     }))
-  #     service = ""
-  #   }]
-  # }
   
   admin_services_storage_account_settings = {
     replication_type = "ZRS" #LRS only if using HPC Cache
@@ -171,12 +125,6 @@ locals {
           delete_protection = false
         }
       }
-      # hpc_cache = {
-      #   enabled                     = false
-      #   size                        = "small"
-      #   cache_update_frequency      = "3h"
-      #   storage_account_data_planes = null
-      # }
     }
     external = null
   }
@@ -197,36 +145,6 @@ locals {
     replicas     = 6
     nodeSelector = "spraypool"
   }
-  
-  # ldap = {
-  #   ldap_server = "" //Server IP
-  #   dali = {
-  #     hpcc_admin_password = ""
-  #     hpcc_admin_username = ""
-  #     ldap_admin_password = ""
-  #     ldap_admin_username = ""
-  #     adminGroupName      = "HPCC-Admins"
-  #     filesBasedn         = "ou=files,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     groupsBasedn        = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     resourcesBasedn     = "ou=smc,ou=espservices,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     systemBasedn        = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     usersBasedn         = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     workunitsBasedn     = "ou=workunits,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #   }
-  #   esp = {
-  #     hpcc_admin_password = ""
-  #     hpcc_admin_username = ""
-  #     ldap_admin_password = ""
-  #     ldap_admin_username = ""
-  #     adminGroupName      = "HPCC-Admins"
-  #     filesBasedn         = "ou=files,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     groupsBasedn        = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     resourcesBasedn     = "ou=smc,ou=espservices,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     systemBasedn        = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     usersBasedn         = "OU=AADDC Users,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #     workunitsBasedn     = "ou=workunits,ou=eclHPCCSysUser,dc=z0lpf,dc=onmicrosoft,dc=com"
-  #   }
-  # }
 
   roxie_internal_service = {
     name        = "iroxie"
