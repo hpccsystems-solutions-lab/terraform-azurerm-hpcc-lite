@@ -221,22 +221,6 @@ variable "authn_htpasswd_filename" {
   default     = ""
 }
 
-variable "hpcc_namespace" {
-  description = "Kubernetes namespace where resources will be created."
-  type = object({
-    prefix_name      = string
-    labels           = map(string)
-    create_namespace = bool
-  })
-  default = {
-    prefix_name = "hpcc"
-    labels = {
-      name = "hpcc"
-    }
-    create_namespace = false
-  }
-}
-
 variable "enable_premium_storage" {
   type        = bool
   description = "OPTIONAL.  If true, premium ($$$) storage will be used for the following storage shares: Dali.\nDefaults to false."

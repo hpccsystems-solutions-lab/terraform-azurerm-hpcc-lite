@@ -34,7 +34,7 @@ module "hpcc" {
   namespace = {
     create_namespace = false
     name             = local.hpcc_namespace
-    labels           = try(var.hpcc_namespace.labels,{})
+    labels           = { name = "hpcc" }
   }
 
   #-----------------------------------------------------------------------
