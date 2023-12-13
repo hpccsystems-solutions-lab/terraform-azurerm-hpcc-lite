@@ -2,7 +2,7 @@
 
 NOTE: A tutorial of this Terraform for the developer, or others who are interested, can be found [here](documentation/hpcc-tf-for-developers.md).
 
-This is a slightly-opinionated Terraform module for deploying an HPCC Systems cluster on Azure's kubernetes service (aks).  The goal is to provide a simple method for deploying a cluster from scratch, with only the most important options to consider.
+This is a slightly-opinionated Terraform module for deploying an HPCC Systems cluster on Azure's Kubernetes service (aks).  The goal is to provide a simple method for deploying a cluster from scratch, with only the most important options to consider.
 
 The HPCC Systems cluster created by this module uses ephemeral storage, which is the default. This means the storage will be deleted when the cluster is deleted) But, you can also have Persistent Storage.  See the section titled [Persistent Storage](#persistent-storage), below.
 
@@ -16,7 +16,7 @@ This repo is a fork of the excellent work performed by Godson Fortil.  The origi
 
 * <font color="red">**kubectl**</font> The Kubernetes client (kubectl) is also required so you can inspect and manage the Azure Kubernetes cluster.  Instructions for download and installing that can be found at [https://kubernetes.io/releases/download/](https://kubernetes.io/releases/download/).  Make sure you have version 1.22.0 or later.
 
-* <font color="red">**Azure CLI**</font> To work with Azure, you will need to install the Azure Command Line tools.  Instructions can be found at [https://docs.microsoft.com/en-us/cli/azure/install-azure-cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).  Even if you think you won't be working with Azure, this module does leverage the command line tools to manipulate network security groups within kubernetes clusters.  TL;DR: Make sure you have the command line tools installed.
+* <font color="red">**Azure CLI**</font> To work with Azure, you will need to install the Azure Command Line tools.  Instructions can be found at [https://docs.microsoft.com/en-us/cli/azure/install-azure-cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).  Even if you think you won't be working with Azure, this module does leverage the command line tools to manipulate network security groups within Kubernetes clusters.  TL;DR: Make sure you have the command line tools installed.
 
 * To successfully create everything you will need to have Azure's `Contributor` role plus access to `Microsoft.Authorization/*/Write` and `Microsoft.Authorization/*/Delete` permissions on your subscription.  You may have to create a custom role for this.  Of course, Azure's `Owner` role includes everything so if you're the subscription's owner then you're good to go.
 * If you run the terraform on an azure VM, then the azure VM must have EncryptionAtHost enabled. You can do this by: 1) Stopping your azure VM; 2) click on `Disk` in the Overview of the azure VM; 3) click on the tab, `Additional Settings`; 4) selecting `yes` radio button under `Encryption at host`.
@@ -96,7 +96,7 @@ The following options should be set in your `lite.auto.tfvars` file (or entered 
 | `aks_dns_zone_name` | string | Name of an existing dns zone. Example entry: "hpcczone.us-hpccsystems-dev.azure.lnrsg.io" | N |
 | `aks_dns_zone_resource_group_name` | string | Name of the resource group of the above dns zone. Example entry: "app-dns-prod-eastus2" | N |
 | `aks_enable_roxie` | boolean | Enable ROXIE? This will also expose port 8002 on the cluster. Example entry: false | Y |
-| `aks_logging_monitoring_enabled` | boolean | This variable enable you to ask for logging and monitoring of the kubernetes and hpcc cluster (true means enable logging and monitoring, false means don't. | N |
+| `aks_logging_monitoring_enabled` | boolean | This variable enable you to ask for logging and monitoring of the Kubernetes and hpcc cluster (true means enable logging and monitoring, false means don't. | N |
 | `aks_roxie_node_size ` | string | The VM size for each roxie node in the HPCC Systems. Example format `aks_roxie_node-size`="xlarge".| N |
 | `aks_serv_node_size ` | string | The VM size for each serv node in the HPCC Systems. Example format `aks_serv_node-size`="2xlarge".| N |
 | `aks_spray_node_size ` | string | The VM size for each spray node in the HPCC Systems. Example format `aks_spray_node-size`="2xlarge".| N |
