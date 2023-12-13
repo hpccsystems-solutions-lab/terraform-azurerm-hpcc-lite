@@ -563,8 +563,8 @@ locals {
       memory = "2G"
     }
     workerResources = {
-      cpu    = 3
-      memory = "4G"
+      cpu    = var.thor_worker_cpus
+      memory = local.thor_worker_ram
     }
     workerMemory = {
       query      = "3G"
