@@ -6,8 +6,6 @@ This is a slightly-opinionated Terraform module for deploying an HPCC Systems cl
 
 The HPCC Systems cluster created by this module uses ephemeral storage, which is the default. This means the storage will be deleted when the cluster is deleted) But, you can also have Persistent Storage.  See the section titled [Persistent Storage](#persistent-storage), below.
 
-This repo is a fork of the excellent work performed by Godson Fortil.  The original can be found in branch, HPCC-27615 of [https://github.com/gfortil/Terraform-azurerm-hpcc].
-
 ## Requirements
 
 * <font color="red">**Terraform**</font> This is a Terraform module, so you need to have Terraform installed on your system.  Instructions for downloading and installing Terraform can be found at [https://www.terraform.io/downloads.html](https://www.terraform.io/downloads.html).  Do make sure you install a 64-bit version of Terraform, as that is needed to accommodate some of the large random numbers used for IDs in the Terraform modules.
