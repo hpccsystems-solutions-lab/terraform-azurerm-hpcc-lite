@@ -17,7 +17,7 @@ The HPCC Systems cluster created by this module uses ephemeral storage, which is
 * <font color="red">**Azure CLI**</font> To work with Azure, you will need to install the Azure Command Line tools.  Instructions can be found at [https://docs.microsoft.com/en-us/cli/azure/install-azure-cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).  Even if you think you won't be working with Azure, this module does leverage the command line tools to manipulate network security groups within Kubernetes clusters.  TL;DR: Make sure you have the command line tools installed.
 
 * To successfully create everything you will need to have Azure's `Contributor` role plus access to `Microsoft.Authorization/*/Write` and `Microsoft.Authorization/*/Delete` permissions on your subscription.  You may have to create a custom role for this.  Of course, Azure's `Owner` role includes everything so if you're the subscription's owner then you're good to go.
-* If you run the terraform on an azure VM, then the azure VM must have EncryptionAtHost enabled. You can do this by: 1) Stopping your azure VM; 2) click on `Disk` in the Overview of the azure VM; 3) click on the tab, `Additional Settings`; 4) selecting `yes` radio button under `Encryption at host`.
+* If you run the terraform code on an azure VM, then the azure VM must have EncryptionAtHost enabled. You can do this by: 1) Stopping your azure VM; 2) click on `Disk` in the Overview of the azure VM; 3) click on the tab, `Additional Settings`; 4) selecting `yes` radio button under `Encryption at host`.
 
 ## Installing/Using This Module
 
