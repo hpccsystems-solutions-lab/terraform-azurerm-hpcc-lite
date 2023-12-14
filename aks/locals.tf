@@ -79,26 +79,6 @@ locals {
 
   node_groups = var.aks_enable_roxie? merge( local.node_groups0, { roxiepool = local.roxiepool } ) : local.node_groups0
 
-  aks_automation = {
-    local_authentication_enabled  = false
-    public_network_access_enabled = false
-    automation_account_name       = "aks-stop-demo-${random_string.name.result}"
-
-    schedule = [
-      {
-        schedule_name   = "aks_stop"
-        description     = "Stops the AKS weekday nights at 6PM MST"
-        runbook_name    = "aks_startstop_runbook"
-        frequency       = "Week" //OneTime, Day, Hour, Week, or Month.
-        interval        = "1"    //cannot be set when frequency is `OneTime`
-        operation       = "stop"
-        daylight_saving = true
-        start_time      = "20:00" // At least 5 minutes in the future
-        week_days       = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-      },
-    ]
-  }
-
   azure_auth_env = {
     AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
     AZURE_SUBSCRIPTION_ID = data.azurerm_client_config.current.subscription_id
@@ -146,10 +126,7 @@ locals {
   today        = formatdate("YYYY-MM-DD", local.current_time)
   tomorrow     = formatdate("YYYY-MM-DD", timeadd(local.current_time, "24h"))
 
-  utc_offset = local.aks_automation.schedule[0].daylight_saving ? 4 : 5
-
   script   = { for item in fileset("${path.root}/scripts", "*") : (item) => file("${path.root}/scripts/${item}") }
-  schedule = { for s in local.aks_automation.schedule : "${s.schedule_name}" => s }
 
   az_command    = "az aks get-credentials --name ${local.cluster_name} --resource-group ${module.resource_groups["azure_kubernetes_service"].name}  --admin --overwrite-existing"
   is_windows_os = substr(pathexpand("~"), 0, 1) == "/" ? false : true

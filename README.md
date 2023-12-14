@@ -2,13 +2,13 @@
 
 NOTE: A tutorial of this Terraform for the developer, or others who are interested, can be found [here](documentation/hpcc-tf-for-developers.md).
 
-This is a slightly-opinionated terraform module for deploying an HPCC Systems cluster on Azure's Kubernetes service (aks).  The goal is to provide a simple method for deploying a cluster from scratch, with only the most important options to consider.
+This is a slightly-opinionated Terraform module for deploying an HPCC Systems cluster on Azure's Kubernetes service (aks).  The goal is to provide a simple method for deploying a cluster from scratch, with only the most important options to consider.
 
 The HPCC Systems cluster created by this module uses ephemeral storage, which is the default. This means the storage will be deleted when the cluster is deleted) But, you can also have Persistent Storage.  See the section titled [Persistent Storage](#persistent-storage), below.
 
 ## Requirements
 
-* <font color="red">**terraform**</font> This is a terraform module, so you need to have terraform installed on your system.  Instructions for downloading and installing terraform can be found at [https://www.terraform.io/downloads.html](https://www.terraform.io/downloads.html).  Do make sure you install a 64-bit version of terraform, as that is needed to accommodate some of the large random numbers used for IDs in the terraform modules.
+* <font color="red">**terraform**</font> This is a Terraform module, so you need to have terraform installed on your system.  Instructions for downloading and installing terraform can be found at [https://www.terraform.io/downloads.html](https://www.terraform.io/downloads.html).  Do make sure you install a 64-bit version of terraform, as that is needed to accommodate some of the large random numbers used for IDs in the Terraform modules.
 
 * <font color="red">**helm**</font> Helm is used to deploy the HPCC Systems processes under Kubernetes.  Instructions for downloading and installing Helm are at [https://helm.sh/docs/intro/install](https://helm.sh/docs/intro/install/).
 
@@ -24,12 +24,12 @@ The HPCC Systems cluster created by this module uses ephemeral storage, which is
 1. If necessary, login to Azure.
 	* From the command line, this is usually accomplished with the `az login` command.
 1. Clone this repo to your local system and change current directory.
-	* `git clone -b https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite.git`
+	* `git clone https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite.git`
 	* `cd terraform-azurerm-hpcc-lite`
-1. Issue `terraform init` to initialize the terraform modules.
+1. Issue `terraform init` to initialize the Terraform modules.
 1. Decide how you want to supply option values to the module during invocation.  There are three possibilities:
 	1. Invoke the `terraform apply` command and enter values for each option as terraform prompts for it, then enter `yes` at the final prompt to begin building the cluster.
-	1. **Recommended:**  Create a `lite.auto.tfvars` file containing the values for each option, invoke `terraform apply`, then enter `yes` at the final prompt to begin building the cluster.  The easiest way to creat `lite.auto.tfvars` is to copy the example file, `lite.auto.tfvars.example`, and then edit the copy:
+	1. **Recommended:**  Create a `lite.auto.tfvars` file containing the values for each option, invoke `terraform apply`, then enter `yes` at the final prompt to begin building the cluster.  The easiest way to create `lite.auto.tfvars` is to copy the example file, `lite.auto.tfvars.example`, and then edit the copy:
 		* `cp -v lite.auto.tfvars.example lite.auto.tfvars`
 	1. Use -var arguments on the command line when executing the terraform tool to set each of the values found in the .tfvars file.  This method is useful if you are driving the creation of the cluster from a script.
 1. After the Kubernetes cluster is deployed, your local `kubectl` tool can be used to interact with it.  At some point during the deployment `kubectl` will acquire the login credentials for the cluster and it will be the current context (so any `kubectl` commands you enter will be directed to that cluster by default).

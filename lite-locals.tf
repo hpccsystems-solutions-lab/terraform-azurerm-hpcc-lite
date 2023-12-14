@@ -1,30 +1,3 @@
-output "thor_max_jobs" {
-   value = var.thor_max_jobs
-}
-output "thor_num_workers" {
-   value = var.thor_num_workers
-}
-output "thor_node_size" {
-   value = local.aks_node_sizes.thor
-}
-output "thor_ns_spec" {
-   value = local.ns_spec[local.aks_node_sizes.thor]
-}
-output "thor_worker_cpus" {
-   value = local.thor_worker_cpus
-}
-output "thorWorkersPerNode" {
-   value = "local.ns_spec[${local.aks_node_sizes.thor}].cpu / local.thor_worker_cpus = ${local.thorWorkersPerNode}"
-}
-output "thor_worker_ram" {
-   value = "local.ns_spec[${local.aks_node_sizes.thor}].ram / local.thorWorkersPerNode = ${local.thor_worker_ram}"
-}
-output "nodesPer1Job" {
-   value = "var.thor_num_workers /  local.thorWorkersPerNode = ${local.nodesPer1Job}"
-}
-output "thorpool_max_capacity" {
-   value = "local.nodesPer1Job * var.thor_max_jobs = ${local.thorpool_max_capacity}"
-}
 locals {
   thor_worker_cpus = 2
 
@@ -63,7 +36,7 @@ locals {
   np1j = "${var.thor_num_workers /  local.thorWorkersPerNode }"
   nodesPer1Job = ceil(local.np1j) == local.np1j? local.np1j : "local.nodesPer1Job, ${local.np1j}, is not an integer because var.thor_num_workers, ${var.thor_num_workers}, is not a multiple of local.thorWorkersPerNode, ${local.thorWorkersPerNode}."
 
-  thorpool_max_capacity = ceil("${ local.nodesPer1Job * var.thor_max_jobs }")
+  thorpool_max_capacity = ceil("${ ceil(local.nodesPer1Job) * ceil(var.thor_max_jobs) }")
 
   helm_chart_timeout=300
 
@@ -74,29 +47,8 @@ locals {
 
   owner_name_initials = lower(join("",[for x in split(" ",local.owner.name): substr(x,0,1)]))
 
-  /*metadata = {
-    project             = format("%shpccplatform", local.owner_name_initials)
-    product_name        = format("%shpccplatform", local.owner_name_initials)
-    business_unit       = "commercial"
-    environment         = "sandbox"
-    market              = "us"
-    product_group        = format("%shpcc", local.owner_name_initials)
-    resource_group_type = "app"
-    sre_team            = format("%shpccplatform", local.owner_name_initials)
-    subscription_type   = "dev"
-    additional_tags     = { "justification" = "testing" }
-    location            = var.aks_azure_region # Acceptable values: eastus, centralus
-  }
-
-  tags = merge(local.metadata.additional_tags, var.extra_tags)
-  */
-
-  # # disable_naming_conventions - Disable naming conventions
-  # # disable_naming_conventions = true 
   disable_naming_conventions = false
   
-  # # auto_launch_eclwatch - Automatically launch ECLWatch web interface.
-  #auto_launch_eclwatch = true
   auto_launch_svc = {
     eclwatch = false
   }
@@ -184,7 +136,6 @@ locals {
       disabled                       = (var.aks_enable_roxie == true)? false : true
       name                           = "roxie"
       nodeSelector                   = { workload = "roxiepool" }
-      # tlh 20231109 numChannels                    = 2
       numChannels                    = 1
       prefix                         = "roxie"
       replicas                       = 2
@@ -408,7 +359,6 @@ locals {
       throttle        = 0
       retryinterval   = 6
       keepResultFiles = false
-      # egress          = "engineEgress"
     }
 
     dfuwu-archiver = {
@@ -422,7 +372,6 @@ locals {
       cutoff   = 14
       at       = "* * * * *"
       throttle = 0
-      # egress   = "engineEgress"
     }
 
     dfurecovery-archiver = {
@@ -431,7 +380,6 @@ locals {
       limit    = 20
       cutoff   = 4
       at       = "* * * * *"
-      # egress   = "engineEgress"
     }
 
     file-expiry = {
@@ -441,7 +389,6 @@ locals {
       persistExpiryDefault = 7
       expiryDefault        = 4
       user                 = "sasha"
-      # egress               = "engineEgress"
     }
   }
 
@@ -474,7 +421,6 @@ locals {
     maxGraphs           = 2
     maxGraphStartupTime = 172800
     numWorkersPerPod    = 1
-    #nodeSelector        = {}
     nodeSelector        = { workload = "thorpool" }
     egress              = "engineEgress"
     tolerations_value   = "thorpool"

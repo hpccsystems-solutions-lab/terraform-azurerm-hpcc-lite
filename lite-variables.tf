@@ -188,7 +188,7 @@ variable "thor_max_jobs" {
     condition     = var.thor_max_jobs >= 1
     error_message = "Value must be 1 or more."
   }
-  default    = 2
+  default    = 1
 }
 
 variable "thor_num_workers" {
