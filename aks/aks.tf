@@ -30,7 +30,6 @@ module "aks" {
 
   dns_resource_group_lookup = { "${local.internal_domain}" = local.dns_resource_group }
 
-  #admin_group_object_ids = [data.azuread_group.subscription_owner.object_id]
   admin_group_object_ids = null
 
   rbac_bindings = var.rbac_bindings
