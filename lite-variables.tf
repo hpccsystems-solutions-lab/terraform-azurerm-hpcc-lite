@@ -1,4 +1,10 @@
 # All 'aks_' variables are before any other variables.
+variable "aks_4nodepools" {
+  description = "If true 4 nodepools are used. If false 2 are used."
+  type        = bool
+  default     = false
+}
+
 variable "aks_logging_monitoring_enabled" {
   description = "Used to get logging and monitoring of kubernetes and hpcc cluster."
   type        = bool

@@ -96,8 +96,8 @@ locals {
   }
   
   spray_service_settings = {
-    replicas     = 6
-    nodeSelector = "spraypool"
+    replicas     = 1
+    nodeSelector = var.aks_4nodepools? "spraypool" : "hpccpool"
   }
 
   roxie_internal_service = {
@@ -135,7 +135,7 @@ locals {
     {
       disabled                       = (var.aks_enable_roxie == true)? false : true
       name                           = "roxie"
-      nodeSelector                   = { workload = "roxiepool" }
+      nodeSelector                   = var.aks_4nodepools? { workload = "roxiepool" } : { workload = "hpccpool" }
       numChannels                    = 1
       prefix                         = "roxie"
       replicas                       = 2
@@ -288,7 +288,7 @@ locals {
         cpu    = "1"
         memory = "4G"
       }
-      nodeSelector = { workload = "servpool" }
+      nodeSelector = var.aks_4nodepools? { workload = "servpool" } : { workload = "hpccpool" }
       egress = "engineEgress"
       cost = {
         perCpu = 1
@@ -307,7 +307,7 @@ locals {
         cpu    = "1"
         memory = "4G"
       }
-      nodeSelector = { workload = "servpool" }
+      nodeSelector = var.aks_4nodepools? { workload = "servpool" } : { workload = "hpccpool" }
       legacySyntax = false
       options      = []
       cost = {
@@ -320,7 +320,7 @@ locals {
       interval     = 24
       at           = "* * * * *"
       minDeltaSize = 50000
-      nodeSelector = { workload = "servpool" }
+      nodeSelector = var.aks_4nodepools? { workload = "servpool" } : { workload = "hpccpool" }
       resources = {
         cpu    = "1"
         memory = "4G"
@@ -335,7 +335,7 @@ locals {
 
   dfuserver_settings = {
     maxJobs = 3
-    nodeSelector = { workload = "servpool" }
+    nodeSelector = var.aks_4nodepools? { workload = "servpool" } : { workload = "hpccpool" }
     resources = {
       cpu    = "1"
       memory = "2G"
@@ -344,7 +344,7 @@ locals {
 
   sasha_config = {
     disabled = false
-    nodeSelector = { workload = "servpool" }
+    nodeSelector = var.aks_4nodepools? { workload = "servpool" } : { workload = "hpccpool" }
     wu-archiver = {
       disabled = false
       service = {
@@ -421,7 +421,7 @@ locals {
     maxGraphs           = 2
     maxGraphStartupTime = 172800
     numWorkersPerPod    = 1
-    nodeSelector        = { workload = "thorpool" }
+    nodeSelector        = var.aks_4nodepools? { workload = "thorpool" } : { workload = "hpccpool" }
     egress              = "engineEgress"
     tolerations_value   = "thorpool"
     managerResources = {

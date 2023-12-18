@@ -224,6 +224,15 @@ authn_htpasswd_filename=""
 
 #------------------------------------------------------------------------------
 
+# If 'aks_4nodepools` is true then 4 nodepools are used. Otherwise only 1 is
+# used. Using 4 nodepools increases multi-processing and the cost.
+# Value type: boolean
+# Updatable: N (Y means YES, is updatable)
+
+aks_4nodepools=false
+
+#------------------------------------------------------------------------------
+
 # If you want external storage instead of ephemeral storage then
 # set this variable to true otherwise set it to false.
 # Value type: boolean

@@ -77,7 +77,24 @@ locals {
     }
   }
 
-  node_groups = var.aks_enable_roxie? merge( local.node_groups0, { roxiepool = local.roxiepool } ) : local.node_groups0
+  hpccpool = {
+    ultra_ssd         = false
+    node_os           = "ubuntu"
+    node_type         = "gp"      # gp, gpd, mem, memd, stor
+    node_type_version = "v2"      # v1, v2
+    node_size         = var.aks_serv_node_size
+    single_group      = false
+    min_capacity      = 4
+    max_capacity      = 385
+    labels = {
+      "lnrs.io/tier" = "standard"
+      "workload"     = "hpccpool"
+    }
+    taints = []
+    tags   = {}
+  }
+
+  node_groups = var.aks_4nodepools? (var.aks_enable_roxie? merge( local.node_groups0, { roxiepool = local.roxiepool } ) : local.node_groups0) : { hpccpool = local.hpccpool }
 
   azure_auth_env = {
     AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id

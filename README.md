@@ -95,6 +95,7 @@ The following options should be set in your `lite.auto.tfvars` file (or entered 
 | `aks_dns_zone_resource_group_name` | string | Name of the resource group of the above dns zone. Example entry: "app-dns-prod-eastus2" | N |
 | `aks_enable_roxie` | boolean | Enable ROXIE? This will also expose port 8002 on the cluster. Example entry: false | Y |
 | `aks_logging_monitoring_enabled` | boolean | This variable enable you to ask for logging and monitoring of the Kubernetes and hpcc cluster (true means enable logging and monitoring, false means don't. | N |
+| `aks_4nodepools ` | boolean | Determines whether 1 or 4 nodepools are use -- 4 used if true otherwise 2 used. (default is false). | N |
 | `aks_roxie_node_size ` | string | The VM size for each roxie node in the HPCC Systems. Example format `aks_roxie_node-size`="xlarge".| N |
 | `aks_serv_node_size ` | string | The VM size for each serv node in the HPCC Systems. Example format `aks_serv_node-size`="2xlarge".| N |
 | `aks_spray_node_size ` | string | The VM size for each spray node in the HPCC Systems. Example format `aks_spray_node-size`="2xlarge".| N |

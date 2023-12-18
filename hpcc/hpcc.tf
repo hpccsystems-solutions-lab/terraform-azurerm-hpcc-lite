@@ -77,7 +77,7 @@ module "hpcc" {
   vault_config                 = local.vault_config
   eclccserver_settings         = local.eclccserver_settings
   spray_service_settings       = local.spray_service_settings
-  admin_services_node_selector = { all = { workload = "servpool" } }
+  admin_services_node_selector = var.aks_4nodepools? { all = { workload = "servpool" } } : { all = { workload = "hpccpool" } }
 
   esp_remoteclients = {
 
