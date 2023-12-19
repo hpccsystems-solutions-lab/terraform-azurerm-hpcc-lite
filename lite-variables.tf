@@ -31,7 +31,7 @@ variable "aks_azure_region" {
 }
 
 variable "aks_enable_roxie" {
-  description = "REQUIRED.  Enable ROXIE?\nThis will also expose port 8002 on the cluster.\nExample entry: false"
+  description = "REQUIRED if you want roxie.  Enable ROXIE?\nThis will also expose port 18002 on the cluster.\nExample entry: false"
   type        = bool
   default     = false
 }
