@@ -41,7 +41,7 @@ hpcc_version="latest"
 #------------------------------------------------------------------------------
 
 # Enable ROXIE?
-# This will also expose port 8002 on the cluster.
+# This will also expose port 18002 on the cluster.
 # Example entry: false
 # Value type: boolean
 # Updatable: Y (Y means YES, is updatable)
