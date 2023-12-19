@@ -27,16 +27,16 @@ locals {
     }
   }
 
-  twpn = "${ local.ns_spec[local.aks_node_sizes.thor].cpu / local.thor_worker_cpus }"
-  thorWorkersPerNode = ceil(local.twpn) == local.twpn? local.twpn : "local.thorWorkersPerNode, ${local.twpn}, is not an integer because local.ns_spec[${local.aks_node_sizes.thor}].cpu, ${local.ns_spec[local.aks_node_sizes.thor].cpu}, is not a multiple of local.thor_worker_cpus, ${local.thor_worker_cpus}."
+  twpn = floor("${ local.ns_spec[local.aks_node_sizes.thor].cpu / local.thor_worker_cpus }")
+  thorWorkersPerNode = local.twpn > 0? local.twpn : "local.thor_worker_cpus, ${local.thor_worker_cpus}, is larger then the number of CPUs on the selected node size, ${local.ns_spec[local.aks_node_sizes.thor].cpu}. That is, a large node size is needed."
 
-  twr = "${local.ns_spec[local.aks_node_sizes.thor].ram / local.thorWorkersPerNode }"
-  thor_worker_ram = ceil(local.twr) == local.twr? local.twr : "local.thor_worker_ram, ${local.twr}, is not an integer because local.ns_spec[${local.aks_node_sizes.thor}].ram, ${local.ns_spec[local.aks_node_sizes.thor].ram}, is not a multiple of local.thorWorkersPerNode, ${local.thorWorkersPerNode}."
+  twr = floor("${local.ns_spec[local.aks_node_sizes.thor].ram / local.thorWorkersPerNode }")
+  thor_worker_ram = local.twr > 0? local.twr : 1
 
-  np1j = "${var.thor_num_workers /  local.thorWorkersPerNode }"
-  nodesPer1Job = ceil(local.np1j) == local.np1j? local.np1j : "local.nodesPer1Job, ${local.np1j}, is not an integer because var.thor_num_workers, ${var.thor_num_workers}, is not a multiple of local.thorWorkersPerNode, ${local.thorWorkersPerNode}."
+  np1j = floor("${var.thor_num_workers /  local.thorWorkersPerNode }")
+  nodesPer1Job = local.np1j > 0? local.np1j : 1 
 
-  thorpool_max_capacity = ceil("${ ceil(local.nodesPer1Job) * ceil(var.thor_max_jobs) }")
+  thorpool_max_capacity = "${ local.nodesPer1Job * var.thor_max_jobs }"
 
   helm_chart_timeout=300
 
