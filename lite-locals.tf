@@ -28,13 +28,12 @@ locals {
   }
 
   twpn = floor("${ local.ns_spec[local.aks_node_sizes.thor].cpu / local.thor_worker_cpus }")
-  thorWorkersPerNode = local.twpn > 0? local.twpn : "local.thor_worker_cpus, ${local.thor_worker_cpus}, is larger then the number of CPUs on the selected node size, ${local.ns_spec[local.aks_node_sizes.thor].cpu}. That is, a large node size is needed."
+  thorWorkersPerNode = local.twpn > 0? local.twpn : 1
 
   twr = floor("${local.ns_spec[local.aks_node_sizes.thor].ram / local.thorWorkersPerNode }")
   thor_worker_ram = local.twr > 0? local.twr : 1
 
-  np1j = floor("${var.thor_num_workers /  local.thorWorkersPerNode }")
-  nodesPer1Job = local.np1j > 0? local.np1j : 1 
+  nodesPer1Job = ceil("${var.thor_num_workers /  local.thorWorkersPerNode }")
 
   thorpool_max_capacity = "${ local.nodesPer1Job * var.thor_max_jobs }"
 
