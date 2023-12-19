@@ -27,11 +27,7 @@ variable "aks_admin_name" {
 
 variable "aks_azure_region" {
   type        = string
-  description = "REQUIRED.  The Azure region abbreviation in which to create these resources.\nMust be one of [\"eastus\", \"eastus2\", \"centralus\"].\nExample entry: eastus2"
-  validation {
-    condition     = contains(["eastus", "eastus2", "centralus"], var.aks_azure_region)
-    error_message = "Value must be one of [\"eastus\", \"eastus2\", \"centralus\"]."
-  }
+  description = "REQUIRED.  The Azure region abbreviation in which to create these resources.\nExample entry: eastus2"
 }
 
 variable "aks_enable_roxie" {
