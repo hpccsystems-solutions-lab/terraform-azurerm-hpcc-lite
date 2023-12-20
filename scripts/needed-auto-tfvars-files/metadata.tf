@@ -10,5 +10,6 @@ locals {
     sre_team            = format("%shpccplatform", local.owner_name_initials)
     subscription_type   = "dev"
     location            = var.aks_azure_region # Acceptable values: eastus, centralus
+    #additional_tags     = {}
   }
 }

@@ -83,6 +83,9 @@ cd $name; # cd into vnet or storage or aks or hpcc
 
 echo "Copy metadata.tf in root directory to this directory."
 cp -v ../scripts/needed-auto-tfvars-files/metadata.tf .
+if [ "$name" == "storage" ];then
+  sed -i "s/#additional_tags/additional_tags/" metadata.tf
+fi
 
 # put the root directory's lite.auto.tfvars (either all or part) in either aks or hpcc
 # directory.
