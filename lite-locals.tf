@@ -429,7 +429,7 @@ locals {
     }
     workerResources = {
       cpu    = local.thor_worker_cpus
-      memory = local.thor_worker_ram
+      memory = format("%dG", local.thor_worker_ram)
     }
     workerMemory = {
       query      = "3G"

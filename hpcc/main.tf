@@ -30,11 +30,11 @@ module "metadata" {
   project             = local.metadata.project
 }
 
-resource "null_resource" "delete_ephemeral_storage_accounts" {
+/*resource "null_resource" "delete_ephemeral_storage_accounts" {
   count = var.external_storage_desired && (local.external_storage_config != []) ? 1 : 0
 
   provisioner "local-exec" {
     command     = "scripts/delete_ephemeral_storage_accounts ${local.get_aks_config.resource_group_name}"
   }
   depends_on = [module.hpcc]
-}
+}*/

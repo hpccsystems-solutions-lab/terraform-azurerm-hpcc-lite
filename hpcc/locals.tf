@@ -45,7 +45,7 @@ locals {
       storage_type    = plane.storage_type
       prefix_name     = plane.prefix_name
     }
-  ] : []
+  ] : [] 
   #---------------------------------------------------------------------------------------------------------------------------
 
   subnet_ids = try({
