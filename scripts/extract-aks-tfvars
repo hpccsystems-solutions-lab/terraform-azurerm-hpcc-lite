@@ -1,0 +1,43 @@
+#!/bin/bash
+# USAGE: scripts/extract-aks-tfvars lite.auto.tfvars
+declare -A endbracket;
+endbracket["{"]="}";
+endbracket["["]="]";
+if [ $# -le 0 ];then
+  echo "FATAL ERROR: $0: lite.auto.tfvars file name must be given on command line"
+  exit 1
+fi
+tfvarsfile=$1;
+while read line;do
+  re1='(aks_[A-Za-z0-9_][A-Za-z0-9_]* *= *)(..*)'
+  if [[ "$line" =~ ^$re1 ]];then
+    if [ "$var_plus_equal_plus_value" != "" ];then
+       echo $var_plus_equal_plus_value;
+       endbrack="";
+       var_plus_equal_plus_value="";
+    fi
+    var_plus_equal=${BASH_REMATCH[1]}
+    val=${BASH_REMATCH[2]}
+    var_plus_equal_plus_value="$var_plus_equal$val";
+    re2='\([\{\[]\)'
+    result=$(echo $val|sed "s/$re2 *$/\1/")
+    #echo "DEBUG: var_plus_equal={$var_plus_equal}, val={$val}, result={$result}"
+    if [ "$result" == "{" ] || [ "$result" == "[" ];then
+       endbrack=${endbracket[$result]}
+       #echo "DEBUG: result is either '{' or '[': {$result}, endbrack={$endbrack}"
+    else
+       echo $var_plus_equal_plus_value;
+    fi
+  elif [ "$endbrack" == "}" ] || [ "$endbrack" == "]" ];then
+    var_plus_equal_plus_value="$var_plus_equal_plus_value $line";
+    if [[ "$line" =~ "$endbrack" ]];then
+       echo $var_plus_equal_plus_value;
+       endbrack="";
+       var_plus_equal_plus_value="";
+    fi
+  else
+    endbrack="";
+    var_plus_equal_plus_value="";
+  fi
+  #echo "DEBUG: End of while read"
+done <$tfvarsfile

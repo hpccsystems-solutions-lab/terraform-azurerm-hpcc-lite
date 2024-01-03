@@ -106,8 +106,8 @@ if [ "$name" == "hpcc" ];then
     cp -v ../lite-locals.tf .
     cp -v ../lite-variables.tf .
 elif [ "$name" == "aks" ] || [ "$name" == "vnet" ] || [ "$name" == "storage" ];then
-    egrep "^aks_" ../lite.auto.tfvars > /tmp/${name}.lite.auto.tfvars
-    egrep "^aks_" ../lite.auto.tfvars > lite.auto.tfvars
+    ../scripts/extract-aks-tfvars ../lite.auto.tfvars > /tmp/${name}.lite.auto.tfvars
+    ../scripts/extract-aks-tfvars ../lite.auto.tfvars > lite.auto.tfvars
     ../scripts/extract-aks-variables ../lite-variables.tf > lite-variables.tf
     if [ "$name" == "aks" ];then
       echo "aks_thorpool_max_capacity=$thorpool_max_capacity" >> lite.auto.tfvars
