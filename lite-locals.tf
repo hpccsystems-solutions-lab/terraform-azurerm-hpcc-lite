@@ -432,7 +432,7 @@ locals {
       memory = format("%dG", local.thor_worker_ram)
     }
     workerMemory = {
-      query      = "3G"
+      query      = format("%dG", local.thor_worker_ram)
       thirdParty = "500M"
     }
     eclAgentResources = {
