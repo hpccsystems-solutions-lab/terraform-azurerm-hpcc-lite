@@ -11,14 +11,6 @@ if [ "$1" != "" ] && [[ $1 =~ hpcc|aks|vnet|storage ]];then
       echo "ERROR: name=\"$name\". Need a 2nd argument (my_azure_id) but none given.";exit 1;
     fi
   fi
-  if [ "$name" == "aks" ];then
-    if [ "$3" != "" ];then
-      thorpool_max_capacity=$3
-      #echo "DEBUG: name=\"$name\", \$3(or thorpool_max_capacity)=\"$3\"";exit
-    else
-      echo "ERROR: name=\"$name\". Need a 3rd argument (thorpool max capacity) but none given.";exit 1;
-    fi
-  fi
 else
   echo "$0 has no arguments. It must of 1 argument that is 'vnet' or 'storage' or 'aks' or 'hpcc'. EXITING.";exit 1;
 fi
@@ -109,9 +101,6 @@ elif [ "$name" == "aks" ] || [ "$name" == "vnet" ] || [ "$name" == "storage" ];t
     ../scripts/extract-aks-tfvars ../lite.auto.tfvars > /tmp/${name}.lite.auto.tfvars
     ../scripts/extract-aks-tfvars ../lite.auto.tfvars > lite.auto.tfvars
     ../scripts/extract-aks-variables ../lite-variables.tf > lite-variables.tf
-    if [ "$name" == "aks" ];then
-      echo "aks_thorpool_max_capacity=$thorpool_max_capacity" >> lite.auto.tfvars
-    fi
     if [ "$name" == "storage" ];then
        cp -v $thisdir/needed-auto-tfvars-files/storage/storage.auto.tfvars.example ./storage.auto.tfvars
     fi

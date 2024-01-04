@@ -35,8 +35,6 @@ locals {
 
   nodesPer1Job = ceil("${var.thor_num_workers /  local.thorWorkersPerNode }")
 
-  thorpool_max_capacity = "${ local.nodesPer1Job * var.thor_max_jobs }"
-
   helm_chart_timeout=300
 
   owner = {
@@ -410,6 +408,9 @@ locals {
 
   admin_services_node_selector = {}
 
+  workerMemory_thirdParty = "500"
+  workerMemory_query = "${local.thor_worker_ram - local.workerMemory_thirdParty}"
+
   thor_config = [{
     disabled            = (var.enable_thor == true) || (var.enable_thor == null)? false : true
     name                = "thor"
@@ -432,8 +433,8 @@ locals {
       memory = format("%dG", local.thor_worker_ram)
     }
     workerMemory = {
-      query      = format("%dG", local.thor_worker_ram)
-      thirdParty = "500M"
+      query      = format(%dG", local.workerMemory_query)
+      thirdParty = format(%dG", local.workerMemory_thirdParty)
     }
     eclAgentResources = {
       cpu    = 1

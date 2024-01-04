@@ -14,7 +14,7 @@ locals {
     node_size         = var.aks_roxie_node_size
     single_group      = false
     min_capacity      = 0
-    max_capacity      = 3
+    max_capacity      = var.aks_nodepools_max_capacity
     labels = {
       "lnrs.io/tier" = "standard"
       "workload"     = "roxiepool"
@@ -32,7 +32,7 @@ locals {
       node_size         = var.aks_thor_node_size
       single_group      = false
       min_capacity      = 0
-      max_capacity      = var.aks_thorpool_max_capacity
+      max_capacity      = var.aks_nodepools_max_capacity
       labels = {
         "lnrs.io/tier" = "standard"
         "workload"     = "thorpool"
@@ -49,7 +49,7 @@ locals {
       node_size         = var.aks_serv_node_size
       single_group      = false
       min_capacity      = 1
-      max_capacity      = 3
+      max_capacity      = var.aks_nodepools_max_capacity
       labels = {
         "lnrs.io/tier" = "standard"
         "workload"     = "servpool"
@@ -66,7 +66,7 @@ locals {
       node_size         = var.aks_spray_node_size
       single_group      = false
       min_capacity      = 0
-      max_capacity      = 6
+      max_capacity      = var.aks_nodepools_max_capacity
       labels = {
         "lnrs.io/tier"  = "standard"
         "workload"      = "spraypool"
@@ -84,8 +84,8 @@ locals {
     node_type_version = "v2"      # v1, v2
     node_size         = var.aks_serv_node_size
     single_group      = false
-    min_capacity      = 4
-    max_capacity      = 385
+    min_capacity      = 1
+    max_capacity      = var.aks_nodepools_max_capacity
     labels = {
       "lnrs.io/tier" = "standard"
       "workload"     = "hpccpool"

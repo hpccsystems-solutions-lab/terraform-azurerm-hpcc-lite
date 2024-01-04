@@ -52,10 +52,10 @@ variable "aks_admin_ip_cidr_map" {
   default     = {}
 }
 
-variable "aks_thorpool_max_capacity" {
+variable "aks_nodepools_max_capacity" {
   type        = number
-  description = "The max capacity (or node count) of the thorpool. This is calculated and an argument for terraform plan and appy for aks."
-  default     = 2
+  description = "The max capacity (or maximum node count) of all hopcc nodepools."
+  default     = 400
 }
 
 variable "aks_roxie_node_size" {
