@@ -1,6 +1,6 @@
 # All 'aks_' variables are before any other variables.
 variable "aks_4nodepools" {
-  description = "If true 4 nodepools are used. If false 2 are used."
+  description = "If true 4 nodepools are used. If false 1 are used."
   type        = bool
   default     = false
 }

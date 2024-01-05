@@ -409,7 +409,8 @@ locals {
   admin_services_node_selector = {}
 
   workerMemory_thirdParty = "500"
-  workerMemory_query = "${local.thor_worker_ram - local.workerMemory_thirdParty}"
+  wmq = "${(local.thor_worker_ram * 1000000000) - (local.workerMemory_thirdParty * 1000000)}"
+  workerMemory_query = floor("${local.wmq / 1000000000}")
 
   thor_config = [{
     disabled            = (var.enable_thor == true) || (var.enable_thor == null)? false : true
@@ -434,7 +435,7 @@ locals {
     }
     workerMemory = {
       query      = format("%dG", local.workerMemory_query)
-      thirdParty = format("%dG", local.workerMemory_thirdParty)
+      thirdParty = format("%dM", local.workerMemory_thirdParty)
     }
     eclAgentResources = {
       cpu    = 1

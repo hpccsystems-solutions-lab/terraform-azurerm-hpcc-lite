@@ -48,7 +48,7 @@ locals {
       node_type_version = "v1"
       node_size         = var.aks_serv_node_size
       single_group      = false
-      min_capacity      = 1
+      min_capacity      = 3
       max_capacity      = var.aks_nodepools_max_capacity
       labels = {
         "lnrs.io/tier" = "standard"
@@ -84,7 +84,7 @@ locals {
     node_type_version = "v2"      # v1, v2
     node_size         = var.aks_serv_node_size
     single_group      = false
-    min_capacity      = 1
+    min_capacity      = 3
     max_capacity      = var.aks_nodepools_max_capacity
     labels = {
       "lnrs.io/tier" = "standard"
