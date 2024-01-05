@@ -433,8 +433,8 @@ locals {
       memory = format("%dG", local.thor_worker_ram)
     }
     workerMemory = {
-      query      = format(%dG", local.workerMemory_query)
-      thirdParty = format(%dG", local.workerMemory_thirdParty)
+      query      = format("%dG", local.workerMemory_query)
+      thirdParty = format("%dG", local.workerMemory_thirdParty)
     }
     eclAgentResources = {
       cpu    = 1

@@ -55,7 +55,7 @@ variable "aks_admin_ip_cidr_map" {
 variable "aks_nodepools_max_capacity" {
   type        = number
   description = "The max capacity (or maximum node count) of all hopcc nodepools."
-  default     = 400
+  default     = 385
 }
 
 variable "aks_roxie_node_size" {
