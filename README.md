@@ -17,9 +17,10 @@ The HPCC Systems cluster created by this module uses ephemeral storage, which is
 * <font color="red">**Azure CLI**</font> To work with Azure, you will need to install the Azure Command Line tools.  Instructions can be found at [https://docs.microsoft.com/en-us/cli/azure/install-azure-cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).  Even if you think you won't be working with Azure, this module does leverage the command line tools to manipulate network security groups within Kubernetes clusters.  TL;DR: Make sure you have the command line tools installed.
 
 * To successfully create everything you will need to have Azure's `Contributor` role plus access to `Microsoft.Authorization/*/Write` and `Microsoft.Authorization/*/Delete` permissions on your subscription.  You may have to create a custom role for this.  Of course, Azure's `Owner` role includes everything so if you're the subscription's owner then you're good to go.
-* You need a minimum of 28 vCPUs available on `azure` and `aks_serv_node_size` must be at least `xlarge`. The following `az` command will tell you the maximum number of vCPUs you can use. And, the 2nd `az` command, below, gives you the number of vCPUs you have already used region `eastus` (replace `eastus` with the name of the region you are using). The first `az` command result minus the second `az` command result gives you the number of vCPUs available for you to use.
-	* `az vm list-usage --location "eastus" -o table|grep "Total Regional vCPUs"|sed "s/  */\t/g"|cut -f5`
-	* `az vm list-usage --location "eastus" -o table|grep "Total Regional vCPUs"|sed "s/  */\t/g"|cut -f4`
+  * You need a minimum of 28 vCPUs available on `azure` and `aks_serv_node_size` must be at least `xlarge`. The following `az` command will tell you the maximum number of vCPUs you can use. And, the 2nd `az` command, below, gives you the number of vCPUs you have already used in region `eastus` (replace `eastus` with the name of the region you are using). Furthermore, you can get the number of vCPUs available for you to use by subtracting the result of the 2nd `az` command, below, from the result of the first `az` command.
+  * `az vm list-usage --location "eastus" -o table|grep "Total Regional vCPUs"|sed "s/  */\t/g"|cut -f5`
+  * `az vm list-usage --location "eastus" -o table|grep "Total Regional vCPUs"|sed "s/  */\t/g"|cut -f4`
+
 * If you run the terraform code on an azure VM, then the azure VM must have EncryptionAtHost enabled. You can do this by: 1) Stopping your azure VM; 2) click on `Disk` in the Overview of the azure VM; 3) click on the tab, `Additional Settings`; 4) selecting `yes` radio button under `Encryption at host`.
 
 ## Installing/Using This Module
@@ -30,6 +31,9 @@ The HPCC Systems cluster created by this module uses ephemeral storage, which is
 	* `git clone https://github.com/hpccsystems-solutions-lab/terraform-azurerm-hpcc-lite.git`
 	* `cd terraform-azurerm-hpcc-lite`
 1. Issue `terraform init` to initialize the Terraform modules.
+2. Issue `terraform apply`
+	This command will do a `terraform init`, `terraform plan` and `terraform apply` for each of the subsystems needed, i.e. `vnet`, `aks`, `storage`, and `hpcc` (the `storage` subsystem is deployed only if you set `external_storage_desired=true`). The order that these subsystems are deploy is: `vnet`, `aks`, `storage`, and `hpcc`.
+	For each subsystem, `terraform` creates a `plan` file which is stored in the directory: `~/tflogs` (note: if this directory doesn't exist, it is created automatically).
 1. Decide how you want to supply option values to the module during invocation.  There are three possibilities:
 	1. Invoke the `terraform apply` command and enter values for each option as terraform prompts for it, then enter `yes` at the final prompt to begin building the cluster.
 	1. **Recommended:**  Create a `lite.auto.tfvars` file containing the values for each option, invoke `terraform apply`, then enter `yes` at the final prompt to begin building the cluster.  The easiest way to create `lite.auto.tfvars` is to copy the example file, `lite.auto.tfvars.example`, and then edit the copy:
