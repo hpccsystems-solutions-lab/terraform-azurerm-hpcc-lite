@@ -16,4 +16,4 @@ rbac_bindings = {
 
 cluster_endpoint_access_cidrs  = ["0.0.0.0/0"]
 
-availability_zones = [1]
+availability_zones = [2]
