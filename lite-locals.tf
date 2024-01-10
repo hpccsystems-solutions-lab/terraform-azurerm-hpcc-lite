@@ -35,7 +35,7 @@ locals {
 
   nodesPer1Job = ceil("${var.thor_num_workers /  local.thorWorkersPerNode }")
 
-  helm_chart_timeout=300
+  helm_chart_timeout=600
 
   owner = {
     name  = var.admin_username
