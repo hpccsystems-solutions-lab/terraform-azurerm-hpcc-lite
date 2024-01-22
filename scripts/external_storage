@@ -1,0 +1,15 @@
+#!/bin/bash
+repopath=$1
+external_storage_desired=$2
+
+if [ "$external_storage_desired" == "false" ];then
+  #echo "DEBUG: EXITING because ignore_external_storage is true."
+  exit 0
+else
+   #echo "DEBUG: EXITING because ignore_external_storage is NOT true."
+    while [ ! -e "$repopath/storage/data/config.json" ];do
+       echo "This file does not exist, yet: $repopath/storage/data/config.json"
+       sleep 20;
+    done
+    exit 0;
+fi

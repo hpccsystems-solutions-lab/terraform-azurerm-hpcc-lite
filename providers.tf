@@ -3,5 +3,3 @@ provider "azurerm" {
   use_cli             = true
   storage_use_azuread = true
 }
-
-provider "azuread" {}

@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ "$1" != "" ];then
+  rg=$1
+else
+  echo "$0 has no arguments. It must of 1 argument that is the name of a resource group. EXITING.";exit 1;
+fi
+echo "In $0. Inputted resource groups is \"$rg\"";
+sleep 20;
+estos=$(az resource list --resource-group $rg|egrep "id\":.*storageAccounts\/hpcc"|sed "s/^ *\"id\": \"//"|sed "s/\", *$//")
+if [ "$estos" == "" ];then
+  echo "In $0 There are no hpcc storage accounts in the resource group, $rg. EXITING.";exit;
+fi
+for s in $estos;do
+  echo "Deleting storage account: $s"
+  az storage account delete --ids $s -y
+done

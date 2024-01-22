@@ -1,4 +1,4 @@
-storage_accounts = {
+storage_accounts = { # storage account
   adminsvc1 = {
     delete_protection         = false //Set to false to allow deletion
     prefix_name               = "adminsvc1"

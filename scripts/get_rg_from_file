@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ $# -gt 0 ];then
+  config_file=$1
+else
+  echo "FATAL ERROR: In $0. Config file path must be given on command line"
+  exit 1
+fi
+
+rg=$(sed "/\"resource_group\": *\"|\"resource_group_name\": *\"/q" $config_file|sed "s/^.*\"resource_group_name\": *\"//"|sed "s/\".*$//")
+if [[ "$rg" != *"hpccplatform"* ]];then
+  rg=$(sed "/\"resource_group\": *\"|\"resource_group_name\": *\"/q" $config_file|sed "s/^.*\"resource_group\": *\"//"|sed "s/\".*$//")
+fi
+echo $rg

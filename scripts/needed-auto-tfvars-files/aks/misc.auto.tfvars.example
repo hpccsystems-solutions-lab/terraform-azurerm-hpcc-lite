@@ -1,0 +1,8 @@
+resource_groups = { # rg
+  azure_kubernetes_service = {
+    tags = { "enclosed resource" = "open source aks" }
+  }
+}
+
+# # auto_connect - Automatically connect to the kubernetes cluster from the host machine.
+auto_connect = true

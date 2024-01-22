@@ -1,0 +1,9 @@
+#!/bin/bash
+if [ $# -gt 0 ];then
+  variable_file=$1
+else
+  echo "FATAL ERROR: Variable file name must be given on command line"
+  exit 1
+fi
+
+sed '/#===== end of aks variables =====/q' $variable_file
